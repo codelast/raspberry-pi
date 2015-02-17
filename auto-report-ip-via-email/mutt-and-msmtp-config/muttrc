@@ -1,0 +1,4 @@
+set sendmail="/usr/bin/msmtp"
+set use_from=yes
+set realname="Alarm"
+set editor="vim"
