@@ -20,4 +20,4 @@ done
 ETH0_IP_ADDR=`ifconfig eth0 | sed -n "2,2p" | awk '{print substr($2,1)}'`
 
 # send the Email
-echo "Current time: `date '+%F %T'`. Enjoy it" | mutt -s "IP Address of Raspberry Pi: $ETH0_IP_ADDR" xxx@gmail.com
+echo "Current time: `date '+%F %T'`. Enjoy it" | mutt -s "IP Address of Raspberry Pi: $ETH0_IP_ADDR" your_mail_address@gmail.com
