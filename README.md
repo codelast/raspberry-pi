@@ -1,4 +1,4 @@
-OBOB# raspberry-pi
+# raspberry-pi
 Raspberry Pi related code, which can be run on the following environment:
 
 
