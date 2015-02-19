@@ -18,6 +18,8 @@ int main(int argc, char **argv) {
   CvCapture* pCapture = cvCreateCameraCapture(0);
   cvSetCaptureProperty(pCapture, CV_CAP_PROP_FRAME_WIDTH, 640);
   cvSetCaptureProperty(pCapture, CV_CAP_PROP_FRAME_HEIGHT, 480);
+  cvSetCaptureProperty(pCapture, CV_CAP_PROP_BRIGHTNESS, 20);
+  cvSetCaptureProperty(pCapture, CV_CAP_PROP_CONTRAST, 10);
 
   IplImage *pFrame = 0;
 
