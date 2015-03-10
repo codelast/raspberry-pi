@@ -73,3 +73,10 @@
 (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
 ;; ac-source-gtags
 (my-ac-config)
+
+;; format code
+(defun indent-buffer ()
+"Indent the whole buffer."
+(interactive)
+(indent-region (point-min) (point-max) nil))
+(global-set-key [f7] 'indent-buffer)
