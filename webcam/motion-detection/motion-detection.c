@@ -50,8 +50,8 @@ int main(int argc, char **argv) {
       break;
     }
  
-    cvAbsDiff(pFrameB, pFrameA, pFrameSub);
-    cvCopy(pFrameA, pFrameB);
+    cvAbsDiff(pFrameB, pFrameA, pFrameSub);  // calculate the diff of two images
+    cvCopy(pFrameA, pFrameB);                // copy image, the 1st param is source & the 2nd is dest
  
     pGrayscaleImage = cvCreateImage(cvGetSize(pFrameSub), IPL_DEPTH_8U, 1);
     cvCvtColor(pFrameSub, pGrayscaleImage, CV_BGR2GRAY);
@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
     cvConvertScale(pHist->bins, pHist->bins, (fMaxValue ? (255.0 / fMaxValue) : 0.0), 0);
  
     double dRealtimeVal = cvGetReal1D(pHist->bins, 10);
-    if (dRealtimeVal > detectThreshold) {
+    if (dRealtimeVal > detectThreshold) {  // triggered
       time_t currentTimestamp = time(NULL);
       if (currentTimestamp - ts >= 1) {
 	ts = currentTimestamp;
@@ -70,13 +70,13 @@ int main(int argc, char **argv) {
       }
     }
  
-    cvReleaseImage(&pGrayscaleImage);
+    cvReleaseImage(&pGrayscaleImage);  // free memory
     pGrayscaleImage = NULL;
  
-    cvWaitKey(10);
+    cvWaitKey(10);  // wait for N milliseconds
   }
  
-  cvReleaseCapture(&pCapture);
+  cvReleaseCapture(&pCapture);  // stop capturing images & release resources
   cvReleaseHist(&pHist);
   cvReleaseImage(&pFrameB);
   cvReleaseImage(&pFrameSub);
