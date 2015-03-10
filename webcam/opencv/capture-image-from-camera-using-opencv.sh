@@ -20,6 +20,7 @@ if [ ! -f $WEBCAM_BIN ]; then
     fi
 fi
 
+# run the program
 $WEBCAM_BIN $OUTPUT_IMAGE_FILE
 if [ $? -ne 0 ]; then
     echo "Failed to capture image and output to file $OUTPUT_IMAGE_FILE"
