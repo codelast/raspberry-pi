@@ -42,40 +42,39 @@ int main(int argc, char **argv) {
   float fMaxValue = 0.0;
 
   time_t ts = 0;  // used to record current timestamp & prevent triggering the monition detection for multi times in 1 second
-  while(true)
-    {
-      pFrameA = cvQueryFrame(pCapture);
-      if(!pFrameA) {
-	fprintf(stdout, "Can't grab images!\n");
+  while(true) {
+    pFrameA = cvQueryFrame(pCapture);
+    if(!pFrameA) {
+      fprintf(stdout, "Can't grab images!\n");
  
-	break;
-      }
- 
-      cvAbsDiff(pFrameB, pFrameA, pFrameSub);
-      cvCopy(pFrameA, pFrameB);
- 
-      pGrayscaleImage = cvCreateImage(cvGetSize(pFrameSub), IPL_DEPTH_8U, 1);
-      cvCvtColor(pFrameSub, pGrayscaleImage, CV_BGR2GRAY);
-      cvCalcHist(&pGrayscaleImage, pHist, 0, 0);
-
-      fMaxValue = 0.0;
-      cvGetMinMaxHistValue(pHist, 0, &fMaxValue, 0, 0);
-      cvConvertScale(pHist->bins, pHist->bins, (fMaxValue ? (255.0 / fMaxValue) : 0.0), 0);
- 
-      double dRealtimeVal = cvGetReal1D(pHist->bins, 10);
-      if (dRealtimeVal > detectThreshold) {
-	time_t currentTimestamp = time(NULL);
-	if (currentTimestamp - ts >= 1) {
-	  ts = currentTimestamp;
-	  fprintf(stdout, "Motion detected!\n");
-	}
-      }
- 
-      cvReleaseImage(&pGrayscaleImage);
-      pGrayscaleImage = NULL;
- 
-      cvWaitKey(10);
+      break;
     }
+ 
+    cvAbsDiff(pFrameB, pFrameA, pFrameSub);
+    cvCopy(pFrameA, pFrameB);
+ 
+    pGrayscaleImage = cvCreateImage(cvGetSize(pFrameSub), IPL_DEPTH_8U, 1);
+    cvCvtColor(pFrameSub, pGrayscaleImage, CV_BGR2GRAY);
+    cvCalcHist(&pGrayscaleImage, pHist, 0, 0);
+
+    fMaxValue = 0.0;
+    cvGetMinMaxHistValue(pHist, 0, &fMaxValue, 0, 0);
+    cvConvertScale(pHist->bins, pHist->bins, (fMaxValue ? (255.0 / fMaxValue) : 0.0), 0);
+ 
+    double dRealtimeVal = cvGetReal1D(pHist->bins, 10);
+    if (dRealtimeVal > detectThreshold) {
+      time_t currentTimestamp = time(NULL);
+      if (currentTimestamp - ts >= 1) {
+	ts = currentTimestamp;
+	fprintf(stdout, "Motion detected!\n");
+      }
+    }
+ 
+    cvReleaseImage(&pGrayscaleImage);
+    pGrayscaleImage = NULL;
+ 
+    cvWaitKey(10);
+  }
  
   cvReleaseCapture(&pCapture);
   cvReleaseHist(&pHist);
