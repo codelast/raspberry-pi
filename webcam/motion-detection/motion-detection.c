@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
       time_t currentTimestamp = time(NULL);
       if (currentTimestamp - ts >= 1) {
 	ts = currentTimestamp;
-	fprintf(stdout, "Motion detected!\n");
+	printf("Motion detected @ %s", ctime(&currentTimestamp));
       }
     }
  
