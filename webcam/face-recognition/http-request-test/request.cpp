@@ -15,7 +15,6 @@ using namespace std;
 string apiKey = "your_faceplusplus_api_key";
 string apiSecret = "your_faceplusplus_api_secret";
 string localImageFilePath = "your_local_image_file_path_to_post_to_faceplusplus_service";
-string retData;
 
 size_t writeFunc(char *data, size_t size, size_t nmemb, string *writerData) {
   if (writerData == NULL) {
@@ -27,6 +26,8 @@ size_t writeFunc(char *data, size_t size, size_t nmemb, string *writerData) {
 }
 
 int main(int argc, char **argv) {
+  string retData;  // the data returned by Face++ service
+
   curl_global_init(CURL_GLOBAL_ALL);
   CURL *curl = curl_easy_init();
   CURLcode res;
