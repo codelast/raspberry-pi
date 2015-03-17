@@ -22,4 +22,5 @@ Demonstrate how to detect motion in front of an USB camera using OpenCV.
 Demonstrate how to capture an image from USB camera on Raspberry Pi using OpenCV.
 ### webcam/v4l2
 Demonstrate how to capture an image from USB camera on Raspberry Pi using V4L2, the code of this subproject is forked from https://github.com/twam/v4l2grab/tree/master & I add a shell script to invoke the program.
-
+### webcam/face-recognition
+Demonstrate the face-recognition application on Raspberry Pi.
