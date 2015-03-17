@@ -1,0 +1,58 @@
+{
+    "face": [
+        {
+            "attribute": {
+                "age": {
+                    "range": 5, 
+                    "value": 30
+                }, 
+                "gender": {
+                    "confidence": 99.9999, 
+                    "value": "Male"
+                }, 
+                "race": {
+                    "confidence": 99.81360000000001, 
+                    "value": "Asian"
+                }, 
+                "smiling": {
+                    "value": 20.3444
+                }
+            }, 
+            "face_id": "0c4d39f8b1a0005ca3c60664b0507533", 
+            "position": {
+                "center": {
+                    "x": 37.555556, 
+                    "y": 33.881579
+                }, 
+                "eye_left": {
+                    "x": 33.347778, 
+                    "y": 27.860888
+                }, 
+                "eye_right": {
+                    "x": 42.617556, 
+                    "y": 27.451184
+                }, 
+                "height": 30.263158, 
+                "mouth_left": {
+                    "x": 34.111333, 
+                    "y": 43.232566
+                }, 
+                "mouth_right": {
+                    "x": 42.099556, 
+                    "y": 43.053289
+                }, 
+                "nose": {
+                    "x": 37.849778, 
+                    "y": 35.283224
+                }, 
+                "width": 20.444444
+            }, 
+            "tag": ""
+        }
+    ], 
+    "img_height": 304, 
+    "img_id": "a2acd5430f013e0a7e72e34661872962", 
+    "img_width": 450, 
+    "session_id": "1acb389ed81d4785b44d0afa793751db", 
+    "url": null
+}
