@@ -1,4 +1,4 @@
-#include "rapidjson/document.h"     // rapidjson's DOM-style API
+#include <rapidjson/document.h>     // rapidjson's DOM-style API
 #include <cstdio>
 
 /**
