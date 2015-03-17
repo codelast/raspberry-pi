@@ -12,7 +12,7 @@ rm -f $OUTPUT_FACE_ID_FILE
 # modify the API key & API Secret to your own
 API_KEY=XXXXXXXXXXXXXXXXXXXXXXXXX
 API_SECRET=XXXXXXXXXXXXXXXXXXXXXXXXX
-INPUT_IMAGE_FILE_DIR=$WORKING_HOME/../../image/ceo-of-jikexueyuan
+INPUT_IMAGE_FILE_DIR=$WORKING_HOME/../../image/ceo-of-jikexueyuan/train
 
 rm -f $OUTPUT_FACE_ID_FILE
 
