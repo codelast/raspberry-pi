@@ -2,7 +2,7 @@
 #include <cstdio>
 
 /**
- * A program to test parsing JSON using rapidjson library.
+ * A program to test parsing a JSON string using rapidjson library.
  *
  * @author Darran Zhang @ codelast.com
  */
