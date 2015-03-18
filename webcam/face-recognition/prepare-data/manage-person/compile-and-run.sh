@@ -23,6 +23,6 @@ fi
 
 # run the program
 PERSON_NAME=jinyan
-OPERATION_TYPE=create
+OPERATION_TYPE=create    # should be "create" or "delete"
 echo "Invoking Face++ service to $OPERATION_TYPE Person $PERSON_NAME ..."
 $COMPILED_BIN $API_KEY $API_SECRET $OPERATION_TYPE $PERSON_NAME
