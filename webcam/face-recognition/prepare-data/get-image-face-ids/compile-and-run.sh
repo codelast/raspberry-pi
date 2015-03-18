@@ -32,7 +32,4 @@ do
     IMAGE_FILE_PATH=$INPUT_IMAGE_FILE_DIR/$IMAGE_FILE_NAME
     echo "Invoking Face++ service for file $IMAGE_FILE_NAME ..."
     $COMPILED_BIN $API_KEY $API_SECRET $IMAGE_FILE_PATH $IMAGE_FILE_NAME >> $OUTPUT_FACE_ID_FILE
-    if [ $? -ne 0 ]; then
-	echo "Failed to get face_id for image file $IMAGE_FILE"
-    fi
 done
