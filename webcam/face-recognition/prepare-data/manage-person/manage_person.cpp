@@ -5,7 +5,7 @@
 #include "curl/easy.h"
 
 /**
- * A program to add/delete Face++ Person.
+ * A program to create/delete a Face++ Person.
  *
  * @author Darran Zhang @ codelast.com
  */
