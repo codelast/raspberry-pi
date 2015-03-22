@@ -1,20 +1,19 @@
 #!/bin/bash
-# A script to batch get the face_ids for some image files under a local dir & save the face_ids returned by Face++ service to a text file.
+# A script to get the face_ids for some image files under a local dir & save the face_ids returned by Face++ service to a text file.
 
 CURRENT_DIR=`dirname "$0"`
-WORKING_HOME=`cd "$CURRENT_DIR"; pwd`
+export FACE_RECOGNITION_HOME=`cd "$CURRENT_DIR/../.."; pwd`
 
-SOURCE_FILE=$WORKING_HOME/get_face_id.cpp
-COMPILED_BIN=$WORKING_HOME/get_face_id
-OUTPUT_FACE_ID_FILE=$WORKING_HOME/output-face-ids.txt
+. $FACE_RECOGNITION_HOME/prepare-data/common-config.sh
+
+SOURCE_FILE=$GET_IMAGE_FACE_IDS_DIR/get_face_id.cpp
+COMPILED_BIN=$GET_IMAGE_FACE_IDS_DIR/get_face_id
+
+OUTPUT_FACE_ID_FILE=$GET_IMAGE_FACE_IDS_DIR/output-face-ids.txt
 rm -f $OUTPUT_FACE_ID_FILE
 
-# replace the API key & API Secret with your own
-API_KEY=XXXXXXXXXXXXXXXXXXXXXXXXX
-API_SECRET=XXXXXXXXXXXXXXXXXXXXXXXXX
-INPUT_IMAGE_FILE_DIR=$WORKING_HOME/../../image/ceo-of-jikexueyuan/train
-
-rm -f $OUTPUT_FACE_ID_FILE
+# the directory which contains the image files to be trained
+INPUT_IMAGE_FILE_DIR=$IMAGE_FILE_BASE_DIR/obama/train
 
 # compile the source code if the executable bin not exists
 if [ ! -f $COMPILED_BIN ]; then
