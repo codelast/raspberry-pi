@@ -18,9 +18,11 @@ Emacs config files on my Raspberry Pi.
 USB camera related applications on Raspberry Pi.
 ### webcam/motion-detection
 Demonstrate how to detect motion in front of an USB camera using OpenCV.
-### webcam/opencv
+### webcam/image-capture/opencv
 Demonstrate how to capture an image from USB camera on Raspberry Pi using OpenCV.
-### webcam/v4l2
+### webcam/image-capture/v4l2
 Demonstrate how to capture an image from USB camera on Raspberry Pi using V4L2, the code of this subproject is forked from https://github.com/twam/v4l2grab/tree/master & I add a shell script to invoke the program.
+### webcam/video-capture
+Demonstrate how to capture video from USB camera on Raspberry Pi & save to a file using OpenCV.
 ### webcam/face-recognition
 Demonstrate the face-recognition application on Raspberry Pi.
