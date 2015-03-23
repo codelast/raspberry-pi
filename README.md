@@ -25,4 +25,4 @@ Demonstrate how to capture an image from USB camera on Raspberry Pi using V4L2, 
 ### webcam/video-capture
 Demonstrate how to capture video from USB camera on Raspberry Pi & save to a file using OpenCV.
 ### webcam/face-recognition
-Demonstrate the face-recognition application on Raspberry Pi.
+Demonstrate how to implement a face-recognition application on Raspberry Pi.
