@@ -226,7 +226,7 @@ int main(int argc, char **argv) {
   while(true) {
     pFrameA = cvQueryFrame(pCapture);
     if(!pFrameA) {
-      fprintf(stdout, "Can't grab images!\n");
+      cout << "Can't grab images!" << endl;
  
       break;
     }
