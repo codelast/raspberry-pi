@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 
   IplImage *pFrameA = cvQueryFrame(pCapture);
   IplImage *pFrameB = cvCreateImage(cvSize(pFrameA->width, pFrameA->height), pFrameA->depth, pFrameA->nChannels);
-  IplImage *pFrameSub = cvCloneImage(pFrameB);
+  IplImage *pFrameDiff = cvCloneImage(pFrameB);
  
   int nDims = 256;
   float hRangesArr[] = {0, 255};
@@ -49,11 +49,11 @@ int main(int argc, char **argv) {
       break;
     }
  
-    cvAbsDiff(pFrameB, pFrameA, pFrameSub);  // calculate the diff of two images
+    cvAbsDiff(pFrameB, pFrameA, pFrameDiff);  // calculate the diff of two images
     cvCopy(pFrameA, pFrameB);                // copy image, the 1st param is source & the 2nd is dest
  
-    pGrayscaleImage = cvCreateImage(cvGetSize(pFrameSub), IPL_DEPTH_8U, 1);
-    cvCvtColor(pFrameSub, pGrayscaleImage, CV_BGR2GRAY);
+    pGrayscaleImage = cvCreateImage(cvGetSize(pFrameDiff), IPL_DEPTH_8U, 1);
+    cvCvtColor(pFrameDiff, pGrayscaleImage, CV_BGR2GRAY);
     cvCalcHist(&pGrayscaleImage, pHist, 0, 0);
 
     fMaxValue = 0.0;
@@ -79,13 +79,13 @@ int main(int argc, char **argv) {
   cvReleaseHist(&pHist);
   cvReleaseImage(&pFrameA);
   cvReleaseImage(&pFrameB);
-  cvReleaseImage(&pFrameSub);
+  cvReleaseImage(&pFrameDiff);
  
   pCapture = NULL;
   pHist = NULL;
   pFrameA = NULL;
   pFrameB = NULL;
-  pFrameSub = NULL;
+  pFrameDiff = NULL;
 
   return 0;
 }
