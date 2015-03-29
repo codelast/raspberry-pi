@@ -6,7 +6,7 @@ WORKING_HOME=`cd "$CURRENT_DIR"; pwd`
 
 SOURCE_FILE=$WORKING_HOME/motion-detection.c
 BIN_FILE=$WORKING_HOME/motion-detection
-MOTION_DETECTION_THRESHOLD=25
+MOTION_DETECTION_THRESHOLD=100
 
 # compile the source code if the executable bin not exists
 if [ ! -f $BIN_FILE ]; then

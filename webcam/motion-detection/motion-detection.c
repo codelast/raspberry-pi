@@ -28,9 +28,8 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  IplImage *pFrame = cvQueryFrame(pCapture);
-  IplImage *pFrameA = NULL;
-  IplImage *pFrameB = cvCreateImage(cvSize(pFrame->width, pFrame->height), pFrame->depth, pFrame->nChannels);
+  IplImage *pFrameA = cvQueryFrame(pCapture);
+  IplImage *pFrameB = cvCreateImage(cvSize(pFrameA->width, pFrameA->height), pFrameA->depth, pFrameA->nChannels);
   IplImage *pFrameSub = cvCloneImage(pFrameB);
  
   int nDims = 256;
@@ -78,15 +77,15 @@ int main(int argc, char **argv) {
  
   cvReleaseCapture(&pCapture);  // stop capturing images & release resources
   cvReleaseHist(&pHist);
+  cvReleaseImage(&pFrameA);
   cvReleaseImage(&pFrameB);
   cvReleaseImage(&pFrameSub);
  
   pCapture = NULL;
   pHist = NULL;
+  pFrameA = NULL;
   pFrameB = NULL;
   pFrameSub = NULL;
-  pFrame = NULL;
-  pFrameA = NULL;
 
   return 0;
 }
