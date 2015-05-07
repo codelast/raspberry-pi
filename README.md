@@ -26,3 +26,8 @@ Demonstrate how to capture an image from USB camera on Raspberry Pi using V4L2, 
 Demonstrate how to capture video from USB camera on Raspberry Pi & save to a file using OpenCV.
 ### webcam/face-recognition
 Demonstrate how to implement a face-recognition application on Raspberry Pi.
+
+## gpio
+GPIO related applications on Raspberry Pi.
+### gpio/led/blink
+Demonstrate how to blink the LED connected to the GPIO port on Raspberry Pi by using the WiringPi library.
