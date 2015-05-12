@@ -20,7 +20,7 @@ int main (int argc,char* argv[])
   int gpioPort = atoi(argv[1]);
 
   if (-1 == wiringPiSetup()) {
-    printf("Setup wiringPi failed!");
+    printf("Setup wiringPi failed!\n");
     return 1;
   }
 
