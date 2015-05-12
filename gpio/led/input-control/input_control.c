@@ -24,15 +24,14 @@ int main (int argc,char* argv[])
   }
 
   pinMode(buttonGpioPort, INPUT);  // set mode to input
-  pinMode(ledGpioPort, OUTPUT);  // set mode to output
-  //pullUpDnControl(buttonGpioPort, PUD_UP);
+  pinMode(ledGpioPort, OUTPUT);    // set mode to output
 
+  int level = 0;
   while(1) {
     int currentLevel = digitalRead(buttonGpioPort);
-    if (1 == digitalRead(buttonGpioPort)) {
-      digitalWrite(ledGpioPort, 0);
-    } else {
-      digitalWrite(ledGpioPort, 1);
+    if (currentLevel != level) {
+      digitalWrite(ledGpioPort, currentLevel);
+      level = currentLevel;
     }
     delay(10);
   }

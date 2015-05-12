@@ -4,7 +4,8 @@
 CURRENT_DIR=`dirname "$0"`
 WORKING_HOME=`cd "$CURRENT_DIR"; pwd`
 
-GPIO_PORT=0
+BUTTON_GPIO_PORT=0
+LED_GPIO_PORT=7
 
 SRC_FILE=$WORKING_HOME/input_control.c
 BIN_FILE=$WORKING_HOME/input_control
@@ -21,4 +22,4 @@ fi
 
 # run the program
 echo "Running $BIN_FILE ..."
-$BIN_FILE $GPIO_PORT
+$BIN_FILE $BUTTON_GPIO_PORT $LED_GPIO_PORT
