@@ -1,5 +1,5 @@
 #!/bin/bash
-# A script to control a stepper motor through the GPIO ports of Raspberry Pi.
+# A script to control a stepper motor through the GPIO ports on Raspberry Pi.
 
 CURRENT_DIR=`dirname "$0"`
 WORKING_HOME=`cd "$CURRENT_DIR"; pwd`

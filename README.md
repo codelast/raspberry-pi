@@ -37,3 +37,5 @@ Control a LED through a button(pressed or not).
 Control the brightness of a LED through PWM.
 ### gpio/sense-light
 Control some LEDs through an pyroelectric module.
+### gpio/stepper-motor
+Control a stepper motor through the GPIO ports on Raspberry Pi.

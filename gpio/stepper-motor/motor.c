@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 /**
- * A program to control a stepper motor through the GPIO ports of Raspberry Pi.
+ * A program to control a stepper motor through the GPIO ports on Raspberry Pi.
  *
  * @author Darran Zhang @ codelast.com
  */
