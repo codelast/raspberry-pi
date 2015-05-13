@@ -12,7 +12,7 @@
 int main (int argc,char* argv[])
 {
   if (argc < 4) {
-    printf("Usage example: ./input pyroelectric_module_gpio_port led_one_gpio_port led_two_gpio_port\n");
+    printf("Usage example: ./sense-light pyroelectric_module_gpio_port led_one_gpio_port led_two_gpio_port\n");
     return 1;
   }
   int pyroelectricModuleGpioPort = atoi(argv[1]);
