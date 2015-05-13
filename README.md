@@ -30,8 +30,10 @@ Demonstrate how to implement a face-recognition application on Raspberry Pi.
 ## gpio
 GPIO related applications on Raspberry Pi.
 ### gpio/led/blink
-Demonstrate how to blink the LED connected to the GPIO port on Raspberry Pi by using the WiringPi library.
+Blink the LED connected to the GPIO port on Raspberry Pi by using the WiringPi library.
 ### gpio/led/input-control
-Demonstrate how to control a LED through a button(pressed or not).
+Control a LED through a button(pressed or not).
 ### gpio/led/pwm
-Demonstrate how to control the brightness of a LED through PWM.
+Control the brightness of a LED through PWM.
+### gpio/sense-light
+Control some LEDs through an pyroelectric module.
