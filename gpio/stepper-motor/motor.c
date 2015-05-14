@@ -49,9 +49,10 @@ int main (int argc,char* argv[])
   return 0;
 }
 
-/* Rotate the motor.
- *  @param pins     A pointer which points to the pins number array.
- *  @param direction  CLOCKWISE for clockwise rotation, COUNTER_CLOCKWISE for counter clockwise rotation.
+/** 
+ * Rotate the stepper motor.
+ * @param pins       A pointer which points to the pins number array.
+ * @param direction  CLOCKWISE for clockwise rotation, COUNTER_CLOCKWISE for counter clockwise rotation.
  */
 void rotate(int* pins, int direction, int delayMS) {
   int i = 0;
