@@ -17,13 +17,14 @@ void rotate(int* pins, int direction, int delayMS);
 int main (int argc,char* argv[])
 {
   if (argc < 4) {
-    printf("Usage example: ./motor gpio_port_1 gpio_port_2 gpio_port_3 gpio_port_4\n");
+    printf("Usage example: ./motor direction gpio_port_1 gpio_port_2 gpio_port_3 gpio_port_4\n");
     return 1;
   }
-  int gpioPort1 = atoi(argv[1]);
-  int gpioPort2 = atoi(argv[2]);
-  int gpioPort3 = atoi(argv[3]);
-  int gpioPort4 = atoi(argv[4]);
+  int direction = atoi(argv[1]);
+  int gpioPort1 = atoi(argv[2]);
+  int gpioPort2 = atoi(argv[3]);
+  int gpioPort3 = atoi(argv[4]);
+  int gpioPort4 = atoi(argv[5]);
 
   int pins[4] = {gpioPort1, gpioPort2, gpioPort3, gpioPort4};
 
@@ -42,7 +43,7 @@ int main (int argc,char* argv[])
   pinMode(gpioPort4, OUTPUT);
 
   while (1) {
-    rotate(pins, CLOCKWISE, 4);
+    rotate(pins, direction, 4);
   }
 
   return 0;
