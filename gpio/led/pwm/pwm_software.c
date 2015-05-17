@@ -27,12 +27,12 @@ int main (int argc,char* argv[])
   int value = 0;
   while(1) {
     for(value = 1; value <= 100; ++value) {
-      softPwmWrite (gpioPort, value);
+      softPwmWrite(gpioPort, value);
       delay(10);
     }
     
     for(value = 100; value >= 1; --value) {
-      softPwmWrite (gpioPort, value);
+      softPwmWrite(gpioPort, value);
       delay(10);
     }
 
