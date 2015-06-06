@@ -21,9 +21,9 @@ typedef enum { false, true } bool;
 const int ROWS = 2;
 const int COLUMNS = 16;
 
-// Raspberry Pi pin number connected to the LCD1602 RS pin and Strobe(E) pin
-const  int PIN_NUMBER_RS = 11;
-const int PIN_NUMBER_E = 10;
+// Raspberry Pi GPIO pin number connected to the LCD1602 RS pin and Strobe(E) pin
+const  int GPIO_PIN_NUMBER_RS = 11;
+const int GPIO_PIN_NUMBER_E = 10;
 
 static int lcdHandle;
 
@@ -47,9 +47,9 @@ int main(int argc, char *argv[]) {
   wiringPiSetup();  // initialize
 
   if(4 == dataBits) {
-    lcdHandle = lcdInit(ROWS, COLUMNS, dataBits, PIN_NUMBER_RS, PIN_NUMBER_E, 4, 5, 6, 7, 0, 0, 0, 0);
+    lcdHandle = lcdInit(ROWS, COLUMNS, dataBits, GPIO_PIN_NUMBER_RS, GPIO_PIN_NUMBER_E, 4, 5, 6, 7, 0, 0, 0, 0);
   } else if (8 == dataBits) {
-    lcdHandle = lcdInit(ROWS, COLUMNS, dataBits, PIN_NUMBER_RS, PIN_NUMBER_E, 0, 1, 2, 3, 4, 5, 6, 7);
+    lcdHandle = lcdInit(ROWS, COLUMNS, dataBits, GPIO_PIN_NUMBER_RS, GPIO_PIN_NUMBER_E, 0, 1, 2, 3, 4, 5, 6, 7);
   } else {
     fprintf(stderr, "data bits must be set to 4 OR 8\n");
     return -1;
