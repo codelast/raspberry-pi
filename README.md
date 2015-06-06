@@ -30,7 +30,7 @@ Demonstrate how to implement a face-recognition application on Raspberry Pi.
 ## gpio
 GPIO related applications on Raspberry Pi.
 ### gpio/lcd
-Display some messages on a LCD1602 screen, including using/not using an PCF8574 I2C module.
+Display some messages on a LCD1602 screen, including the examples of using/not using an PCF8574 I2C module.
 ### gpio/led/blink
 Blink the LED connected to the GPIO port on Raspberry Pi by using the WiringPi library.
 ### gpio/led/input-control
