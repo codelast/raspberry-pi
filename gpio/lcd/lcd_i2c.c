@@ -24,7 +24,7 @@ const int COLUMNS = 16;
 
 static int lcdHandle;
 
-//define new pins
+// define new pins
 #define AF_BASE 100
 
 #define AF_RS   (AF_BASE + 0)
@@ -71,8 +71,8 @@ int main(int argc, char *argv[]) {
   pcf8574Setup(AF_BASE, 0x3f);
 
   /* turn on LCD backlight */
-  pinMode (AF_BL, OUTPUT);
-  digitalWrite (AF_BL, 1);
+  pinMode(AF_BL, OUTPUT);
+  digitalWrite(AF_BL, 1);
 
   /* set LCD into write mode */
   pinMode(AF_RW, OUTPUT);
