@@ -22,7 +22,7 @@ const int ROWS = 2;
 const int COLUMNS = 16;
 
 // Raspberry Pi GPIO pin number connected to the LCD1602 RS pin and Strobe(E) pin
-const  int GPIO_PIN_NUMBER_RS = 11;
+const int GPIO_PIN_NUMBER_RS = 11;
 const int GPIO_PIN_NUMBER_E = 10;
 
 static int lcdHandle;
@@ -44,7 +44,10 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
-  wiringPiSetup();  // initialize
+  if (-1 == wiringPiSetup()) {  // initialize WiringPi
+    printf("Setup wiringPi failed!\n");
+    return 1;
+  }
 
   if(4 == dataBits) {
     lcdHandle = lcdInit(ROWS, COLUMNS, dataBits, GPIO_PIN_NUMBER_RS, GPIO_PIN_NUMBER_E, 4, 5, 6, 7, 0, 0, 0, 0);
@@ -60,6 +63,7 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
+  lcdClear(lcdHandle);             // clear the screen
   lcdPosition(lcdHandle, 3, 0);    // set the cursor on the the 4th column & 1st row
   lcdPuts(lcdHandle, "RPi");       // print the text on the LCD at current cursor postion
   lcdPosition(lcdHandle, 4, 1);    // set the cursor on the the 5th column & 2nd row
