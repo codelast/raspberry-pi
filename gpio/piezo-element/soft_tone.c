@@ -12,7 +12,7 @@
 
 typedef enum { false, true } bool;
 
-int scaleSuperMario[23] = {659, 659, 0, 659, 0, 523, 659, 0, 784, 0, 0, 0, 392, 0, 0, 0, 523, 0, 0, 392, 0, 0, 330};
+int scale[23] = {659, 659, 0, 659, 0, 523, 659, 0, 784, 0, 0, 0, 392, 0, 0, 0, 523, 0, 0, 392, 0, 0, 330};
 
 int main (int argc, char *argv[]) {
   const char* programName = argv[0];
@@ -32,12 +32,12 @@ int main (int argc, char *argv[]) {
 
   int i;
   int loopCount = 0;
-  int arrayLength = sizeof(scaleSuperMario) / sizeof(int);
+  int arrayLength = sizeof(scale) / sizeof(int);
   while (true) {
     printf("Has played the music for %d times\n", loopCount);
     
     for (i = 0; i < arrayLength; ++i) {
-      softToneWrite(gpioPort, scaleSuperMario[i]);
+      softToneWrite(gpioPort, scale[i]);
       delay(200);
     }
 
