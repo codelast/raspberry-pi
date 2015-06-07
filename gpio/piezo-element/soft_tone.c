@@ -12,7 +12,7 @@
 
 typedef enum { false, true } bool;
 
-int scaleSuperMario[23] = {659, 659, 0, 659, 0, 523, 659, 0, 784, 0, 0, 0, 392, 0, 0, 0, 523, 0,0, 392, 0, 0, 330};
+int scaleSuperMario[23] = {659, 659, 0, 659, 0, 523, 659, 0, 784, 0, 0, 0, 392, 0, 0, 0, 523, 0, 0, 392, 0, 0, 330};
 
 int main (int argc, char *argv[]) {
   const char* programName = argv[0];
