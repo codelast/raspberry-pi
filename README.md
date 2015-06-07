@@ -37,6 +37,8 @@ Blink the LED connected to the GPIO port on Raspberry Pi by using the WiringPi l
 Control a LED through a button(pressed or not).
 ### gpio/led/pwm
 Control the brightness of a LED through PWM.
+### gpio/piezo-element
+Play music through a piezo element.
 ### gpio/sense-light
 Control some LEDs through an pyroelectric module.
 ### gpio/stepper-motor
