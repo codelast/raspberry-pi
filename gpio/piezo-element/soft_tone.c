@@ -23,12 +23,13 @@ int main (int argc, char *argv[]) {
 
   int gpioPort = atoi(argv[1]);
 
-  if (-1 == wiringPiSetup()) {  // initialize WiringPi
-    printf("Setup wiringPi failed!\n");
+  wiringPiSetup();
+
+  if (0 != softToneCreate(gpioPort)) {
+    printf("Create software tone failed!\n");
     return 1;
   }
 
-  softToneCreate(gpioPort);
   int i;
   int loopCount = 0;
   int arrayLength = sizeof(scaleSuperMario) / sizeof(int);

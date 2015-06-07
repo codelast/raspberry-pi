@@ -17,10 +17,7 @@ int main (int argc,char* argv[])
   }
   int gpioPort = atoi(argv[1]);
 
-  if (-1 == wiringPiSetup()) {
-    printf("Setup wiringPi failed!\n");
-    return 1;
-  }
+  wiringPiSetup();
 
   softPwmCreate(gpioPort, 0, 100);  // setup software PWM to the specified port with initial value 0 & PWM range 100
 

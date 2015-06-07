@@ -45,10 +45,7 @@ int main(int argc, char *argv[]) {
   int dataBits = atoi(argv[1]);
   const char* displayMessage = argv[2];
 
-  if (-1 == wiringPiSetup()) {  // initialize WiringPi
-    printf("Setup wiringPi failed!\n");
-    return 1;
-  }
+  wiringPiSetup();
 
   if(4 == dataBits) {
     lcdHandle = lcdInit(ROWS, COLUMNS, dataBits, GPIO_PIN_NUMBER_RS, GPIO_PIN_NUMBER_E, 4, 5, 6, 7, 0, 0, 0, 0);

@@ -19,10 +19,7 @@ int main (int argc,char* argv[])
   int ledOneGpioPort = atoi(argv[2]);
   int ledTwoGpioPort = atoi(argv[3]);
 
-  if (-1 == wiringPiSetup()) {
-    printf("Setup wiringPi failed!\n");
-    return 1;
-  }
+  wiringPiSetup();
 
   pinMode(pyroelectricModuleGpioPort, INPUT);  // set mode to input
   pinMode(ledOneGpioPort, OUTPUT);   // set mode to output

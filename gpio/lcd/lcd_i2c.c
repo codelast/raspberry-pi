@@ -55,10 +55,7 @@ int main(int argc, char *argv[]) {
   }
 
   /* initialize WiringPi */
-  if (-1 == wiringPiSetupSys()) {
-    printf("Setup wiringPi failed!\n");
-    return 1;
-  }
+  wiringPiSetupSys();
 
   /* initalize LCD */
   lcdHandle = lcdInit(ROWS, COLUMNS, 4, AF_RS, AF_E, AF_D1, AF_D2, AF_D3, AF_D4, 0, 0, 0, 0);

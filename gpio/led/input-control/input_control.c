@@ -18,10 +18,7 @@ int main (int argc,char* argv[])
   int buttonGpioPort = atoi(argv[1]);
   int ledGpioPort = atoi(argv[2]);
 
-  if (-1 == wiringPiSetup()) {
-    printf("Setup wiringPi failed!\n");
-    return 1;
-  }
+  wiringPiSetup();
 
   pinMode(buttonGpioPort, INPUT);  // set mode to input
   pinMode(ledGpioPort, OUTPUT);    // set mode to output

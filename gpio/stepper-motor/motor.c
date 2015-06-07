@@ -31,10 +31,7 @@ int main (int argc,char* argv[])
   printf("Stepper motor connected to GPIO port [%d], [%d], [%d], [%d]\n",
 	 gpioPort1, gpioPort2, gpioPort3, gpioPort4);
 
-  if (-1 == wiringPiSetup()) {
-    printf("Setup wiringPi failed!\n");
-    return 1;
-  }
+  wiringPiSetup();
 
   /* set mode to output */
   pinMode(gpioPort1, OUTPUT);
