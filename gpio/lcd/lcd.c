@@ -36,13 +36,14 @@ int main(int argc, char *argv[]) {
   char buf[32];
 
   const char* programName = argv[0];
-  int dataBits = atoi(argv[1]);
-  const char* displayMessage = argv[2];
 
   if(argc < 3) {
     fprintf(stderr, "Usage: %s data_bits display_message\n", programName);
     return -1;
   }
+
+  int dataBits = atoi(argv[1]);
+  const char* displayMessage = argv[2];
 
   if (-1 == wiringPiSetup()) {  // initialize WiringPi
     printf("Setup wiringPi failed!\n");
