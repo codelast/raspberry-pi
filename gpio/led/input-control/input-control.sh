@@ -1,5 +1,5 @@
 #!/bin/bash
-# A script to control a LED through an button using WiringPi.
+# A script to control a LED through an button using WiringPi - polling way.
 
 CURRENT_DIR=`dirname "$0"`
 WORKING_HOME=`cd "$CURRENT_DIR"; pwd`
