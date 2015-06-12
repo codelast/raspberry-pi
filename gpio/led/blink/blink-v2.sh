@@ -4,6 +4,9 @@
 VALUE=1
 GPIO_PORT=0
 
+# set the specified GPIO port to OUTPUT mode
+gpio mode $GPIO_PORT out
+
 while true
 do
     if [ $VALUE -eq 1 ]; then
