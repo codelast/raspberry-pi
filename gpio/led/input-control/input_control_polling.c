@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 /**
- * A program to control a LED through a button using WiringPi.
+ * A program to turn on/off a LED through a button(the polling way).
  *
  * @author Darran Zhang @ codelast.com
  */
@@ -12,7 +12,7 @@
 int main (int argc,char* argv[])
 {
   if (argc < 3) {
-    printf("Usage example: ./input button_gpio_port led_gpio_port\n");
+    printf("Usage example: ./%s button_gpio_port led_gpio_port\n", argv[0]);
     return 1;
   }
   int buttonGpioPort = atoi(argv[1]);
@@ -26,10 +26,12 @@ int main (int argc,char* argv[])
   int level = 0;
   while(1) {
     int currentLevel = digitalRead(buttonGpioPort);
-    if (currentLevel != level) {
-      digitalWrite(ledGpioPort, currentLevel);
-      level = currentLevel;
+    if (1 == currentLevel) {
+      level = 0;
+    } else {
+      level = 1;
     }
+    digitalWrite(ledGpioPort, level);
     delay(10);
   }
 

@@ -7,8 +7,8 @@ WORKING_HOME=`cd "$CURRENT_DIR"; pwd`
 BUTTON_GPIO_PORT=0
 LED_GPIO_PORT=7
 
-SRC_FILE=$WORKING_HOME/input_control.c
-BIN_FILE=$WORKING_HOME/input_control
+SRC_FILE=$WORKING_HOME/input_control_polling.c
+BIN_FILE=$WORKING_HOME/input_control_polling
 
 # compile the source code if the executable bin not exists
 if [ ! -f $BIN_FILE ]; then
