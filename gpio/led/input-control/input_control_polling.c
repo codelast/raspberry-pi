@@ -26,12 +26,14 @@ int main (int argc,char* argv[])
   int level = 0;
   while(1) {
     int currentLevel = digitalRead(buttonGpioPort);
+
+    // when the button is pressed/released, we want the LED to be turn on/off
     if (1 == currentLevel) {
       level = 0;
     } else {
       level = 1;
     }
-    digitalWrite(ledGpioPort, level);
+    digitalWrite(ledGpioPort, level);  // turn on/off the LED
     delay(10);
   }
 
