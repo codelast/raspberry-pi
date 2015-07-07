@@ -11,8 +11,8 @@ PYROELECTRIC_MODULE_GPIO_PORT=7
 LED_GPIO_PORT_1=0
 LED_GPIO_PORT_2=1
 
-SRC_FILE=$WORKING_HOME/sense-light.c
-BIN_FILE=$WORKING_HOME/sense-light
+SRC_FILE=$WORKING_HOME/sense_light.c
+BIN_FILE=$WORKING_HOME/sense_light
 
 # compile the source code if the executable bin not exists
 if [ ! -f $BIN_FILE ]; then
