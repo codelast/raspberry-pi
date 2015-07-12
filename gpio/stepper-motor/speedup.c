@@ -45,7 +45,7 @@ int main (int argc,char* argv[])
   int delayMS = MAX_DELAY;
   while (1) {
     int i;
-    for (i = 0; i < 5 + MAX_DELAY - delayMS; i++) {
+    for (i = 0; i < 10; i++) {
       rotate(pins, direction, delayMS);
     }
     --delayMS;
