@@ -69,23 +69,13 @@ void rotate(int* pins, int direction, int delayMS) {
   int j = 0;
   for (i = 0; i < 4; i++) {
     for (j = 0; j < 4; j++) {
+      int pinIndex = (CLOCKWISE == direction) ? (3 -j) : j;
       if (j == i) {
-	if (CLOCKWISE == direction) {
-	  digitalWrite(pins[3 - j], 1); // output a high level
-	  delay(delayMS);
-	} else {
-	  digitalWrite(pins[j], 1);
-	  delay(delayMS);
-	}
+	digitalWrite(pins[pinIndex], 1); // output a high level
       } else {
-	if (CLOCKWISE == direction) {
-	  digitalWrite(pins[3 - j], 0); // output a low level
-	  delay(delayMS);
-	} else {
-	  digitalWrite(pins[j], 0);
-	  delay(delayMS);
-	}
+	digitalWrite(pins[pinIndex], 0); // output a low level
       }
+      delay(delayMS);
     }
   }
 }
