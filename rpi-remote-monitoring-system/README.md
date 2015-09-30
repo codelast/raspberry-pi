@@ -9,7 +9,12 @@ This is the UI for end users. It gives orders to Raspberry Pi, make it to execut
 
 **pi-controller - A Raspberry-Pi-based hardware(Coding work ongoing but NOT done yet)**
 
-This the backend monitoring part of the system. There is a webcam binded with a stepper motor, and the stepper motor is connected to Raspberry Pi, which can rotate according to the command from pi-commander, this will change the view angle of the system. The webcam can also take photos, and the photo will be sent to pi-commander, which means it will be displayed on the Android device.
+This is the backend monitoring part of the system. There is a webcam binded with a stepper motor, and the stepper motor is connected to Raspberry Pi, which can rotate according to the command from pi-commander, this will change the view angle of the system. The webcam can also take photos, and the photo will be sent to pi-commander, which means it will be displayed on the Android device.
+
+I built this part with some Lego blocks, as the images shown below:
+
+![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/rpi-remote-monitoring-system/demo/pi-controller_1.png)
+![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/rpi-remote-monitoring-system/demo/pi-controller_2.png)
 
 ## Dependencies installation
 Before compiling the pi-controller project, you should have some software packages installed on your Arch Linux ARM:
