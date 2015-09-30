@@ -34,7 +34,7 @@ Description of the JSON data:
 
 in which,
 #### id: JSON-RPC message id, we use timestamp(in seconds) as the message id
-#### method: the command to give Raspberry Pi to execute, e.g. the "rotateMotor" method name means that we want Raspberry Pi to rotate the stepper motor connected to it
+#### method: the command to give Raspberry Pi to execute, e.g. the "rotateMotor" method name means that we want Raspberry Pi to rotate the stepper motor connected to it.
 #### params: the method parameters, e.g. when rotating the stepper motor, we may also want to specify the rotation driection.
 #### validate: the validation string to check whether this is a authorized request, if not, it will be discarded by the pi-controller
 #### how to generate the validate string: SHA-512(id+token)

@@ -14,19 +14,6 @@ Script & config files to let Raspberry Pi report its IP address to an specified 
 ## emacs-config
 Emacs config files on my Raspberry Pi.
 
-## webcam
-USB camera related applications on Raspberry Pi.
-### webcam/motion-detection
-Demonstrate how to detect motion in front of an USB camera using OpenCV.
-### webcam/image-capture/opencv
-Demonstrate how to capture an image from USB camera on Raspberry Pi using OpenCV.
-### webcam/image-capture/v4l2
-Demonstrate how to capture an image from USB camera on Raspberry Pi using V4L2, the code of this subproject is forked from https://github.com/twam/v4l2grab/tree/master & I add a shell script to invoke the program.
-### webcam/video-capture
-Demonstrate how to capture video from USB camera on Raspberry Pi & save to a file using OpenCV.
-### webcam/face-recognition
-Demonstrate how to implement a face-recognition application on Raspberry Pi.
-
 ## gpio
 GPIO related applications on Raspberry Pi.
 ### gpio/lcd
@@ -43,3 +30,19 @@ Play music through a piezo element.
 Control some LEDs through an pyroelectric module.
 ### gpio/stepper-motor
 Control a stepper motor through the GPIO ports on Raspberry Pi.
+
+## rpi-remote-monitoring-system
+Please refer to the README of this subproject.
+
+## webcam
+USB camera related applications on Raspberry Pi.
+### webcam/motion-detection
+Demonstrate how to detect motion in front of an USB camera using OpenCV.
+### webcam/image-capture/opencv
+Demonstrate how to capture an image from USB camera on Raspberry Pi using OpenCV.
+### webcam/image-capture/v4l2
+Demonstrate how to capture an image from USB camera on Raspberry Pi using V4L2, the code of this subproject is forked from https://github.com/twam/v4l2grab/tree/master & I add a shell script to invoke the program.
+### webcam/video-capture
+Demonstrate how to capture video from USB camera on Raspberry Pi & save to a file using OpenCV.
+### webcam/face-recognition
+Demonstrate how to implement a face-recognition application on Raspberry Pi.
