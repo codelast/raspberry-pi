@@ -8,13 +8,13 @@ Raspberry Pi related code, which can run on the following environment:
 
 Description of each subproject:
 
-## auto-report-ip-via-email
+## [auto-report-ip-via-email](./auto-report-ip-via-email)
 Script & config files to let Raspberry Pi report its IP address to an specified Email address at system startup.
 
-## emacs-config
+## [emacs-config](./emacs-config)
 Emacs config files on my Raspberry Pi.
 
-## gpio
+## [gpio](./gpio)
 GPIO related applications on Raspberry Pi.
 ### gpio/lcd
 Display some messages on a LCD1602 screen, including the examples of using/not using an PCF8574 I2C module.
@@ -34,7 +34,7 @@ Control a stepper motor through the GPIO ports on Raspberry Pi.
 ## [rpi-remote-monitoring-system](./rpi-remote-monitoring-system)
 Please refer to the README of this subproject.
 
-## webcam
+## [webcam](./webcam)
 USB camera related applications on Raspberry Pi.
 ### webcam/motion-detection
 Demonstrate how to detect motion in front of an USB camera using OpenCV.
