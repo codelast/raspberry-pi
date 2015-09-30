@@ -2,8 +2,6 @@
 #include <signal.h>
 #include <string.h>
 #include <iostream>
-#include <curl/curl.h>
-#include <map>
 #include <wiringPi.h>
 #include <glog/logging.h>
 #include "option_parser.h"

@@ -13,7 +13,6 @@
 
 /**
  * A thread which implements the main hardware controlling logic.
- * The reply of the server looks like: {"jsonrpc":"2.0","id":1443367226,"result":55}
  *
  * @author Darran Zhang @ codelast.com
  */
