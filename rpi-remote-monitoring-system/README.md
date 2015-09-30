@@ -1,6 +1,7 @@
 # A remote monitoring system based on Raspberry Pi - this is an experimental project which may not be accomplished in a certain time period.
 Project description: by this system you can use An Android App to control a Raspberry-Pi-based hardware to monitoring a place through the webcam connected to Pi, and you can control the webcam to rotate an angle to get a broader view.
 
+****
 The system is made of 2 parts:
 
 **pi-commander - An Android application(Coding work NOT started yet)**
@@ -16,6 +17,7 @@ I built this part with some Lego blocks, as the images shown below:
 ![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/rpi-remote-monitoring-system/demo/pi-controller_1.png)
 ![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/rpi-remote-monitoring-system/demo/pi-controller_2.png)
 
+****
 ## Dependencies installation
 Before compiling the pi-controller project, you should have some software packages installed on your Arch Linux ARM:
 #### WiringPi(a GPIO access library for Raspberry Pi)
@@ -30,6 +32,7 @@ pacman -S google-glog
 #### libconfig(C/C++ library for processing configuration files):
 pacmas -S libconfig
 
+****
 ## Communication Protocol
 
 There is a JSON-RPC server runs on pi-controller, which accepts remote commands from pi-commander & executes them. So the pi-commander should send JSON format commands to pi-controller, when doing End-To-End test you should also use some tools(like curl) to do this.
@@ -45,6 +48,7 @@ in which,
 #### validate: the validation string to check whether this is a authorized request, if not, it will be discarded by the pi-controller.
 #### how to generate the validate string: SHA-512(id+token)
 
+****
 ### E2E test guide
 
 #### Build the hardware system, including connecting stepper motor & webcam to Raspberry Pi, etc.
