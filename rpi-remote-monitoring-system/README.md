@@ -1,4 +1,4 @@
-# A remote monitoring system based on Raspberry Pi - this is an experimental project which may not be accomplished at last.
+# A remote monitoring system based on Raspberry Pi - this is an experimental project which may not be accomplished in a certain time period.
 Project description: by this system you can use An Android App to control a Raspberry-Pi-based hardware to monitoring a place through the webcam connected to Pi, and you can control the webcam to rotate an angle to get a broader view.
 
 The system is made of 2 parts:
