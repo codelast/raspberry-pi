@@ -79,7 +79,10 @@ static int methodHandler(char *buf, int len, struct mg_rpc_request *req) {
   string methodName(req->method->ptr, req->method->len);  // method name, e.g. "rotateMotor"
   LOG(INFO) << "Whole JSON string in the reqeust: [" << json << "]";
   Document doc;
-  doc.Parse(json.c_str());
+  if (doc.Parse(json.c_str()).HasParseError()) {
+    LOG(ERROR) << "Invalid JSON string in the request!";
+    return mg_rpc_create_std_error(buf, len, req, JSON_RPC_PARSE_ERROR);
+  }
 
   /* process field "id" */
   Value::ConstMemberIterator itr = doc.FindMember(JSON_FIELD_ID.c_str());
