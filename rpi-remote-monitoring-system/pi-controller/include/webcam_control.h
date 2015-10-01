@@ -19,11 +19,11 @@ class WebcamControl
  private:
   CvCapture* pCapture;
   
-  std::string getImageFilePath(std::string imageDir);
+  std::string getImageFilePath(const std::string &imageDir);
 
  public:
   bool init(int webcamIndex);
-  bool captureImage(std::string imageDir);
+  bool captureImage(const std::string &imageDir, std::string &imageFilePath);
   void cleanup();
 };
 

@@ -42,9 +42,10 @@ bool WebcamControl::init(int webcamIndex) {
 /** 
  * Use the webcam to capture an image & save it to the specified directory.
  *
- * @param imageDir  A local dir to save the images captured by the webcam.
+ * @param imageDir       A local dir to save the images captured by the webcam.
+ * @param imageFilePath  The returned path of the image file which we saved.
  */
-bool WebcamControl::captureImage(string imageDir) {
+bool WebcamControl::captureImage(const string &imageDir, string &imageFilePath) {
   if (NULL == pCapture) {
     LOG(ERROR) << "Can't capture image because webcam was not properly initialized!";
     return false;
@@ -67,7 +68,7 @@ bool WebcamControl::captureImage(string imageDir) {
  * @param imageDir  A local dir to save the images captred by the webcam.
  * @return The image file path.
  */
-string WebcamControl::getImageFilePath(string imageDir) {
+string WebcamControl::getImageFilePath(const string &imageDir) {
   stringstream ss;
   ss << imageDir << "/" << CUtil::getMillisecond() << ".jpg";
   return ss.str();
