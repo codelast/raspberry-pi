@@ -27,6 +27,12 @@ bool MotorControl::init(unsigned int* pins) {
     return false;
   }
   this->pins = pins;
+
+  /* set GPIO mode to output */
+  for (int i = 0; i < 4; i++) {
+    pinMode(pins[i], OUTPUT);
+  }
+
   return true;
 }
 

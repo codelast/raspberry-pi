@@ -38,12 +38,6 @@ int main(int argc, char* argv[]) {
   // don't need to check the return value of wiringPiSetup series functions because WiringPi Version 2 always return 0(refer to http://wiringpi.com/reference/setup/)
   wiringPiSetup();
 
-  /* set GPIO mode to output */
-  pinMode(gConfig.getPinA(), OUTPUT);
-  pinMode(gConfig.getPinB(), OUTPUT);
-  pinMode(gConfig.getPinC(), OUTPUT);
-  pinMode(gConfig.getPinD(), OUTPUT);
-
   /* signal handler */
   gUtil.signalIgnore(SIGHUP);	// ignore SIGHUP signal, to ensure that current program can live after the terminal close 
   gUtil.signalIgnore(SIGUSR1);	// ignore SIGUSR1 
