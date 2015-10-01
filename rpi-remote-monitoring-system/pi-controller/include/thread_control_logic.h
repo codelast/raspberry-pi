@@ -65,7 +65,9 @@ static int rotateMotor(Document &doc, char *buf, int len, struct mg_rpc_request 
 static int captureImage(Document &doc, char *buf, int len, struct mg_rpc_request *req) {
   LOG(INFO) << "Will capture an image ...";
   string imageFilePath;
-  webcamControl.captureImage(gConfig.getFullImageDir(), imageFilePath);
+  if (!webcamControl.captureImage(gConfig.getFullImageDir(), imageFilePath)) {
+    return mg_rpc_create_reply(buf, len, req, "F");  // return "F"(refers to "false")
+  }
 
   //TODO: return the base64 string of the image file
   return mg_rpc_create_reply(buf, len, req, "T");
