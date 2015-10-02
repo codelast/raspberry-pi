@@ -95,7 +95,7 @@ static int captureImage(Document &doc, char *buf, int len, struct mg_rpc_request
   unsigned char* data = new unsigned char[fileSizeInByte];
   ifs.read(reinterpret_cast<char*>(data), fileSizeInByte);
 
-  /* base64-encod the data we just read */
+  /* base64-encode the data we just read */
   string encodedBase64Str = base64_encode(data, fileSizeInByte);
   delete data;
   data = NULL;
