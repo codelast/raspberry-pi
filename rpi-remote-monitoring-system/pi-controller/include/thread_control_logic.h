@@ -6,6 +6,7 @@
 #include <fstream>
 #include <ostream>
 #include <sstream>
+#include <string.h>  // memset
 #include "config.h"
 #include "constants.h"
 #include "util.h"
@@ -99,7 +100,7 @@ static int captureImage(Document &doc, char *buf, int len, struct mg_rpc_request
   delete data;
   data = NULL;
 
-  //TODO: fix the bug here, the returned content is not right
+  // returned format "s" refers to quoted string
   return mg_rpc_create_reply(buf, len , req, "s", encodedBase64Str.c_str());
 }
 
@@ -166,7 +167,9 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
   struct http_message *hm = (struct http_message *) ev_data;
   static const char *methods[] = {RPC_METHOD_NAME_ROTATE_MOTOR.c_str(), RPC_METHOD_NAME_CAPTURE_IMAGE.c_str(), NULL};
   static mg_rpc_handler_t handlers[] = {methodHandler, methodHandler, NULL};
-  char buf[100];
+
+  char buf[RPC_BUFFER_SIZE];
+  memset(buf, 0, sizeof(char) * RPC_BUFFER_SIZE);
 
   switch (ev) {
   case NS_HTTP_REQUEST:

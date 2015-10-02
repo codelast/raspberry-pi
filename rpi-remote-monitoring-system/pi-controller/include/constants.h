@@ -17,6 +17,8 @@ const int COMMAND_TAKE_PHOTO = 1;
 const int COMMAND_MOTOR_ROTATE_CLOCKWISE = 2;
 const int COMMAND_MOTOR_ROTATE_COUNTER_CLOCKWISE = 3;
 
+const int RPC_BUFFER_SIZE = 524288;  // 512KB
+
 const std::string CFG_FILE_SECTION_SERVER = "Server";
 const std::string CFG_FILE_SECTION_LOCAL = "Local";
 
