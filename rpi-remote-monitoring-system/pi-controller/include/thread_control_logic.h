@@ -168,7 +168,7 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
   static const char *methods[] = {RPC_METHOD_NAME_ROTATE_MOTOR.c_str(), RPC_METHOD_NAME_CAPTURE_IMAGE.c_str(), NULL};
   static mg_rpc_handler_t handlers[] = {methodHandler, methodHandler, NULL};
 
-  char buf[RPC_BUFFER_SIZE];
+  char buf[RPC_BUFFER_SIZE];  // NOTE that buffer size should be large enough for your JSON-RPC reply message
   memset(buf, 0, sizeof(char) * RPC_BUFFER_SIZE);
 
   switch (ev) {
