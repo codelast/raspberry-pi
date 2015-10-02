@@ -8,7 +8,7 @@ DEBUG = NO
 
 CC = g++
 
-BASIC_FLAG = -Wall -D_GNU_SOURCE -D_REENTRANT
+BASIC_FLAG = -Wall -Wno-narrowing -D_GNU_SOURCE -D_REENTRANT
 ifeq (YES, ${DEBUG})
    FLAG = ${BASIC_FLAG} -g -DDEBUG
 else
@@ -16,7 +16,6 @@ else
 endif
 
 BASIC_INCLUDE_PATH = -I./include
-BASIC_LIB_PATH = -L./lib
 
 OPENCV_INCLUDE_PATH = -I/usr/include/opencv2/ `pkg-config --cflags opencv`
 OPENCV_LIB_PATH = `pkg-config --libs opencv`
@@ -25,6 +24,8 @@ CXXFLAGS = ${FLAG} \
            ${BASIC_INCLUDE_PATH} \
            ${BASIC_INCLUDE_PATH}/3rd \
            ${OPENCV_INCLUDE_PATH}
+
+CFLAGS = ${CXXFLAGS}
 
 LDFLAGS = ${OPENCV_LIB_PATH} \
           -lconfig++ -lglog -lwiringPi
@@ -35,10 +36,11 @@ OBJECTS=./src/pi_controller.o \
         ./src/motor_control.o \
         ./src/webcam_control.o \
 	./src/3rd/mongoose.o \
-	./src/3rd/sha512.o
+	./src/3rd/sha512.o \
+	./src/3rd/base64.o
 
 pi_controller: $(OBJECTS)
-	$(CC) $(CXXFLAGS) -o $@ $(OBJECTS) $(LDFLAGS)
+	$(CC) $(CXXFLAGS) $(CFLAGS) -o $@ $(OBJECTS) $(LDFLAGS)
 
 install:
 	rm -rf deploy

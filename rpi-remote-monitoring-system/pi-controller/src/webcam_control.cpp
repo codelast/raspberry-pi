@@ -57,7 +57,8 @@ bool WebcamControl::captureImage(const string &imageDir, string &imageFilePath) 
     return false;
   }
 
-  cvSaveImage(getImageFilePath(imageDir).c_str(), pFrame);
+  imageFilePath = getImageFilePath(imageDir);
+  cvSaveImage(imageFilePath.c_str(), pFrame);
 
   return true;
 }

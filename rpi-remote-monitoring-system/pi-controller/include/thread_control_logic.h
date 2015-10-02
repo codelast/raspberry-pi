@@ -3,6 +3,9 @@
 
 #include <string>
 #include <stdio.h>
+#include <fstream>
+#include <ostream>
+#include <sstream>
 #include "config.h"
 #include "constants.h"
 #include "util.h"
@@ -10,6 +13,7 @@
 #include "webcam_control.h"
 #include "rapidjson/document.h"
 #include "mongoose.h"
+#include "base64.h"
 
 /**
  * A thread which implements the main hardware controlling logic.
@@ -24,6 +28,11 @@ MotorControl motorControl;
 WebcamControl webcamControl;
 extern CConfig gConfig;
 
+/**
+ * A specific JSON-RPC method handler to deal with the stepper motor control command.
+ * Please refer to the API doc of Mongoose for the detail of the params.
+ *
+ */
 static int rotateMotor(Document &doc, char *buf, int len, struct mg_rpc_request *req) {
   /* process field "direction" */
   Value::ConstMemberIterator itr = doc.FindMember(JSON_FIELD_DIRECTION.c_str());
@@ -62,6 +71,11 @@ static int rotateMotor(Document &doc, char *buf, int len, struct mg_rpc_request 
   return mg_rpc_create_reply(buf, len, req, "T");
 }
 
+/**
+ * A specific JSON-RPC method handler to deal with the image capture command.
+ * Please refer to the API doc of Mongoose for the detail of the params.
+ *
+ */
 static int captureImage(Document &doc, char *buf, int len, struct mg_rpc_request *req) {
   LOG(INFO) << "Will capture an image ...";
   string imageFilePath;
@@ -69,10 +83,32 @@ static int captureImage(Document &doc, char *buf, int len, struct mg_rpc_request
     return mg_rpc_create_reply(buf, len, req, "F");  // return "F"(refers to "false")
   }
 
-  //TODO: return the base64 string of the image file
-  return mg_rpc_create_reply(buf, len, req, "T");
+  /* read the image file to an unsigned char array */
+  ifstream ifs(imageFilePath.c_str(), ios_base::in | ios_base::binary);
+  if (!ifs.is_open()) {
+    LOG(ERROR) << "Failed to open image file << [" << imageFilePath << "]";
+    return mg_rpc_create_reply(buf, len, req, "F");
+  }
+  ifs.seekg(0, ios::end);
+  size_t fileSizeInByte = ifs.tellg();
+  unsigned char* data = new unsigned char[fileSizeInByte];
+  ifs.read(reinterpret_cast<char*>(data), fileSizeInByte);
+
+  /* base64-encod the data we just read */
+  string encodedBase64Str = base64_encode(data, fileSizeInByte);
+  delete data;
+  data = NULL;
+
+  //TODO: fix the bug here, the returned content is not right
+  return mg_rpc_create_reply(buf, len , req, "s", encodedBase64Str.c_str());
 }
 
+/**
+ * Uniform JSON-RPC method handler, when a JSON-RPC request comes, it will first
+ * processed by this function, then some other specific method handlers.
+ * Please refer to the API doc of Mongoose for the detail of the params.
+ *
+ */
 static int methodHandler(char *buf, int len, struct mg_rpc_request *req) {
   /* use RapidJSON to parse the JSON string in the JSON-RPC call */
   string json(req->message->ptr, req->message->len);      // whole RPC message
@@ -110,6 +146,7 @@ static int methodHandler(char *buf, int len, struct mg_rpc_request *req) {
     return mg_rpc_create_std_error(buf, len, req, JSON_RPC_INVALID_PARAMS_ERROR);
   }
 
+  /* process other fields according to specific RPC method */
   if (RPC_METHOD_NAME_ROTATE_MOTOR == methodName) {
     return rotateMotor(doc, buf, len, req);
   } else if (RPC_METHOD_NAME_CAPTURE_IMAGE == methodName) {
@@ -120,6 +157,11 @@ static int methodHandler(char *buf, int len, struct mg_rpc_request *req) {
   }
 }
 
+/**
+ * HTTP event handler, it defines the handlers for all kinds of JSON-RPC request methods.
+ * Please refer to the API doc of Mongoose for the detail of the params.
+ *
+ */
 static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
   struct http_message *hm = (struct http_message *) ev_data;
   static const char *methods[] = {RPC_METHOD_NAME_ROTATE_MOTOR.c_str(), RPC_METHOD_NAME_CAPTURE_IMAGE.c_str(), NULL};
@@ -142,6 +184,11 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
   }
 }
 
+/**
+ * Thread function, to start a JSON-RPC server, init stepper motor controller,
+ * webcam controller, etc.
+ *
+ */
 void* threadCmdExec(void*) {
   /* initialize stepper motor controller */
   unsigned int pins[4] = {gConfig.getPinA(), gConfig.getPinB(), gConfig.getPinC(), gConfig.getPinD()};
