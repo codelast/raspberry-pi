@@ -8,7 +8,7 @@ DEBUG = NO
 
 CC = g++
 
-BASIC_FLAG = -Wall -Wno-narrowing -D_GNU_SOURCE -D_REENTRANT
+BASIC_FLAG = -Wall -D_GNU_SOURCE -D_REENTRANT
 ifeq (YES, ${DEBUG})
    FLAG = ${BASIC_FLAG} -g -DDEBUG
 else

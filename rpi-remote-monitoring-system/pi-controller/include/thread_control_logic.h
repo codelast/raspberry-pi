@@ -185,7 +185,7 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
 }
 
 /**
- * Thread function, to start a JSON-RPC server, init stepper motor controller,
+ * Thread function, to start a JSON-RPC server, initialize the stepper motor controller,
  * webcam controller, etc.
  *
  */
