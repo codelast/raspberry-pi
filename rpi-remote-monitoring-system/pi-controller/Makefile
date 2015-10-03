@@ -47,7 +47,7 @@ install:
 	mkdir -p deploy/conf
 	mkdir -p deploy/bin
 	cp -f bin/* deploy/bin
-	mv -f pi_controller deploy/bin
+	mv -f pi_controller deploy
 	cp -f conf/pi-controller.cfg deploy/conf
 
 .PHONY : clean

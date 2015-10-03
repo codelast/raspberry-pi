@@ -7,4 +7,4 @@ export PI_CONTROLLER_HOME=`cd "$bin/.."; pwd`
 cd $PI_CONTROLLER_HOME
 
 # run it
-$PI_CONTROLLER_HOME/bin/pi_controller $LOG_DIR $CONFIG_FILE
+$PI_CONTROLLER_HOME/pi_controller $LOG_DIR $CONFIG_FILE
