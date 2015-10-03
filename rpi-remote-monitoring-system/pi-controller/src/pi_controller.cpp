@@ -25,10 +25,9 @@ void signalCatchSIGINT(int signalNumber);
 
 int main(int argc, char* argv[]) {
   google::InitGoogleLogging(argv[0]);                // initialize Google's logging library 
-  google::SetLogDestination(google::INFO, argv[1]);  // set log file directory 
   google::SetStderrLogging(google::INFO);            // set logging level 
 
-  gConfig.setConfigFile(argv[2]);
+  gConfig.setConfigFile(argv[1]);
   if (!gConfig.loadConfig()) {
     LOG(ERROR) << "Failed to load pi-controller config file, please check its content";
     return 1;
