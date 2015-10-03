@@ -4,7 +4,6 @@
 #include <iostream>
 #include <wiringPi.h>
 #include <glog/logging.h>
-#include "option_parser.h"
 #include "util.h"
 #include "config.h"
 #include "thread_control_logic.h"
