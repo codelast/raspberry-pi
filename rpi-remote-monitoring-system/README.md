@@ -30,7 +30,7 @@ pacman -S opencv opencv-samples pkg-config
 pacman -S google-glog
 
 #### libconfig(C/C++ library for processing configuration files):
-pacmas -S libconfig
+pacman -S libconfig
 
 ****
 ## Communication Protocol
