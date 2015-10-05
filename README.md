@@ -2,7 +2,8 @@
 Raspberry Pi related code, which can run on the following environment:
 
 
-**Raspberry Pi model: B+**
+**Raspberry Pi model: B+/B**
+* For each subproject, if there is no explicit declaration about the applicable RPi model, then it's Model B+.
 
 **OS: Arch Linux ARM**
 
