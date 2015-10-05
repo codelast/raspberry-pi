@@ -2,9 +2,10 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include <algorithm>  // std::fill_n
-#include <stdlib.h>  // atoi()
-#include <unistd.h>
+#include <algorithm>  // std::fill_n()
+#include <stdlib.h>   // atoi()
+#include <sys/time.h>
+#include <string.h>   // memset()
 #include <wiringPi.h>
 
 /**
@@ -16,6 +17,7 @@
 
 using namespace std;
 
+void getCurrentTime(string &currentTime);
 void stringSplit(const string &src, char delimiter, vector<string> &output);
 int getPositionInTimeRange(string &hourAndMinute);
 bool loadTimeRange(string &timeRangeFile, int *timeRageArray);
@@ -65,6 +67,24 @@ int main (int argc,char* argv[])
   }
 
   return 0;
+}
+
+/**
+ * Get current time with the format of "HH:MM"(e.g. "21:05")
+ *
+ * @param currentTime  The returned time string.
+ */
+void getCurrentTime(string &currentTime) {
+  struct timeval tv;
+  memset(&tv, 0, sizeof(tv));
+  char timeStr[10] = "0";
+
+  /* obtain the time of day, and convert it to a tm struct */
+  gettimeofday(&tv, NULL);
+  struct tm* ptm = localtime(&tv.tv_sec);
+
+  strftime(timeStr, sizeof(timeStr), "%H:%M:%S", ptm);  // format time
+  currentTime = timeStr;
 }
 
 /**
