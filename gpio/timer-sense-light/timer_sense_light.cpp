@@ -17,15 +17,16 @@
 
 using namespace std;
 
-void getCurrentTime(string &currentTime);
+string getCurrentTime();
 void stringSplit(const string &src, char delimiter, vector<string> &output);
-int getPositionInTimeRange(string &hourAndMinute);
+int getPositionInTimeRange(const string &hourAndMinute);
 bool loadTimeRange(string &timeRangeFile, int *timeRageArray);
 
 const int DISABLE_STATUS = 0;
 const int ENABLE_STATUS = 1;
 const int INVALID_POSITION = -1;
 const int ONE_DAY_MINUTES = 1440;  // total minutes of a day
+
 int timeRageArray[ONE_DAY_MINUTES];  // used to represents the status(enable/disable) of each minute of a day
 
 int main (int argc,char* argv[])
@@ -73,8 +74,9 @@ int main (int argc,char* argv[])
  * Get current time with the format of "HH:MM"(e.g. "21:05")
  *
  * @param currentTime  The returned time string.
+ * @return current time string.
  */
-void getCurrentTime(string &currentTime) {
+string getCurrentTime() {
   struct timeval tv;
   memset(&tv, 0, sizeof(tv));
   char timeStr[10] = "0";
@@ -84,7 +86,7 @@ void getCurrentTime(string &currentTime) {
   struct tm* ptm = localtime(&tv.tv_sec);
 
   strftime(timeStr, sizeof(timeStr), "%H:%M:%S", ptm);  // format time
-  currentTime = timeStr;
+  return timeStr;
 }
 
 /**
@@ -116,7 +118,7 @@ void stringSplit(const string &src,
  * @param hourAndMinute  The "hour:minute" string(e.g. "21:05").
  * @return the position value, -1 for something wrong.
  */
-int getPositionInTimeRange(string &hourAndMinute) {
+int getPositionInTimeRange(const string &hourAndMinute) {
   vector<string> items;  // each item e.g. "21"
   stringSplit(hourAndMinute, ':', items);
   if (items.size() != 2) {
