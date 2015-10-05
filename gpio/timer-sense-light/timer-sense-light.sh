@@ -4,7 +4,11 @@
 CURRENT_DIR=`dirname "$0"`
 WORKING_HOME=`cd "$CURRENT_DIR"; pwd`
 
-TIME_RANGE_CONF_FILE=$CURRENT_DIR/conf/time-range.txt
+TIME_RANGE_CONF_FILE=$WORKING_HOME/conf/time-range.txt
+if [ ! -f $TIME_RANGE_CONF_FILE ]; then
+    echo "Config file $TIME_RANGE_CONF_FILE not exists, quit"
+    exit 1
+fi
 
 # input mode port
 PYROELECTRIC_MODULE_GPIO_PORT=0

@@ -1,6 +1,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <list>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -15,14 +16,35 @@
 
 using namespace std;
 
+void stringSplit(const string &src,
+		 char delimiter,
+		 list<string> &output) {
+  output.clear();
+  string::size_type begin = 0, end = 0, length = src.length();
+  while(begin < length && end != string::npos) {
+    end = src.find(delimiter, begin);
+    output.push_back(src.substr(begin, end-begin));
+    begin = end + 1;
+  }
+  return;
+}
+
 void loadTimeRange(string &timeRangeFile) {
   ifstream ifs;
   ifs.open(timeRangeFile.c_str(), ios::in);
   string line;
   while (!ifs.eof()) {
     getline(ifs, line);
-    cout << line << endl;
-    //TODO: parse each line
+    if (line.empty()) {
+      continue;
+    }
+    
+    list<string> lineItems;
+    stringSplit(line, '\t', lineItems);
+    list<string>::iterator it;
+    for (it = lineItems.begin(); it != lineItems.end(); ++it) {
+      //TODO:
+    }
   }
   ifs.close();
 
@@ -41,6 +63,7 @@ int main (int argc,char* argv[])
   int ledNumber = atoi(argv[4]);
 
   //TODO: read the time range file
+  loadTimeRange(timeRangeFile);
   
   wiringPiSetup();
 
