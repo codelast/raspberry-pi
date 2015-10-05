@@ -177,6 +177,8 @@ bool loadTimeRange(const string &timeRangeFile, int *timeRangeArray) {
       continue;
     }
 
+    cout << "LED can be lighten up between [" << lineItems[0] << "~" << lineItems[1] << "]" << endl;
+
     /* set all minutes between the start & end position to enable status */
     for (int i = startPosition; i <= endPosition; i++) {
       timeRangeArray[i] = ENABLE_STATUS;
