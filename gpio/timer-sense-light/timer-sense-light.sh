@@ -1,8 +1,10 @@
 #!/bin/bash
-# A script to control some LEDs through an pyroelectric module.
+# A time-controllable human sense light implementation based on Raspberry Pi.
 
 CURRENT_DIR=`dirname "$0"`
 WORKING_HOME=`cd "$CURRENT_DIR"; pwd`
+
+TIME_RANGE_CONF_FILE=$CURRENT_DIR/conf/time-range.txt
 
 # input mode port
 PYROELECTRIC_MODULE_GPIO_PORT=0
@@ -26,4 +28,4 @@ fi
 
 # run the program
 echo "Running $BIN_FILE ..."
-$BIN_FILE $PYROELECTRIC_MODULE_GPIO_PORT $LED_GPIO_PORT_START $LED_NUMBER
+$BIN_FILE $TIME_RANGE_CONF_FILE $PYROELECTRIC_MODULE_GPIO_PORT $LED_GPIO_PORT_START $LED_NUMBER
