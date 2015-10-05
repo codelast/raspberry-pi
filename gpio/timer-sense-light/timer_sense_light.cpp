@@ -20,7 +20,7 @@ using namespace std;
 string getCurrentTime();
 void stringSplit(const string &src, char delimiter, vector<string> &output);
 int getPositionInTimeRange(const string &hourAndMinute);
-bool loadTimeRange(string &timeRangeFile, int *timeRageArray);
+bool loadTimeRange(const string &timeRangeFile, int *timeRageArray);
 
 const int DISABLE_STATUS = 0;
 const int ENABLE_STATUS = 1;
@@ -144,7 +144,7 @@ int getPositionInTimeRange(const string &hourAndMinute) {
  * @param timeRangeArray  The returned time range data pointer.
  * @return true for successfully loaded the data, false otherwise.
  */
-bool loadTimeRange(string &timeRangeFile, int *timeRageArray) {
+bool loadTimeRange(const string &timeRangeFile, int *timeRageArray) {
   ifstream ifs(timeRangeFile.c_str(), ios::in);
   if (!ifs.is_open()) {
     cout << "Failed to open file [" << timeRangeFile << "]" << endl;
