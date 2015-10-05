@@ -79,6 +79,13 @@ void stringSplit(const string &src,
 
 /**
  * Load time range data from a file.
+ * The format of the time range definition file looks like:
+ * 21:00[\t]23:59
+ * 00:00[\t]07:00
+ *
+ * This two lines means that: the LEDs can only be lighten up between 21:00~23:59 & 00:00~07:00,
+ * at any other time of a day they will be turned off, even a person gets close to the pyroelectric 
+ * module connected to RPi.
  *
  * @param timeRangeFile  A file stores the time range data.
  */
