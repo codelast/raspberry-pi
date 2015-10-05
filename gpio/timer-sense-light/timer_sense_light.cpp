@@ -1,4 +1,6 @@
 #include <string>
+#include <fstream>
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -13,10 +15,24 @@
 
 using namespace std;
 
+void loadTimeRange(string &timeRangeFile) {
+  ifstream ifs;
+  ifs.open(timeRangeFile.c_str(), ios::in);
+  string line;
+  while (!ifs.eof()) {
+    getline(ifs, line);
+    cout << line << endl;
+    //TODO: parse each line
+  }
+  ifs.close();
+
+  return;
+}
+
 int main (int argc,char* argv[])
 {
   if (argc < 4) {
-    printf("Usage example: ./sense_light pyroelectric_module_gpio_port led_gpio_port_start led_number\n");
+    cout << "Usage example: ./sense_light pyroelectric_module_gpio_port led_gpio_port_start led_number\n" << endl;
     return 1;
   }
   string timeRangeFile = argv[1];
@@ -37,7 +53,7 @@ int main (int argc,char* argv[])
   while(1) {
     int currentLevel = digitalRead(pyroelectricModuleGpioPort);
     if (currentLevel != level) {
-      printf("Current level: %d\n", currentLevel);
+      cout << "Current level: " << currentLevel << endl;
 
       // turn on/off all LEDs
       for (int i = 0; i < ledNumber; i++) {
