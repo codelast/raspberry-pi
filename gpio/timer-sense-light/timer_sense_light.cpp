@@ -10,7 +10,7 @@
 
 /**
  * A time-controllable sense light based on Raspberry Pi.
- * Please refer to the README.md for more details.
+ * Please refer to the README.md for details.
  *
  * @author Darran Zhang @ codelast.com
  */
@@ -27,7 +27,7 @@ const int ENABLE_STATUS = 1;
 const int INVALID_POSITION = -1;
 const int ONE_DAY_MINUTES = 1440;  // total minutes of a day
 
-int timeRageArray[ONE_DAY_MINUTES];  // used to represents the status(enable/disable) of each minute of a day
+int timeRangeArray[ONE_DAY_MINUTES];  // used to represents the status(enable/disable) of each minute of a day
 
 int main (int argc,char* argv[])
 {
@@ -40,8 +40,8 @@ int main (int argc,char* argv[])
   int ledGpioPortStart = atoi(argv[3]);
   int ledNumber = atoi(argv[4]);
 
-  fill_n(timeRageArray, ONE_DAY_MINUTES, DISABLE_STATUS);  // set all minutes of a day to disable status
-  if (!loadTimeRange(timeRangeFile, timeRageArray)) {  //read the time range file
+  fill_n(timeRangeArray, ONE_DAY_MINUTES, DISABLE_STATUS);  // set all minutes of a day to disable status
+  if (!loadTimeRange(timeRangeFile, timeRangeArray)) {  //read the time range file
     return 1;
   }
   
@@ -58,10 +58,14 @@ int main (int argc,char* argv[])
     if (currentLevel != level) {
       cout << "Current level: " << currentLevel << endl;
 
-      // turn on/off all LEDs
+      // turn on/off all LEDs according to enable/disable status of current time
       for (int i = 0; i < ledNumber; i++) {
-	//TODO: check the enable/disable status of current time & apply it to the LEDs
-	digitalWrite(ledGpioPortStart, currentLevel);
+	int currentTimePosition = getPositionInTimeRange(getCurrentTime());
+	if (DISABLE_STATUS == timeRangeArray[currentTimePosition]) {
+	  digitalWrite(ledGpioPortStart, 0);
+	} else {
+	  digitalWrite(ledGpioPortStart, currentLevel);
+	}
       }
     }
     delay(10);
@@ -144,7 +148,7 @@ int getPositionInTimeRange(const string &hourAndMinute) {
  * @param timeRangeArray  The returned time range data pointer.
  * @return true for successfully loaded the data, false otherwise.
  */
-bool loadTimeRange(const string &timeRangeFile, int *timeRageArray) {
+bool loadTimeRange(const string &timeRangeFile, int *timeRangeArray) {
   ifstream ifs(timeRangeFile.c_str(), ios::in);
   if (!ifs.is_open()) {
     cout << "Failed to open file [" << timeRangeFile << "]" << endl;
@@ -175,7 +179,7 @@ bool loadTimeRange(const string &timeRangeFile, int *timeRageArray) {
 
     /* set all minutes between the start & end position to enable status */
     for (int i = startPosition; i <= endPosition; i++) {
-      timeRageArray[i] = ENABLE_STATUS;
+      timeRangeArray[i] = ENABLE_STATUS;
     }
   }
   ifs.close();
