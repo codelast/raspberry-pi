@@ -9,5 +9,12 @@ Environment:
 
 ****
 
-This is a sense light used at home, when a person gets close to the light, the pyroelectric module connected to Raspberry Pi will detect the human movement & ouput a high level to one of the GPIO port on RPi, then the program runs on RPi will light up some LEDs connected to it.
+You can use this project to build a human sense light, in short, when a person gets close to the light, the pyroelectric module connected to Raspberry Pi will detect the human movement & ouput a high level to one of the GPIO port on RPi, then the program runs on RPi will light up some LEDs connected to it.
 Also, you can set the time range of day, only in those time range the LEDs can be lighten up, and in other time range the LEDs will be turned off(this feature is still under developing).
+
+****
+
+## Dependencies installation
+Before compiling the pi-controller project, you should have some software packages installed on your Arch Linux ARM(besides the basic development tools such as gcc, make, etc.):
+#### WiringPi(a GPIO access library for Raspberry Pi)
+git clone git://git.drogon.net/wiringPi && cd wiringPi && ./build
