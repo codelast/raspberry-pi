@@ -19,7 +19,7 @@ I built this part with some Lego blocks, as the images shown below:
 
 ****
 ## Dependencies installation
-Before compiling the pi-controller project, you should have some software packages installed on your Arch Linux ARM:
+Before compiling the pi-controller project, you should have some software packages installed on your Arch Linux ARM(besides the basic development tools such as gcc, make, etc.):
 #### WiringPi(a GPIO access library for Raspberry Pi)
 git clone git://git.drogon.net/wiringPi && cd wiringPi && ./build
 
