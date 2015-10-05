@@ -16,40 +16,8 @@
 
 using namespace std;
 
-void stringSplit(const string &src,
-		 char delimiter,
-		 list<string> &output) {
-  output.clear();
-  string::size_type begin = 0, end = 0, length = src.length();
-  while(begin < length && end != string::npos) {
-    end = src.find(delimiter, begin);
-    output.push_back(src.substr(begin, end-begin));
-    begin = end + 1;
-  }
-  return;
-}
-
-void loadTimeRange(string &timeRangeFile) {
-  ifstream ifs;
-  ifs.open(timeRangeFile.c_str(), ios::in);
-  string line;
-  while (!ifs.eof()) {
-    getline(ifs, line);
-    if (line.empty()) {
-      continue;
-    }
-    
-    list<string> lineItems;
-    stringSplit(line, '\t', lineItems);
-    list<string>::iterator it;
-    for (it = lineItems.begin(); it != lineItems.end(); ++it) {
-      //TODO:
-    }
-  }
-  ifs.close();
-
-  return;
-}
+void stringSplit(const string &src, char delimiter, list<string> &output);
+void loadTimeRange(string &timeRangeFile);
 
 int main (int argc,char* argv[])
 {
@@ -87,4 +55,51 @@ int main (int argc,char* argv[])
   }
 
   return 0;
+}
+
+/**
+ * Split a string by the specified delimiter.
+ *
+ * @param src        The string to split.
+ * @param delimiter  The delimiter used to split the string.
+ * @param output     The output list which contains the split result.
+ */
+void stringSplit(const string &src,
+		 char delimiter,
+		 list<string> &output) {
+  output.clear();
+  string::size_type begin = 0, end = 0, length = src.length();
+  while(begin < length && end != string::npos) {
+    end = src.find(delimiter, begin);
+    output.push_back(src.substr(begin, end-begin));
+    begin = end + 1;
+  }
+  return;
+}
+
+/**
+ * Load time range data from a file.
+ *
+ * @param timeRangeFile  A file stores the time range data.
+ */
+void loadTimeRange(string &timeRangeFile) {
+  ifstream ifs;
+  ifs.open(timeRangeFile.c_str(), ios::in);
+  string line;
+  while (!ifs.eof()) {
+    getline(ifs, line);
+    if (line.empty()) {
+      continue;
+    }
+    
+    list<string> lineItems;
+    stringSplit(line, '\t', lineItems);
+    list<string>::iterator it;
+    for (it = lineItems.begin(); it != lineItems.end(); ++it) {
+      //TODO:
+    }
+  }
+  ifs.close();
+
+  return;
 }
