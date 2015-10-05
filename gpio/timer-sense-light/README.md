@@ -15,6 +15,6 @@ Also, you can set the time range of day, only in those time range the LEDs can b
 ****
 
 ## Dependencies installation
-Before compiling the pi-controller project, you should have some software packages installed on your Arch Linux ARM(besides the basic development tools such as gcc, make, etc.):
+Before compiling this project, you should have some software packages installed on your Arch Linux ARM(besides the basic development tools such as gcc, etc.):
 #### WiringPi(a GPIO access library for Raspberry Pi)
 git clone git://git.drogon.net/wiringPi && cd wiringPi && ./build
