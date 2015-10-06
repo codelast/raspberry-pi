@@ -166,6 +166,11 @@ bool loadTimeRange(const string &timeRangeFile, int *timeRangeArray) {
     if (line.empty()) {
       continue;
     }
+
+    if (0 == line.compare(0, 1, "#")) {  // line starts with "#" indicates it's a comment line
+      cout << "Read a comment line, skip" << endl;
+      continue;
+    }
     
     vector<string> lineItems;  // each item e.g. "21:00"
     stringSplit(line, '\t', lineItems);
