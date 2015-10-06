@@ -32,7 +32,7 @@ int timeRangeArray[ONE_DAY_MINUTES];  // used to represents the status(enable/di
 int main (int argc,char* argv[])
 {
   if (argc < 4) {
-    cout << "Usage example: ./sense_light pyroelectric_module_gpio_port led_gpio_port_start led_number\n" << endl;
+    cout << "Usage example: ./timer_sense_light pyroelectric_module_gpio_port led_gpio_port_start led_number\n" << endl;
     return 1;
   }
   string timeRangeFile = argv[1];
@@ -52,21 +52,27 @@ int main (int argc,char* argv[])
     pinMode(ledGpioPortStart + i, OUTPUT);   // set all LED GPIO port mode to output
   }
 
+  /* turn off all the LEDs at the initial status */
+  for (int i = 0; i < ledNumber; i++) {
+    digitalWrite(ledGpioPortStart + i, 0);
+  }
+
   int level = 0;
   while(true) {
     int currentLevel = digitalRead(pyroelectricModuleGpioPort);
     if (currentLevel != level) {
       cout << "Current level: " << currentLevel << endl;
 
-      // turn on/off all LEDs according to enable/disable status of current time
+      /* turn on/off all LEDs according to enable/disable status of current time */
       for (int i = 0; i < ledNumber; i++) {
 	int currentTimePosition = getPositionInTimeRange(getCurrentTime());
 	if (DISABLE_STATUS == timeRangeArray[currentTimePosition]) {
-	  digitalWrite(ledGpioPortStart, 0);
+	  digitalWrite(ledGpioPortStart + i, 0);
 	} else {
 	  digitalWrite(ledGpioPortStart, currentLevel);
 	}
       }
+      level = currentLevel;
     }
     delay(10);
   }
