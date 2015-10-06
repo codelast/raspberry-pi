@@ -10,7 +10,7 @@ Environment:
 ****
 
 You can use this project to build a human sense light, in short, when a person gets close to the light, the pyroelectric module connected to Raspberry Pi will detect the human movement & ouput a high level to one of the GPIO port on RPi, then the program runs on RPi will light up some LEDs connected to it.
-Also, you can set the time range of day, only in those time range the LEDs can be lighten up, and in other time range the LEDs will be turned off(this feature is still under developing).
+Also, you can set the time range of day, only in those time range the LEDs can be lighten up, and in other time range the LEDs will be turned off.
 
 ****
 
