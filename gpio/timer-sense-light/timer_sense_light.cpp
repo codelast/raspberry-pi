@@ -89,7 +89,7 @@ string getCurrentTime() {
   gettimeofday(&tv, NULL);
   struct tm* ptm = localtime(&tv.tv_sec);
 
-  strftime(timeStr, sizeof(timeStr), "%H:%M:%S", ptm);  // format time
+  strftime(timeStr, sizeof(timeStr), "%H:%M", ptm);  // format time
   return timeStr;
 }
 
