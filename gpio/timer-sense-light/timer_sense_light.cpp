@@ -59,20 +59,23 @@ int main (int argc,char* argv[])
 
   int level = 0;
   while(true) {
-    int currentLevel = digitalRead(pyroelectricModuleGpioPort);
-    if (currentLevel != level) {
-      cout << "Current level: " << currentLevel << endl;
-
-      /* turn on/off all LEDs according to enable/disable status of current time */
+    int currentTimePosition = getPositionInTimeRange(getCurrentTime());
+    if (DISABLE_STATUS == timeRangeArray[currentTimePosition]) {
+      /* turn off all the LEDs */
       for (int i = 0; i < ledNumber; i++) {
-	int currentTimePosition = getPositionInTimeRange(getCurrentTime());
-	if (DISABLE_STATUS == timeRangeArray[currentTimePosition]) {
-	  digitalWrite(ledGpioPortStart + i, 0);
-	} else {
+	digitalWrite(ledGpioPortStart + i, 0);
+      }
+    } else {
+      int currentLevel = digitalRead(pyroelectricModuleGpioPort);
+      if (currentLevel != level) {
+	cout << "Current level: " << currentLevel << endl;
+
+	/* turn on/off all LEDs according to current input level */
+	for (int i = 0; i < ledNumber; i++) {
 	  digitalWrite(ledGpioPortStart, currentLevel);
 	}
+	level = currentLevel;
       }
-      level = currentLevel;
     }
     delay(10);
   }
