@@ -32,6 +32,7 @@ git clone git://git.drogon.net/wiringPi && cd wiringPi && ./build
 
 ## How to know your Raspberry Pi revision
 Install WiringPi, then execute command "gpio -v" to get RPi's revision, the output info looks like:
+
     gpio version: 2.25
     Copyright (c) 2012-2015 Gordon Henderson
     This is free software with ABSOLUTELY NO WARRANTY.
