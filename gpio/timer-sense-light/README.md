@@ -1,9 +1,9 @@
 # A time-controllable human sense light based on Raspberry Pi.
-I only tested this program on Raspberry Pi Model B, but it should work on other models of RPi too, except that the hardware wiring should be some difference, and the code should need no modification.
+I only tested this program on Raspberry Pi Model B+ & Model B, but it should work on other models of RPi too, except that the hardware wiring should be some difference, and the code should need no modification.
 
 Environment:
 
-**Raspberry Pi model: B**
+**Raspberry Pi model: B+/B**
 
 **OS: Arch Linux ARM**
 
