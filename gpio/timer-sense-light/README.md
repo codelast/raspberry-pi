@@ -31,6 +31,8 @@ Before compiling this project, you should have some software packages installed 
 #### WiringPi(a GPIO access library for Raspberry Pi)
 git clone git://git.drogon.net/wiringPi && cd wiringPi && ./build
 
+****
+
 ## How to know your Raspberry Pi revision
 Install WiringPi, then execute command "gpio -v" to get RPi's revision, the output info looks like:
 
@@ -41,3 +43,8 @@ Install WiringPi, then execute command "gpio -v" to get RPi's revision, the outp
     
     Raspberry Pi Details:
       Type: Model B+, Revision: 1.2, Memory: 512MB, Maker: Sony
+
+****
+
+## Future work
+Add an UI for this project(may be web-based?).
