@@ -6,6 +6,7 @@
 #include <stdlib.h>   // atoi()
 #include <sys/time.h>
 #include <wiringPi.h>
+#include <glog/logging.h>
 #include "constants.h"
 #include "util.h"
 
@@ -25,10 +26,14 @@ int timeRangeArray[ONE_DAY_MINUTES];  // used to represents the status(enable/di
 
 int main (int argc,char* argv[])
 {
+  google::InitGoogleLogging(argv[0]);      // initialize Google's logging library 
+  google::SetStderrLogging(google::INFO);  // set logging level 
+
   if (argc < 4) {
-    cout << "Usage example: ./timer_sense_light pyroelectric_module_gpio_port led_gpio_port_start led_number\n" << endl;
+    LOG(ERROR) << "Usage example: ./timer_sense_light pyroelectric_module_gpio_port led_gpio_port_start led_number";
     return 1;
   }
+
   string timeRangeFile = argv[1];
   int pyroelectricModuleGpioPort = atoi(argv[2]);
   int ledGpioPortStart = atoi(argv[3]);
@@ -62,7 +67,7 @@ int main (int argc,char* argv[])
     } else {
       int currentLevel = digitalRead(pyroelectricModuleGpioPort);
       if (currentLevel != level) {
-	cout << "Current level: " << currentLevel << endl;
+	LOG(INFO) << "Level change detected, current level is: " << currentLevel;
 
 	/* turn on/off all LEDs according to current input level */
 	for (int i = 0; i < ledNumber; i++) {
@@ -90,7 +95,7 @@ int getPositionInTimeRange(const string &hourAndMinute) {
   vector<string> items;  // each item e.g. "21"
   CUtil::stringSplit(hourAndMinute, ':', items);
   if (items.size() != 2) {
-    cout << "Invalid hour & minute: [" << hourAndMinute << "], current line will be skipped" << endl;
+    LOG(ERROR) << "Invalid hour & minute: [" << hourAndMinute << "], current line will be skipped";
     return INVALID_POSITION;
   }
   int hour = atoi(items[0].c_str());
@@ -115,7 +120,7 @@ int getPositionInTimeRange(const string &hourAndMinute) {
 bool loadTimeRange(const string &timeRangeFile, int *timeRangeArray) {
   ifstream ifs(timeRangeFile.c_str(), ios::in);
   if (!ifs.is_open()) {
-    cout << "Failed to open file [" << timeRangeFile << "]" << endl;
+    LOG(ERROR) << "Failed to open file [" << timeRangeFile << "]";
     return false;
   }
   string line;
@@ -126,14 +131,14 @@ bool loadTimeRange(const string &timeRangeFile, int *timeRangeArray) {
     }
 
     if (0 == line.compare(0, 1, "#")) {  // line starts with "#" indicates it's a comment line
-      cout << "Read a comment line, skip" << endl;
+      LOG(INFO) << "Read a comment line, skip";
       continue;
     }
     
     vector<string> lineItems;  // each item e.g. "21:00"
     CUtil::stringSplit(line, '\t', lineItems);
     if (lineItems.size() != 2) {
-      cout << "Skip invalid line: [" << line << "]" << endl;
+      LOG(WARNING) << "Skip invalid line: [" << line << "]";
       continue;
     }
 
@@ -146,7 +151,7 @@ bool loadTimeRange(const string &timeRangeFile, int *timeRangeArray) {
       continue;
     }
 
-    cout << "LED can be lighten up between [" << lineItems[0] << "~" << lineItems[1] << "]" << endl;
+    LOG(INFO) << "LED can be lighten up between [" << lineItems[0] << "~" << lineItems[1] << "]";
 
     /* set all minutes between the start & end position to enable status */
     for (int i = startPosition; i <= endPosition; i++) {
