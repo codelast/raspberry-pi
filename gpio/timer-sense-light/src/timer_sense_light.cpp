@@ -5,8 +5,9 @@
 #include <algorithm>  // std::fill_n()
 #include <stdlib.h>   // atoi()
 #include <sys/time.h>
-#include <string.h>   // memset()
 #include <wiringPi.h>
+#include "constants.h"
+#include "util.h"
 
 /**
  * A time-controllable sense light based on Raspberry Pi.
@@ -17,15 +18,8 @@
 
 using namespace std;
 
-string getCurrentTime();
-void stringSplit(const string &src, char delimiter, vector<string> &output);
 int getPositionInTimeRange(const string &hourAndMinute);
 bool loadTimeRange(const string &timeRangeFile, int *timeRageArray);
-
-const int DISABLE_STATUS = 0;
-const int ENABLE_STATUS = 1;
-const int INVALID_POSITION = -1;
-const int ONE_DAY_MINUTES = 1440;  // total minutes of a day
 
 int timeRangeArray[ONE_DAY_MINUTES];  // used to represents the status(enable/disable) of each minute of a day
 
@@ -59,7 +53,7 @@ int main (int argc,char* argv[])
 
   int level = 0;
   while(true) {
-    int currentTimePosition = getPositionInTimeRange(getCurrentTime());
+    int currentTimePosition = getPositionInTimeRange(CUtil::getCurrentTime());
     if (DISABLE_STATUS == timeRangeArray[currentTimePosition]) {
       /* turn off all the LEDs */
       for (int i = 0; i < ledNumber; i++) {
@@ -84,45 +78,6 @@ int main (int argc,char* argv[])
 }
 
 /**
- * Get current time with the format of "HH:MM"(e.g. "21:05")
- *
- * @param currentTime  The returned time string.
- * @return current time string.
- */
-string getCurrentTime() {
-  struct timeval tv;
-  memset(&tv, 0, sizeof(tv));
-  char timeStr[10] = "0";
-
-  /* obtain the time of day, and convert it to a tm struct */
-  gettimeofday(&tv, NULL);
-  struct tm* ptm = localtime(&tv.tv_sec);
-
-  strftime(timeStr, sizeof(timeStr), "%H:%M", ptm);  // format time
-  return timeStr;
-}
-
-/**
- * Split a string by the specified delimiter.
- *
- * @param src        The string to split.
- * @param delimiter  The delimiter used to split the string.
- * @param output     The output vector which contains the split result.
- */
-void stringSplit(const string &src,
-		 char delimiter,
-		 vector<string> &output) {
-  output.clear();
-  string::size_type begin = 0, end = 0, length = src.length();
-  while(begin < length && end != string::npos) {
-    end = src.find(delimiter, begin);
-    output.push_back(src.substr(begin, end-begin));
-    begin = end + 1;
-  }
-  return;
-}
-
-/**
  * Get the position of a "hour:minute" string(e.g. "21:05") in the time range array.
  * The time ranger array is a 1440 elements array, which represent all the minutes of a day,
  * this function will calculate the position of a time in the array, e.g. if the time is 
@@ -133,7 +88,7 @@ void stringSplit(const string &src,
  */
 int getPositionInTimeRange(const string &hourAndMinute) {
   vector<string> items;  // each item e.g. "21"
-  stringSplit(hourAndMinute, ':', items);
+  CUtil::stringSplit(hourAndMinute, ':', items);
   if (items.size() != 2) {
     cout << "Invalid hour & minute: [" << hourAndMinute << "], current line will be skipped" << endl;
     return INVALID_POSITION;
@@ -176,7 +131,7 @@ bool loadTimeRange(const string &timeRangeFile, int *timeRangeArray) {
     }
     
     vector<string> lineItems;  // each item e.g. "21:00"
-    stringSplit(line, '\t', lineItems);
+    CUtil::stringSplit(line, '\t', lineItems);
     if (lineItems.size() != 2) {
       cout << "Skip invalid line: [" << line << "]" << endl;
       continue;

@@ -31,6 +31,9 @@ Before compiling this project, you should have some software packages installed 
 #### WiringPi(a GPIO access library for Raspberry Pi)
 git clone git://git.drogon.net/wiringPi && cd wiringPi && ./build
 
+#### glog(Google logging module):
+pacman -S google-glog
+
 ****
 
 ## How to know your Raspberry Pi revision
