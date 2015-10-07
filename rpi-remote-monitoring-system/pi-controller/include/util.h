@@ -19,7 +19,7 @@ class CUtil
   time_t static getFileModTime(const std::string &filePath);
   
  public:
-  void signalIgnore(int signalNumber);
+  void static signalIgnore(int signalNumber);
   void static executeShellCommand(std::string shellCommand);
   std::string static getLatestFile(const std::string &dir);
   long long static getMillisecond();

@@ -18,7 +18,6 @@
 using namespace std;
 
 // global variables
-CUtil gUtil;
 CConfig gConfig;
 
 void signalCatchSIGINT(int signalNumber);
@@ -37,9 +36,9 @@ int main(int argc, char* argv[]) {
   wiringPiSetup();
 
   /* signal handler */
-  gUtil.signalIgnore(SIGHUP);	// ignore SIGHUP signal, to ensure that current program can live after the terminal close 
-  gUtil.signalIgnore(SIGUSR1);	// ignore SIGUSR1 
-  gUtil.signalIgnore(SIGUSR2);	// ignore SIGUSR2 
+  CUtil::signalIgnore(SIGHUP);	// ignore SIGHUP signal, to ensure that current program can live after the terminal close 
+  CUtil::signalIgnore(SIGUSR1);	// ignore SIGUSR1 
+  CUtil::signalIgnore(SIGUSR2);	// ignore SIGUSR2 
 
   /* register SIGINT signal handler */
   struct sigaction saSIGINT;
