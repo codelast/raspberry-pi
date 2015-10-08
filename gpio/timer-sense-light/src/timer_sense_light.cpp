@@ -51,7 +51,7 @@ int main(int argc,char* argv[])
 
   int level = 0;
   while(true) {
-    int currentTimePosition = CUtil::getPositionInTimeRange(CUtil::getCurrentTime());
+    int currentTimePosition = CUtil::getCurrentTimePositionInTimeRange();
     if (DISABLE_STATUS == gConfigLoader.getTimePositionStatus(currentTimePosition)) {
       /* turn off all the LEDs */
       for (int i = 0; i < ledNumber; i++) {

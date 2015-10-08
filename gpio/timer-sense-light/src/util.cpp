@@ -78,3 +78,12 @@ int CUtil::getPositionInTimeRange(const string &hourAndMinute) {
   int minute = atoi(items[1].c_str());
   return 60 * hour + minute;
 }
+
+/**
+ * Get the position of a current time in the time range array.
+
+ * @return the position value, -1 for something wrong.
+ */
+int CUtil::getCurrentTimePositionInTimeRange() {
+  return getPositionInTimeRange(getCurrentTime());
+}

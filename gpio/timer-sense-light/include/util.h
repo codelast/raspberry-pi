@@ -16,12 +16,15 @@ class CUtil
   CUtil();
   virtual ~CUtil();
 
- public:
+ private:
   std::string static getCurrentTime();
+
+ public:
   void static stringSplit(const std::string &src,
 			  char delimiter,
 			  std::vector<std::string> &output);
   int static getPositionInTimeRange(const std::string &hourAndMinute);
+  int static getCurrentTimePositionInTimeRange();
 };
 
 #endif
