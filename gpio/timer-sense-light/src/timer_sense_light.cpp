@@ -19,7 +19,6 @@
 
 using namespace std;
 
-int getPositionInTimeRange(const string &hourAndMinute);
 bool loadTimeRange(const string &timeRangeFile, int *timeRageArray);
 
 int timeRangeArray[ONE_DAY_MINUTES];  // used to represents the status(enable/disable) of each minute of a day
@@ -58,7 +57,7 @@ int main (int argc,char* argv[])
 
   int level = 0;
   while(true) {
-    int currentTimePosition = getPositionInTimeRange(CUtil::getCurrentTime());
+    int currentTimePosition = CUtil::getPositionInTimeRange(CUtil::getCurrentTime());
     if (DISABLE_STATUS == timeRangeArray[currentTimePosition]) {
       /* turn off all the LEDs */
       for (int i = 0; i < ledNumber; i++) {
@@ -80,27 +79,6 @@ int main (int argc,char* argv[])
   }
 
   return 0;
-}
-
-/**
- * Get the position of a "hour:minute" string(e.g. "21:05") in the time range array.
- * The time ranger array is a 1440 elements array, which represent all the minutes of a day,
- * this function will calculate the position of a time in the array, e.g. if the time is 
- * "00:05", then the position is 6.
- *
- * @param hourAndMinute  The "hour:minute" string(e.g. "21:05").
- * @return the position value, -1 for something wrong.
- */
-int getPositionInTimeRange(const string &hourAndMinute) {
-  vector<string> items;  // each item e.g. "21"
-  CUtil::stringSplit(hourAndMinute, ':', items);
-  if (items.size() != 2) {
-    LOG(ERROR) << "Invalid hour & minute: [" << hourAndMinute << "], current line will be skipped";
-    return INVALID_POSITION;
-  }
-  int hour = atoi(items[0].c_str());
-  int minute = atoi(items[1].c_str());
-  return 60 * hour + minute;
 }
 
 /**
@@ -142,11 +120,11 @@ bool loadTimeRange(const string &timeRangeFile, int *timeRangeArray) {
       continue;
     }
 
-    int startPosition = getPositionInTimeRange(lineItems[0]);
+    int startPosition = CUtil::getPositionInTimeRange(lineItems[0]);
     if (INVALID_POSITION == startPosition) {
       continue;
     }
-    int endPosition = getPositionInTimeRange(lineItems[1]);
+    int endPosition = CUtil::getPositionInTimeRange(lineItems[1]);
     if (INVALID_POSITION == endPosition) {
       continue;
     }

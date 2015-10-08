@@ -21,6 +21,7 @@ class CUtil
   void static stringSplit(const std::string &src,
 			  char delimiter,
 			  std::vector<std::string> &output);
+  int static getPositionInTimeRange(const std::string &hourAndMinute);
 };
 
 #endif

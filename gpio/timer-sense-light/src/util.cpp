@@ -1,6 +1,9 @@
 #include <string.h>	// memset 
 #include <time.h>
 #include <sys/time.h>
+#include <stdlib.h>     // atoi()
+#include <glog/logging.h>
+#include "constants.h"
 #include "util.h"
 
 /**
@@ -54,4 +57,25 @@ void CUtil::stringSplit(const string &src,
     begin = end + 1;
   }
   return;
+}
+
+/**
+ * Get the position of a "hour:minute" string(e.g. "21:05") in the time range array.
+ * The time ranger array is a 1440 elements array, which represent all the minutes of a day,
+ * this function will calculate the position of a time in the array, e.g. if the time is 
+ * "00:05", then the position is 6.
+ *
+ * @param hourAndMinute  The "hour:minute" string(e.g. "21:05").
+ * @return the position value, -1 for something wrong.
+ */
+int CUtil::getPositionInTimeRange(const string &hourAndMinute) {
+  vector<string> items;  // each item e.g. "21"
+  CUtil::stringSplit(hourAndMinute, ':', items);
+  if (items.size() != 2) {
+    LOG(ERROR) << "Invalid hour & minute: [" << hourAndMinute << "], current line will be skipped";
+    return INVALID_POSITION;
+  }
+  int hour = atoi(items[0].c_str());
+  int minute = atoi(items[1].c_str());
+  return 60 * hour + minute;
 }
