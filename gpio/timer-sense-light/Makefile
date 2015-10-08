@@ -25,6 +25,7 @@ CFLAGS = ${CXXFLAGS}
 LDFLAGS = -lglog -lwiringPi
 
 OBJECTS=./src/timer_sense_light.o \
+        ./src/config_loader.o \
         ./src/util.o
 
 timer_sense_light: $(OBJECTS)

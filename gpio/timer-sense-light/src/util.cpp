@@ -23,7 +23,6 @@ CUtil::~CUtil() {
 /**
  * Get current time with the format of "HH:MM"(e.g. "21:05")
  *
- * @param currentTime  The returned time string.
  * @return current time string.
  */
 string CUtil::getCurrentTime() {
