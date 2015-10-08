@@ -16,8 +16,7 @@
 using namespace std;
 using namespace libconfig;
 
-CConfig::CConfig()
-{
+CConfig::CConfig() {
   threadRunning = true;
   pinA = 0;
   pinB = 1;
