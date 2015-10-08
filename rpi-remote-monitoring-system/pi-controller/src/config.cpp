@@ -65,8 +65,7 @@ size_t CConfig::getExecutablePath(char* buffer, size_t len) {
  *
  * @return true for successfully loaded the config file, false otherwise.
  */
-bool CConfig::loadConfig()
-{
+bool CConfig::loadConfig(const string configFile) {
   Config cfg;
 
   try {

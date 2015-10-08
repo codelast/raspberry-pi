@@ -26,8 +26,7 @@ int main(int argc, char* argv[]) {
   google::InitGoogleLogging(argv[0]);                // initialize Google's logging library 
   google::SetStderrLogging(google::INFO);            // set logging level 
 
-  gConfig.setConfigFile(argv[1]);
-  if (!gConfig.loadConfig()) {
+  if (!gConfig.loadConfig(argv[1])) {
     LOG(ERROR) << "Failed to load pi-controller config file, please check its content";
     return 1;
   }

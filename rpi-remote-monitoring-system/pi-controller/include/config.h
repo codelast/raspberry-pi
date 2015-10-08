@@ -17,7 +17,6 @@ class CConfig
 
  private:
   std::string currentAppPath;  // the path of the current running program 
-  std::string configFile;      // the config file (including path and file name) 
 
   unsigned int webcamIndex;      // index of the webcam connected to Raspberry Pi
   bool threadRunning;	         // a flag to control the thread running status 
@@ -36,11 +35,9 @@ class CConfig
  public:
   size_t getExecutablePath(char* buffer, size_t len);
 
-  bool loadConfig();
+  bool loadConfig(const std::string configFile);
 
   inline std::string getCurrentAppPath() const { return currentAppPath; }
-  inline std::string getConfigFile() const { return configFile; }
-  inline void setConfigFile(const std::string &val) { configFile = val; }
   inline unsigned int getWebcamIndex() const { return webcamIndex; }
   inline bool getThreadRunning() const { return threadRunning; }
   inline void setThreadRunning(bool val) { threadRunning = val; } 
