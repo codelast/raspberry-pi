@@ -32,9 +32,10 @@ class CConfig
   unsigned int pinC;
   unsigned int pinD;
 
- public:
+ private:
   size_t getExecutablePath(char* buffer, size_t len);
 
+ public:
   bool loadConfig(const std::string configFile);
 
   inline std::string getCurrentAppPath() const { return currentAppPath; }
