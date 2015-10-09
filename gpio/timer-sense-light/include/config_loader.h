@@ -19,9 +19,27 @@ class CConfigLoader
  private:
   int timeRangeArray[ONE_DAY_MINUTES];  // used to represents the status(enable/disable) of each minute of a day
 
+  int pyroelectricGpioPort;
+  int ledGpioPortStart;
+  int ledNumber;
+
+  int listenPort;       // local web sever listen port
+  std::string webRootDirName;
+
+  bool threadRunning;  // a flag to control the thread running status
+
  public:
+  bool loadMainConfig(const std::string mainConfigFile);
   bool loadTimeRange(const std::string &timeRangeFile);
   int getTimePositionStatus(int timePosition);
+
+  inline int getPyroelectricGpioPort() const { return pyroelectricGpioPort; }
+  inline int getLedGpioPortStart() const { return ledGpioPortStart; }
+  inline int getLedNumber() const { return ledNumber; }
+  inline int getListenPort() const { return listenPort; }
+  inline std::string getWebRootDirName() const { return webRootDirName; }
+  inline bool getThreadRunning() const { return threadRunning; }
+  inline void setThreadRunning(bool val) { threadRunning = val; }
 };
 
 #endif

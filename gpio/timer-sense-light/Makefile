@@ -18,15 +18,17 @@ endif
 BASIC_INCLUDE_PATH = -I./include
 
 CXXFLAGS = ${FLAG} \
+           ${BASIC_INCLUDE_PATH}/3rd \
            ${BASIC_INCLUDE_PATH}
 
 CFLAGS = ${CXXFLAGS}
 
-LDFLAGS = -lglog -lwiringPi
+LDFLAGS = -lpthread -lconfig++ -lglog -lwiringPi
 
 OBJECTS=./src/timer_sense_light.o \
         ./src/config_loader.o \
-        ./src/util.o
+        ./src/util.o \
+        ./src/3rd/mongoose.o
 
 timer_sense_light: $(OBJECTS)
 	$(CC) $(CXXFLAGS) $(CFLAGS) -o $@ $(OBJECTS) $(LDFLAGS)
@@ -37,7 +39,8 @@ install:
 	mkdir -p deploy/bin
 	cp -f bin/* deploy/bin
 	mv -f timer_sense_light deploy
-	cp -f conf/time-range.txt deploy/conf
+	cp -f conf/* deploy/conf
+	cp -rf web-root deploy
 
 .PHONY : clean
 clean:

@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>  // std::fill_n()
 #include <glog/logging.h>
+#include <libconfig.h++>
 #include "util.h"
 #include "config_loader.h"
 
@@ -12,12 +13,67 @@
  */
 
 using namespace std;
+using namespace libconfig;
 
 CConfigLoader::CConfigLoader() {
   fill_n(timeRangeArray, ONE_DAY_MINUTES, DISABLE_STATUS);  // set all minutes of a day to disable status
+  pyroelectricGpioPort = 0;
+  ledGpioPortStart = 1;
+  ledNumber = 1;
+
+  threadRunning = true;
 }
 
 CConfigLoader::~CConfigLoader() {
+}
+
+/**
+ * Load main configuration from a file.
+ *
+ * @return true for successfully loaded the config file, false otherwise.
+ */
+bool CConfigLoader::loadMainConfig(const string configFile) {
+  Config cfg;
+
+  try {
+    cfg.readFile(configFile.c_str());
+  } catch(const FileIOException &fioex) {    
+    LOG(ERROR) << "I/O exception when loading config file.";
+    return false;
+  } catch(const ParseException &pex) {
+    LOG(ERROR) << "Parse config file error at " << pex.getFile() << " : " << pex.getLine() << " - " << pex.getError();
+    return false;
+  }
+
+  // get the root object of the config object 
+  const Setting& root = cfg.getRoot();
+
+  try {
+    const Setting &gpio = root[CFG_FILE_SECTION_GPIO.c_str()];
+
+    if (!(gpio.lookupValue("PyroelectricGpioPort", pyroelectricGpioPort) &&
+	  gpio.lookupValue("LedGpioPortStart", ledGpioPortStart) &&
+	  gpio.lookupValue("LedNumber", ledNumber))) {
+      LOG(ERROR) << "Failed to read config file section " << CFG_FILE_SECTION_GPIO;
+    }
+  } catch (...) {
+    LOG(ERROR) << "Exception caught when reading config file section " << CFG_FILE_SECTION_GPIO;
+    return false;
+  }
+
+  try {
+    const Setting &web = root[CFG_FILE_SECTION_WEB.c_str()];
+
+    if (!(web.lookupValue("ListenPort", listenPort) &&
+	  web.lookupValue("WebRootDirName", webRootDirName))) {
+      LOG(ERROR) << "Failed to read config file section " << CFG_FILE_SECTION_WEB;
+    }
+  } catch (...) {
+    LOG(ERROR) << "Exception caught when reading config file section " << CFG_FILE_SECTION_WEB;
+    return false;
+  }
+
+  return true;
 }
 
 /**

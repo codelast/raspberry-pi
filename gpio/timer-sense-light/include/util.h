@@ -20,6 +20,7 @@ class CUtil
   std::string static getCurrentTime();
 
  public:
+  void static signalIgnore(int signalNumber);
   void static stringSplit(const std::string &src,
 			  char delimiter,
 			  std::vector<std::string> &output);

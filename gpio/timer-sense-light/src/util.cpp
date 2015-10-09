@@ -1,4 +1,5 @@
-#include <string.h>	// memset 
+#include <signal.h>     // signal related
+#include <string.h>     // memset
 #include <time.h>
 #include <sys/time.h>
 #include <stdlib.h>     // atoi()
@@ -18,6 +19,20 @@ CUtil::CUtil() {
 }
 
 CUtil::~CUtil() {
+}
+
+/**
+ * Ignore a signal.
+ *
+ * @param signalNumber	The signal identifier.
+ */
+void CUtil::signalIgnore(int signalNumber) {
+  struct sigaction sa_SIG;
+  memset(&sa_SIG, 0, sizeof(sa_SIG));
+  sa_SIG.sa_handler = SIG_IGN;  // specify the signal handler function
+  sigemptyset(&sa_SIG.sa_mask);
+  sa_SIG.sa_flags = 0;
+  sigaction(signalNumber, &sa_SIG, NULL);  // register
 }
 
 /**
