@@ -17,6 +17,32 @@ Also, you can set the time range of day, only in those time range the LEDs can b
 
 ****
 
+## Usage instruction
+### Dependencies installation
+Before compiling this project, you should have some software packages installed on your Arch Linux ARM(besides the basic development tools such as gcc, etc.):
+* WiringPi(a GPIO access library for Raspberry Pi)
+
+git clone git://git.drogon.net/wiringPi && cd wiringPi && ./build
+* glog(Google logging module)
+
+pacman -S google-glog
+
+### build the hardware system
+Buy essencial electronic components and build the hardware system according to the circuit diagrams.
+
+### build the binary program
+make && make install
+
+### modify the configuraion files according to your needs
+cd deploy
+vim conf/main.conf
+vim conf/time-range.txt
+
+### start the system
+cd bin && ./run-timer-sense-light.sh
+
+****
+
 ## Hardware model
 You should prepare some specific hardware components for this project, including:
 #### A pyroelectric module(HC-SR501)
@@ -25,16 +51,6 @@ You should prepare some specific hardware components for this project, including
 
 #### Some LEDs
 ![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/timer-sense-light/demo/led.jpg)
-
-****
-
-## Dependencies installation
-Before compiling this project, you should have some software packages installed on your Arch Linux ARM(besides the basic development tools such as gcc, etc.):
-#### WiringPi(a GPIO access library for Raspberry Pi)
-git clone git://git.drogon.net/wiringPi && cd wiringPi && ./build
-
-#### glog(Google logging module):
-pacman -S google-glog
 
 ****
 
