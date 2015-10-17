@@ -44,7 +44,7 @@ in which,
 #### id: JSON-RPC message id, we use timestamp(in seconds) as the message id
 #### method: the command to give Raspberry Pi to execute, e.g. the "rotateMotor" method name means that we want Raspberry Pi to rotate the stepper motor connected to it.
 #### direction: one of the method parameters. When rotating the stepper motor, we may also want to specify the rotation driection, 1 for clockwise and -1 for counter clockwise.
-#### round: one of the method parameters, used to control the rotation angle. 150 does not mean 150 degrees but is a relatively number, I did not test the conversion relation between this number & the real ratation angle, so currently we should not set this value too large.
+#### round: one of the method parameters, used to control the rotation angle. 150 does not mean 150 degrees but is a relatively number, I did not test the conversion relation between this number & the real rotation angle, so currently we should not set this value too large.
 #### validate: the validation string to check whether this is a authorized request, if not, it will be discarded by the pi-controller.
 #### how to generate the validate string: SHA-512(id+token)
 
