@@ -12,8 +12,9 @@ if [ ! -f $TIME_RANGE_CONFIG_FILE ]; then
     exit 1
 fi
 
-# set glog dir by setting this environment variable
-export GOOGLE_LOG_DIR=$LOG_DIR
+# config glog by setting some environment variables
+export GOOGLE_LOG_DIR=$LOG_DIR  # log dir
+export GLOG_max_log_size=5      # create a new log file every N MB
 
 # run it
 echo "Running program..."
