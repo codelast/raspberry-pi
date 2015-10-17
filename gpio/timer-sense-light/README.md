@@ -31,14 +31,18 @@ pacman -S google-glog
 Buy essencial electronic components and build the hardware system according to the circuit diagrams.
 
 ### build the binary program
-make && make install
+
+    make && make install
 
 ### modify the configuraion files according to your needs
-vim deploy/conf/main.conf
-vim deploy/conf/time-range.txt
+
+    vim deploy/conf/main.conf
+    vim deploy/conf/time-range.txt
 
 ### start the system
-cd deploy/bin && ./run-timer-sense-light.sh
+
+    cd deploy/bin
+    ./run-timer-sense-light.sh
 
 ****
 
