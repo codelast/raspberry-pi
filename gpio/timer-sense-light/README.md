@@ -73,4 +73,4 @@ Install WiringPi, then execute command "gpio -v" to get RPi's revision, the outp
 ****
 
 ## Work in progress(NOT done yet)
-Add an web-base UI for this project.
+Add a web-base UI for this project.
