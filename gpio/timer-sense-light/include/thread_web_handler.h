@@ -75,7 +75,7 @@ void* threadWebHandler(void*) {
   //httpServerOpts.document_root = gConfigLoader.getWebRootDirName().c_str();  // set up web root directory
 
   if (mg_stat(httpServerOpts.document_root, &st) != 0) {
-    LOG(ERROR) << "Cannot find web root directory, quit";
+    LOG(ERROR) << "Cannot find web root directory, thread exits";
     return NULL;
   }
 
