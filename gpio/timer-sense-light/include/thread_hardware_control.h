@@ -40,6 +40,8 @@ void* threadHardwareControl(void*) {
   // turn off all the LEDs at the initial status
   turnOffAllLED(ledGpioPortStart, ledNumber);
 
+  LOG(INFO) << "Hardware controlling thread starts to work...";
+
   int level = 0;
   while(gConfigLoader.getThreadRunning()) {
     int currentTimePosition = CUtil::getCurrentTimePositionInTimeRange();
