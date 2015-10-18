@@ -72,12 +72,14 @@ void* threadWebHandler(void*) {
 
   /* set up web server parameters */
   mg_set_protocol_http_websocket(nc);
-  //httpServerOpts.document_root = gConfigLoader.getWebRootDirName().c_str();  // set up web root directory
+  /*
+  httpServerOpts.document_root = gConfigLoader.getWebRootDirName().c_str();  // set up web root directory
 
   if (mg_stat(httpServerOpts.document_root, &st) != 0) {
-    LOG(ERROR) << "Cannot find web root directory, thread exits";
+    LOG(ERROR) << "Cannot find web root directory, web handler thread exits";
     return NULL;
   }
+  */
 
   LOG(INFO) << "Start web server on port [" << gConfigLoader.getListenPort() << "]";
 

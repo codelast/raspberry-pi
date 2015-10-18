@@ -36,8 +36,8 @@ timer_sense_light: $(OBJECTS)
 install:
 	rm -rf deploy
 	mkdir -p deploy/conf
-	mkdir -p deploy/bin
-	cp -f bin/* deploy/bin
+	mkdir -p deploy/script
+	cp -f script/* deploy/script
 	mv -f timer_sense_light deploy
 	cp -f conf/* deploy/conf
 	cp -rf web-root deploy
