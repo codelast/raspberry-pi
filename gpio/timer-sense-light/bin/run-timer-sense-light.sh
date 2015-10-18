@@ -5,10 +5,10 @@
 # (2) restart:  ./run-timer-sense-light.sh restart
 # (3) kill:     ./run-timer-sense-light.sh kill
 
-bin=`dirname "$0"`
-export TIMER_SENSE_LIGHT_HOME=`cd "$bin/.."; pwd`
+CURRENT_DIR=`dirname "$0"`
+export TIMER_SENSE_LIGHT_HOME=`cd "$CURRENT_DIR/.."; pwd`
 
-. $TIMER_SENSE_LIGHT_HOME/bin/common-config.sh
+. $TIMER_SENSE_LIGHT_HOME/script/common-config.sh
 cd $TIMER_SENSE_LIGHT_HOME
 
 EXEC_FILE_NAME=timer_sense_light
