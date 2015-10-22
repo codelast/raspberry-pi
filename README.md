@@ -34,10 +34,18 @@ Control some LEDs through an pyroelectric module.
 ### gpio/stepper-motor
 Control a stepper motor through the GPIO ports on Raspberry Pi.
 ### [gpio/timer-sense-light](./gpio/timer-sense-light)
-Please refer to the README of this subproject.
+A time-controllable human sense light based on Raspberry Pi.
+
+[![Click to watch Youtube video demo](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/timer-sense-light/demo/finished_product_1.jpg)](https://www.youtube.com/watch?v=_6llPyMW7_M)
+
+Please refer to the README of this subproject for details.
 
 ## [rpi-remote-monitoring-system](./rpi-remote-monitoring-system)
-Please refer to the README of this subproject.
+A remote monitoring system based on Raspberry Pi
+
+![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/rpi-remote-monitoring-system/demo/pi-controller_1.png)
+
+Please refer to the README of this subproject for details.
 
 ## [webcam](./webcam)
 USB camera related applications on Raspberry Pi.
