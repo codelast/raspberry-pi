@@ -34,6 +34,7 @@ Play music through a piezo element.
 Control some LEDs through an pyroelectric module.
 ### gpio/stepper-motor
 Control a stepper motor through the GPIO ports on Raspberry Pi.
+![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/stepper-motor/demo/stepper-motor.png)
 ### [gpio/timer-sense-light](./gpio/timer-sense-light)
 A time-controllable human sense light based on Raspberry Pi.
 
