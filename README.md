@@ -1,8 +1,7 @@
-# raspberry-pi
-Raspberry Pi related code, which can run on the following environment:
+# Raspberry Pi related code
+There are some related video tutorial recorded by me on jikexueyuan.com: http://search.jikexueyuan.com/course/?q=%E6%A0%91%E8%8E%93%E6%B4%BE
 
-
-**Raspberry Pi model: B+/B**
+**Environment: Raspberry Pi model B+/B**
 * For each subproject, if there is no explicit declaration about the applicable RPi model, then it's Model B+.
 
 **OS: Arch Linux ARM**
