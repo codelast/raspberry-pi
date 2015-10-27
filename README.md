@@ -20,6 +20,7 @@ Emacs config files on my Raspberry Pi.
 GPIO related applications on Raspberry Pi.
 ### gpio/lcd
 Display some messages on a LCD1602 screen, including the examples of using/not using an PCF8574 I2C module.
+
 ![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/lcd/demo/lcd1602-8bit-display.png)
 ![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/lcd/demo/lcd1602-with-i2c-2.jpg)
 ### gpio/led/blink
