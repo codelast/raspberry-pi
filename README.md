@@ -1,5 +1,5 @@
 # Raspberry Pi related code
-Video courses corresponding to these codes recorded by me on jikexueyuan.com: [here](http://search.jikexueyuan.com/course/?q=%E6%A0%91%E8%8E%93%E6%B4%BE "Click to watch")
+My video courses corresponding to these codes on jikexueyuan.com: [here](http://search.jikexueyuan.com/course/?q=%E6%A0%91%E8%8E%93%E6%B4%BE "Click to watch")
 
 **Environment: Raspberry Pi model B+/B**
 * For each subproject, if there is no explicit declaration about the applicable RPi model, then it's Model B+.
