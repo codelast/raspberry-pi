@@ -21,6 +21,11 @@
  */
 
 #define MG_VERSION "6.0"
+
+/* Local tweaks, applied before any of Mongoose's own headers. */
+#ifdef MG_LOCALS
+#include <mg_locals.h>
+#endif
 /*
  * Copyright (c) 2015 Cesanta Software Limited
  * All rights reserved
@@ -68,6 +73,7 @@
 #endif
 
 /*
+ * MSVC++ 14.0 _MSC_VER == 1900 (Visual Studio 2015)
  * MSVC++ 12.0 _MSC_VER == 1800 (Visual Studio 2013)
  * MSVC++ 11.0 _MSC_VER == 1700 (Visual Studio 2012)
  * MSVC++ 10.0 _MSC_VER == 1600 (Visual Studio 2010)
@@ -129,6 +135,7 @@
 #define __func__ __FILE__ ":" STR(__LINE__)
 #endif
 #define snprintf _snprintf
+#define fileno  _fileno
 #define vsnprintf _vsnprintf
 #define sleep(x) Sleep((x) *1000)
 #define to64(x) _atoi64(x)
@@ -237,7 +244,7 @@ struct dirent *readdir(DIR *dir);
 
 #define INVALID_SOCKET (-1)
 #define INT64_FMT PRId64
-#if defined(ESP8266) || defined(MG_ESP8266)
+#if defined(ESP8266) || defined(MG_ESP8266) || defined(MG_CC3200)
 #define SIZE_T_FMT "u"
 #else
 #define SIZE_T_FMT "zu"
@@ -402,6 +409,22 @@ void MD5_Init(MD5_CTX *c);
 void MD5_Update(MD5_CTX *c, const unsigned char *data, size_t len);
 void MD5_Final(unsigned char *md, MD5_CTX *c);
 
+/*
+ * Return stringified MD5 hash for NULL terminated list of strings.
+ * Example:
+ *
+ *    char buf[33];
+ *    cs_md5(buf, "foo", "bar", NULL);
+ */
+char *cs_md5(char buf[33], ...);
+
+/*
+ * Stringify binary data. Output buffer size must be 2 * size_of_input + 1
+ * because each byte of input takes 2 bytes in string representation
+ * plus 1 byte for the terminating \0 character.
+ */
+void cs_to_hex(char *to, const unsigned char *p, size_t len);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
@@ -465,7 +488,7 @@ int c_vsnprintf(char *buf, size_t buf_size, const char *format, va_list ap);
 #if !(_XOPEN_SOURCE >= 700 || _POSIX_C_SOURCE >= 200809L) &&    \
         !(__DARWIN_C_LEVEL >= 200809L) && !defined(RTOS_SDK) || \
     defined(_WIN32)
-int strnlen(const char *s, size_t maxlen);
+size_t strnlen(const char *s, size_t maxlen);
 #endif
 
 #ifdef __cplusplus
@@ -587,11 +610,11 @@ typedef void *SSL_CTX;
 #endif
 
 #ifdef MG_USE_READ_WRITE
-#define MG_EV_RECV_FUNC(s, b, l, f) read(s, b, l)
-#define MG_EV_SEND_FUNC(s, b, l, f) write(s, b, l)
+#define MG_RECV_FUNC(s, b, l, f) read(s, b, l)
+#define MG_SEND_FUNC(s, b, l, f) write(s, b, l)
 #else
-#define MG_EV_RECV_FUNC(s, b, l, f) recv(s, b, l, f)
-#define MG_EV_SEND_FUNC(s, b, l, f) send(s, b, l, f)
+#define MG_RECV_FUNC(s, b, l, f) recv(s, b, l, f)
+#define MG_SEND_FUNC(s, b, l, f) send(s, b, l, f)
 #endif
 
 #ifdef __cplusplus
@@ -654,7 +677,8 @@ struct mg_connection {
   struct mg_connection *listener;    /* Set only for accept()-ed connections */
   struct mg_mgr *mgr;                /* Pointer to containing manager */
 
-  sock_t sock;             /* Socket to the remote peer */
+  sock_t sock; /* Socket to the remote peer */
+  int err;
   union socket_address sa; /* Remote peer address */
   size_t recv_mbuf_limit;  /* Max size of recv buffer */
   struct mbuf recv_mbuf;   /* Received data */
@@ -723,6 +747,7 @@ void mg_mgr_free(struct mg_mgr *);
  */
 time_t mg_mgr_poll(struct mg_mgr *, int milli);
 
+#ifndef MG_DISABLE_SOCKETPAIR
 /*
  * Pass a message of a given length to all connections.
  *
@@ -736,6 +761,7 @@ time_t mg_mgr_poll(struct mg_mgr *, int milli);
  * by `MG_CTL_MSG_MESSAGE_SIZE` which is set to 8192 bytes.
  */
 void mg_broadcast(struct mg_mgr *, mg_event_handler_t func, void *, size_t);
+#endif
 
 /*
  * Iterate over all active connections.
@@ -905,13 +931,11 @@ const char *mg_set_ssl(struct mg_connection *nc, const char *cert,
 /*
  * Send data to the connection.
  *
- * Return number of written bytes. Note that sending
- * functions do not actually push data to the socket. They just append data
- * to the output buffer. The exception is UDP connections. For UDP, data is
- * sent immediately, and returned value indicates an actual number of bytes
- * sent to the socket.
+ * Note that sending functions do not actually push data to the socket.
+ * They just append data to the output buffer. MG_EV_SEND will be delivered when
+ * the data has actually been pushed out.
  */
-int mg_send(struct mg_connection *, const void *buf, int len);
+void mg_send(struct mg_connection *, const void *buf, int len);
 
 /* Enables format string warnings for mg_printf */
 #if defined(__GNUC__)
@@ -946,7 +970,9 @@ int mg_socketpair(sock_t[2], int sock_type);
  * CAUTION: this function can block.
  * Return 1 on success, 0 on failure.
  */
+#ifndef MG_DISABLE_SYNC_RESOLVER
 int mg_resolve(const char *domain_name, char *ip_addr_buf, size_t buf_len);
+#endif
 
 /*
  * Verify given IP address against the ACL.
@@ -995,6 +1021,64 @@ enum v7_err mg_enable_javascript(struct mg_mgr *m, struct v7 *v7,
 #endif /* __cplusplus */
 
 #endif /* MG_NET_HEADER_INCLUDED */
+#ifndef MG_NET_IF_HEADER_INCLUDED
+#define MG_NET_IF_HEADER_INCLUDED
+
+/*
+ * Internal async networking core interface.
+ * Consists of calls made by the core, which should not block,
+ * and callbacks back into the core ("..._cb").
+ * Callbacks may (will) cause methods to be invoked from within,
+ * but methods are not allowed to invoke callbacks inline.
+ *
+ * Implementation must ensure that only one callback is invoked at any time.
+ */
+
+/* Request that a TCP connection is made to the specified address. */
+void mg_if_connect_tcp(struct mg_connection *nc,
+                       const union socket_address *sa);
+/* Open a UDP socket. Doesn't actually connect anything. */
+void mg_if_connect_udp(struct mg_connection *nc);
+/* Callback invoked by connect methods. err = 0 -> ok, != 0 -> error. */
+void mg_if_connect_cb(struct mg_connection *nc, int err);
+
+/* Set up a listening TCP socket on a given address. rv = 0 -> ok. */
+int mg_if_listen_tcp(struct mg_connection *nc, union socket_address *sa);
+/* Deliver a new TCP connection. Returns NULL in case on error (unable to
+ * create connection, in which case interface state should be discarded. */
+struct mg_connection *mg_if_accept_tcp_cb(struct mg_connection *lc,
+                                          union socket_address *sa,
+                                          size_t sa_len);
+
+/* Request that a "listening" UDP socket be created. */
+int mg_if_listen_udp(struct mg_connection *nc, union socket_address *sa);
+
+/* Send functions for TCP and UDP. Sent data is copied before return. */
+void mg_if_tcp_send(struct mg_connection *nc, const void *buf, size_t len);
+void mg_if_udp_send(struct mg_connection *nc, const void *buf, size_t len);
+/* Callback that reports that data has been put on the wire. */
+void mg_if_sent_cb(struct mg_connection *nc, int num_sent);
+
+/*
+ * Receive callback.
+ * buf must be heap-allocated and ownership is transferred to the core.
+ * Core will acknowledge consumption by calling mg_if_recved.
+ * No more than one chunk of data can be unacknowledged at any time.
+ */
+void mg_if_recv_tcp_cb(struct mg_connection *nc, void *buf, int len);
+void mg_if_recv_udp_cb(struct mg_connection *nc, void *buf, int len,
+                       union socket_address *sa, size_t sa_len);
+void mg_if_recved(struct mg_connection *nc, size_t len);
+
+/* Deliver a POLL event to the connection. */
+void mg_if_poll(struct mg_connection *nc, time_t now);
+
+/* Perform interface-related cleanup on connection before destruction. */
+void mg_if_destroy_conn(struct mg_connection *nc);
+
+void mg_close_conn(struct mg_connection *nc);
+
+#endif /* MG_NET_IF_HEADER_INCLUDED */
 /*
  * Copyright (c) 2014 Cesanta Software Limited
  * All rights reserved
@@ -1257,10 +1341,11 @@ extern "C" {
 struct http_message {
   struct mg_str message; /* Whole message: request line + headers + body */
 
-  struct mg_str proto; /* "HTTP/1.1" -- for both request and response */
   /* HTTP Request line (or HTTP response line) */
   struct mg_str method; /* "GET" */
   struct mg_str uri;    /* "/my_file.html" */
+  struct mg_str proto;  /* "HTTP/1.1" -- for both request and response */
+
   /* For responses, code and response status message are set */
   int resp_code;
   struct mg_str resp_status_msg;
@@ -1559,6 +1644,9 @@ struct mg_serve_http_opts {
   /* List of index files. Default is "" */
   const char *index_files;
 
+  /* Path to a HTTP requests log file. Leave as NULL to disable access log. */
+  const char *access_log_file;
+
   /*
    * Leave as NULL to disable authentication.
    * To enable directory protection with authentication, set this to ".htpasswd"
@@ -1611,6 +1699,9 @@ struct mg_serve_http_opts {
 
   /* DAV document root. If NULL, DAV requests are going to fail. */
   const char *dav_document_root;
+
+  /* DAV passwords file. If NULL, DAV requests are going to fail. */
+  const char *dav_auth_file;
 
   /* Glob pattern for the files to hide. */
   const char *hidden_file_pattern;
@@ -2114,35 +2205,35 @@ extern "C" {
 
 #define MG_DNS_MESSAGE 100 /* High-level DNS message event */
 
-enum mg_dmg_resource_record_kind {
+enum mg_dns_resource_record_kind {
   MG_DNS_INVALID_RECORD = 0,
   MG_DNS_QUESTION,
   MG_DNS_ANSWER
 };
 
 /* DNS resource record. */
-struct mg_dmg_resource_record {
+struct mg_dns_resource_record {
   struct mg_str name; /* buffer with compressed name */
   int rtype;
   int rclass;
   int ttl;
-  enum mg_dmg_resource_record_kind kind;
+  enum mg_dns_resource_record_kind kind;
   struct mg_str rdata; /* protocol data (can be a compressed name) */
 };
 
 /* DNS message (request and response). */
-struct mg_dmg_message {
+struct mg_dns_message {
   struct mg_str pkt; /* packet body */
   uint16_t flags;
   uint16_t transaction_id;
   int num_questions;
   int num_answers;
-  struct mg_dmg_resource_record questions[MG_MAX_DNS_QUESTIONS];
-  struct mg_dmg_resource_record answers[MG_MAX_DNS_ANSWERS];
+  struct mg_dns_resource_record questions[MG_MAX_DNS_QUESTIONS];
+  struct mg_dns_resource_record answers[MG_MAX_DNS_ANSWERS];
 };
 
-struct mg_dmg_resource_record *mg_dmg_next_record(
-    struct mg_dmg_message *, int, struct mg_dmg_resource_record *);
+struct mg_dns_resource_record *mg_dns_next_record(
+    struct mg_dns_message *, int, struct mg_dns_resource_record *);
 
 /*
  * Parse the record data from a DNS resource record.
@@ -2155,20 +2246,20 @@ struct mg_dmg_resource_record *mg_dmg_next_record(
  *
  * TODO(mkm): MX
  */
-int mg_dmg_parse_record_data(struct mg_dmg_message *,
-                             struct mg_dmg_resource_record *, void *, size_t);
+int mg_dns_parse_record_data(struct mg_dns_message *,
+                             struct mg_dns_resource_record *, void *, size_t);
 
 /*
  * Send a DNS query to the remote end.
  */
-void mg_send_dmg_query(struct mg_connection *, const char *, int);
+void mg_send_dns_query(struct mg_connection *, const char *, int);
 
 /*
  * Insert a DNS header to an IO buffer.
  *
  * Return number of bytes inserted.
  */
-int mg_dmg_insert_header(struct mbuf *, size_t, struct mg_dmg_message *);
+int mg_dns_insert_header(struct mbuf *, size_t, struct mg_dns_message *);
 
 /*
  * Append already encoded body from an existing message.
@@ -2178,7 +2269,7 @@ int mg_dmg_insert_header(struct mbuf *, size_t, struct mg_dmg_message *);
  *
  * Return number of appened bytes.
  */
-int mg_dmg_copy_body(struct mbuf *, struct mg_dmg_message *);
+int mg_dns_copy_body(struct mbuf *, struct mg_dns_message *);
 
 /*
  * Encode and append a DNS resource record to an IO buffer.
@@ -2196,11 +2287,11 @@ int mg_dmg_copy_body(struct mbuf *, struct mg_dmg_message *);
  *
  * Return the number of bytes appened or -1 in case of error.
  */
-int mg_dmg_encode_record(struct mbuf *, struct mg_dmg_resource_record *,
+int mg_dns_encode_record(struct mbuf *, struct mg_dns_resource_record *,
                          const char *, size_t, const void *, size_t);
 
 /* Low-level: parses a DNS response. */
-int mg_parse_dns(const char *, int, struct mg_dmg_message *);
+int mg_parse_dns(const char *, int, struct mg_dns_message *);
 
 /*
  * Uncompress a DNS compressed name.
@@ -2215,7 +2306,7 @@ int mg_parse_dns(const char *, int, struct mg_dmg_message *);
  * If `dst_len` is 0 `dst` can be NULL.
  * Return the uncompressed name length.
  */
-size_t mg_dmg_uncompress_name(struct mg_dmg_message *, struct mg_str *, char *,
+size_t mg_dns_uncompress_name(struct mg_dns_message *, struct mg_str *, char *,
                               int);
 
 /*
@@ -2224,10 +2315,10 @@ size_t mg_dmg_uncompress_name(struct mg_dmg_message *, struct mg_str *, char *,
  * DNS event handler parses incoming UDP packets, treating them as DNS
  * requests. If incoming packet gets successfully parsed by the DNS event
  * handler, a user event handler will receive `MG_DNS_REQUEST` event, with
- * `ev_data` pointing to the parsed `struct mg_dmg_message`.
+ * `ev_data` pointing to the parsed `struct mg_dns_message`.
  *
  * See
- * https://github.com/cesanta/mongoose/tree/master/examples/captive_dmg_server[captive_dmg_server]
+ * https://github.com/cesanta/mongoose/tree/master/examples/captive_dns_server[captive_dns_server]
  * example on how to handle DNS request and send DNS reply.
  */
 void mg_set_protocol_dns(struct mg_connection *);
@@ -2259,8 +2350,8 @@ extern "C" {
 
 #define MG_DNS_SERVER_DEFAULT_TTL 3600
 
-struct mg_dmg_reply {
-  struct mg_dmg_message *msg;
+struct mg_dns_reply {
+  struct mg_dns_message *msg;
   struct mbuf *io;
   size_t start;
 };
@@ -2273,10 +2364,10 @@ struct mg_dmg_reply {
  * "reply + recursion allowed" will be added to the message flags and
  * message's num_answers will be set to 0.
  *
- * Answer records can be appended with `mg_dmg_send_reply` or by lower
+ * Answer records can be appended with `mg_dns_send_reply` or by lower
  * level function defined in the DNS API.
  *
- * In order to send the reply use `mg_dmg_send_reply`.
+ * In order to send the reply use `mg_dns_send_reply`.
  * It's possible to use a connection's send buffer as reply buffers,
  * and it will work for both UDP and TCP connections.
  *
@@ -2284,17 +2375,17 @@ struct mg_dmg_reply {
  *
  * [source,c]
  * -----
- * reply = mg_dmg_create_reply(&nc->send_mbuf, msg);
+ * reply = mg_dns_create_reply(&nc->send_mbuf, msg);
  * for (i = 0; i < msg->num_questions; i++) {
  *   rr = &msg->questions[i];
  *   if (rr->rtype == MG_DNS_A_RECORD) {
- *     mg_dmg_reply_record(&reply, rr, 3600, &dummy_ip_addr, 4);
+ *     mg_dns_reply_record(&reply, rr, 3600, &dummy_ip_addr, 4);
  *   }
  * }
- * mg_dmg_send_reply(nc, &reply);
+ * mg_dns_send_reply(nc, &reply);
  * -----
  */
-struct mg_dmg_reply mg_dmg_create_reply(struct mbuf *, struct mg_dmg_message *);
+struct mg_dns_reply mg_dns_create_reply(struct mbuf *, struct mg_dns_message *);
 
 /*
  * Append a DNS reply record to the IO buffer and to the DNS message.
@@ -2304,7 +2395,7 @@ struct mg_dmg_reply mg_dmg_create_reply(struct mbuf *, struct mg_dmg_message *);
  *
  * Returns -1 on error.
  */
-int mg_dmg_reply_record(struct mg_dmg_reply *, struct mg_dmg_resource_record *,
+int mg_dns_reply_record(struct mg_dns_reply *, struct mg_dns_resource_record *,
                         const char *, int, int, const void *, size_t);
 
 /*
@@ -2313,13 +2404,13 @@ int mg_dmg_reply_record(struct mg_dmg_reply *, struct mg_dmg_resource_record *,
  * The DNS data is stored in an IO buffer pointed by reply structure in `r`.
  * This function mutates the content of that buffer in order to ensure that
  * the DNS header reflects size and flags of the mssage, that might have been
- * updated either with `mg_dmg_reply_record` or by direct manipulation of
+ * updated either with `mg_dns_reply_record` or by direct manipulation of
  * `r->message`.
  *
  * Once sent, the IO buffer will be trimmed unless the reply IO buffer
  * is the connection's send buffer and the connection is not in UDP mode.
  */
-int mg_dmg_send_reply(struct mg_connection *, struct mg_dmg_reply *);
+void mg_dns_send_reply(struct mg_connection *, struct mg_dns_reply *);
 
 #ifdef __cplusplus
 }
@@ -2344,7 +2435,7 @@ int mg_dmg_send_reply(struct mg_connection *, struct mg_dmg_reply *);
 extern "C" {
 #endif /* __cplusplus */
 
-typedef void (*mg_resolve_callback_t)(struct mg_dmg_message *, void *);
+typedef void (*mg_resolve_callback_t)(struct mg_dns_message *, void *);
 
 /* Options for `mg_resolve_async_opt`. */
 struct mg_resolve_async_opts {
@@ -2370,14 +2461,14 @@ int mg_resolve_async(struct mg_mgr *, const char *, int, mg_resolve_callback_t,
  * will receive a NULL `msg`.
  *
  * The DNS answers can be extracted with `mg_next_record` and
- * `mg_dmg_parse_record_data`:
+ * `mg_dns_parse_record_data`:
  *
  * [source,c]
  * ----
  * struct in_addr ina;
- * struct mg_dmg_resource_record *rr = mg_next_record(msg, MG_DNS_A_RECORD,
+ * struct mg_dns_resource_record *rr = mg_next_record(msg, MG_DNS_A_RECORD,
  *   NULL);
- * mg_dmg_parse_record_data(msg, rr, &ina, sizeof(ina));
+ * mg_dns_parse_record_data(msg, rr, &ina, sizeof(ina));
  * ----
  */
 int mg_resolve_async_opt(struct mg_mgr *, const char *, int,
