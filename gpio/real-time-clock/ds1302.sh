@@ -13,7 +13,7 @@ fi
 
 # set these ports according to your RPi GPIO pinout
 SCLK_PORT=14
-SDA0_PORT=8
+SDA0_PORT=30
 CE0_PORT=10
 
 SOURCE=$WORKING_HOME/ds1302.c

@@ -158,7 +158,6 @@ static int setLinuxClock (void)
   return 0 ;
 }
 
-
 /*
  * setDSclock:
  *	Set the DS1302 block from Linux time
@@ -167,33 +166,38 @@ static int setLinuxClock (void)
 
 static int setDSclock (void)
 {
-  struct tm t ;
-  time_t now ;
-  int clock [8] ;
+  struct tm* t = NULL;
+  time_t now;
+  int clock[8];
 
-  printf("Setting the clock in the DS1302 from Linux time... ");
+  now = time(NULL);
+  t = localtime(&now);
 
-  now = time (NULL);
-  gmtime_r (&now, &t);
+  int second = t->tm_sec;        // seconds after the minute(0~61)
+  int minute = t->tm_min;        // minutes after the hour(0~59)
+  int hour = t->tm_hour;         // hours since midnight(0~23)
+  int day = t->tm_mday;          // day of the month(1~31)
+  int month = t->tm_mon + 1;     // months since January(0~11 --> 1~12)
+  int weekDay = t->tm_wday + 1;  // days since Sunday(0~6 --> 1~7)
+  int year = t->tm_year - 100;   // years
 
-  clock [ 0] = dToBcd (t.tm_sec);	// seconds
-  clock [ 1] = dToBcd (t.tm_min);	// mins
-  clock [ 2] = dToBcd (t.tm_hour);	// hours
-  clock [ 3] = dToBcd (t.tm_mday);	// date
-  clock [ 4] = dToBcd (t.tm_mon + 1);	// months 0-11 --> 1-12
-  clock [ 5] = dToBcd (t.tm_wday + 1);	// weekdays (sun 0)
-  clock [ 6] = dToBcd (t.tm_year - 100);       // years
-  clock [ 7] = 0 ;			// W-Protect off
+  printf("Setting the clock in the DS1302 from Linux time [%d-%d-%d %d:%d:%d]...", year, month, day, hour, minute, second);
 
-  ds1302clockWrite (clock);
+  clock[0] = dToBcd(second);	// seconds
+  clock[1] = dToBcd(minute);	// mins
+  clock[2] = dToBcd(hour);	// hours
+  clock[3] = dToBcd(day);	// date
+  clock[4] = dToBcd(month);	// months 0-11 --> 1-12
+  clock[5] = dToBcd(weekDay);	// weekdays (sun 0)
+  clock[6] = dToBcd(year);      // years
+  clock[7] = 0;			// W-Protect off
+
+  ds1302clockWrite(clock);
 
   printf("OK\n");
 
   return 0 ;
 }
-
-
-
 
 int main(int argc, char *argv [])
 {
@@ -206,6 +210,7 @@ int main(int argc, char *argv [])
     int portSCLK = atoi(argv[1]);
     int portSDA0 = atoi(argv[2]);
     int portCE0 = atoi(argv[3]);
+    printf("SCLK port: [%d], SDA0 port: [%d], CE0 port: [%d]\n", portSCLK, portSDA0, portCE0);
     ds1302setup(portSCLK, portSDA0, portCE0);
 
     if (strcmp(argv[4], "-slc") == 0) {
