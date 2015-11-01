@@ -210,6 +210,8 @@ int main(int argc, char *argv [])
     return EXIT_FAILURE;
   }
 
+  wiringPiSetup();
+
   int portSCLK = atoi(argv[1]);
   int portSDA0 = atoi(argv[2]);
   int portCE0 = atoi(argv[3]);
@@ -218,8 +220,6 @@ int main(int argc, char *argv [])
 
   int i;
   int clock[8];
-
-  wiringPiSetup();
 
   const char* param = argv[4];
   if (argc >= 5) {
