@@ -99,7 +99,7 @@ static int ramTest (void)
 	if ((got = ds1302ramRead (addr)) != testVal)
 	  {
 	    printf("DS1302 RAM Failure: Address: %2d, Expected: 0x%02X, Got: 0x%02X\n",
-		    addr, testVal, got);
+		   addr, testVal, got);
 	    ++errors ;
 	  }
       testVal = ramTestValues [++i] ;
@@ -112,7 +112,7 @@ static int ramTest (void)
     if ((got = ds1302ramRead (addr)) != addr)
       {
 	printf("DS1302 RAM Failure: Address: %2d, Expected: 0x%02X, Got: 0x%02X\n",
-		addr, addr, got);
+	       addr, addr, got);
 	++errors ;
       }
 
@@ -144,13 +144,13 @@ static int setLinuxClock (void)
   // [MMDDhhmm[[CC]YY][.ss]]
 
   sprintf(dateTime, "%02d%02d%02d%02d%02d%02d.%02d",
-	   bcdToD (clock [RTC_MONTH], masks [RTC_MONTH]),
-	   bcdToD (clock [RTC_DATE],  masks [RTC_DATE]),
-	   bcdToD (clock [RTC_HOURS], masks [RTC_HOURS]),
-	   bcdToD (clock [RTC_MINS],  masks [RTC_MINS]),
-	   20,
-	   bcdToD (clock [RTC_YEAR],  masks [RTC_YEAR]),
-	   bcdToD (clock [RTC_SECS],  masks [RTC_SECS]));
+	  bcdToD (clock [RTC_MONTH], masks [RTC_MONTH]),
+	  bcdToD (clock [RTC_DATE],  masks [RTC_DATE]),
+	  bcdToD (clock [RTC_HOURS], masks [RTC_HOURS]),
+	  bcdToD (clock [RTC_MINS],  masks [RTC_MINS]),
+	  20,
+	  bcdToD (clock [RTC_YEAR],  masks [RTC_YEAR]),
+	  bcdToD (clock [RTC_SECS],  masks [RTC_SECS]));
 
   sprintf(command, "/bin/date %s", dateTime);
   system (command);
@@ -199,44 +199,50 @@ static int setDSclock (void)
   return 0 ;
 }
 
+void printUsage() {
+  printf("Usage: ./ds1302 SCLK_port SDA0_port CE0_port [-slc | -sdsc | -rtest]\n");
+}
+
 int main(int argc, char *argv [])
 {
+  if (argc < 4) {
+    printUsage();
+    return EXIT_FAILURE;
+  }
+
+  int portSCLK = atoi(argv[1]);
+  int portSDA0 = atoi(argv[2]);
+  int portCE0 = atoi(argv[3]);
+  printf("SCLK port: [%d], SDA0 port: [%d], CE0 port: [%d]\n", portSCLK, portSDA0, portCE0);
+  ds1302setup(portSCLK, portSDA0, portCE0);
+
   int i;
   int clock[8];
 
   wiringPiSetup();
 
+  const char* param = argv[4];
   if (argc >= 5) {
-    int portSCLK = atoi(argv[1]);
-    int portSDA0 = atoi(argv[2]);
-    int portCE0 = atoi(argv[3]);
-    printf("SCLK port: [%d], SDA0 port: [%d], CE0 port: [%d]\n", portSCLK, portSDA0, portCE0);
-    ds1302setup(portSCLK, portSDA0, portCE0);
-
-    if (strcmp(argv[4], "-slc") == 0) {
+    if (strcmp(param, "-slc") == 0) {
       return setLinuxClock();
-    } else if (strcmp(argv[4], "-sdsc") == 0) {
+    } else if (strcmp(param, "-sdsc") == 0) {
       return setDSclock();
-    } else if (strcmp(argv[4], "-rtest") == 0) {
+    } else if (strcmp(param, "-rtest") == 0) {
       return ramTest();
     } else {
-      printf("Usage: ds1302 [SCLK_PORT] [SDA0_PORT] [CE0_PORT] [-slc | -sdsc | -rtest]\n");
+      printUsage();
       return EXIT_FAILURE ;
     }
   }
 
   for (i = 0 ;; ++i) {
     printf("%5d:  ", i);
-
     ds1302clockRead (clock);
     printf(" %2d:%02d:%02d",
-	    bcdToD (clock [2], masks [2]), bcdToD (clock [1], masks [1]), bcdToD (clock [0], masks [0]));
-
+	   bcdToD (clock [2], masks [2]), bcdToD (clock [1], masks [1]), bcdToD (clock [0], masks [0]));
     printf(" %2d/%02d/%04d",
-	    bcdToD (clock [3], masks [3]), bcdToD (clock [4], masks [4]), bcdToD (clock [6], masks [6]) + 2000);
-      
+	   bcdToD (clock [3], masks [3]), bcdToD (clock [4], masks [4]), bcdToD (clock [6], masks [6]) + 2000);
     printf("\n");
-
     delay (200);
   }
  
