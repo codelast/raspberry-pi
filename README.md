@@ -1,7 +1,7 @@
 # Raspberry Pi related code
-My video courses corresponding to these codes on jikexueyuan.com: [here](http://search.jikexueyuan.com/course/?q=%E6%A0%91%E8%8E%93%E6%B4%BE "Click to watch")
+My video courses corresponding to these codes on jikexueyuan.com: [link](http://search.jikexueyuan.com/course/?q=%E6%A0%91%E8%8E%93%E6%B4%BE "Click to watch")
 
-在极客学院网站上，有我录制的和这些代码相关的视频课程: [在这里](http://search.jikexueyuan.com/course/?q=%E6%A0%91%E8%8E%93%E6%B4%BE "点击跳转到极客学院查看")
+在极客学院网站上，有我录制的和这些代码相关的视频课程: [链接](http://search.jikexueyuan.com/course/?q=%E6%A0%91%E8%8E%93%E6%B4%BE "点击跳转到极客学院查看")
 
 **Environment: Raspberry Pi model B+/B**
 * For each subproject, if there is no explicit declaration about the applicable RPi model, then it's Model B+.
