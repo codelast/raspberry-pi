@@ -1,4 +1,4 @@
-Slight modification to the ds1302.c shipped with WiringPi to work with the DS1302 Real-Time Clock module.
+Slight modification to the ds1302.c shipped with WiringPi to work better with the DS1302 Real-Time Clock module.
 
 Usage instruction:
 * ./ds1302.sh：print the date & time stored in DS1302 module
