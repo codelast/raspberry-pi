@@ -5,6 +5,7 @@ Usage instruction:
 * ./ds1302.sh -rtest：test whether the DS1302 module works fine
 * ./ds1302.sh -sdsc：write OS time into the DS1302 module
 * ./ds1302.sh -slc：write the time stored in DS1302 module into OS
+* ./ds1302.sh -slc b+：same effect as above command, especially that it's for RPi model B+(default model B)
 
 
 ****
@@ -16,3 +17,4 @@ Usage instruction:
 * ./ds1302.sh -rtest：测试 DS1302 模块是否工作正常
 * ./ds1302.sh -sdsc：将Linux系统时间写入 DS1302 模块中
 * ./ds1302.sh -slc：将 DS1302 模块中的时间写入Linux系统
+* ./ds1302.sh -slc b+：与上面命令效果相同，但只适用于树莓派model B+（默认model B）
