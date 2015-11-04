@@ -11,10 +11,27 @@ if [ $# -ge 1 ]; then
     PARAM=$1
 fi
 
+RASPBERRY_PI_MODEL=b
+if [ $# -ge 2 ]; then
+    RASPBERRY_PI_MODEL=$2
+fi
+
 # set these ports according to your RPi GPIO pinout
 SCLK_PORT=14
-SDA0_PORT=30
+SDA0_PORT=
 CE0_PORT=10
+
+case "$RASPBERRY_PI_MODEL" in
+    'b')
+	SDA0_PORT=8
+	;;
+    'b+')
+	SDA0_PORT=30
+	;;
+    *)
+	echo "Unsupported Raspberry Pi model: $RASPBERRY_PI_MODEL"
+	exit 1
+esac
 
 SOURCE=$WORKING_HOME/ds1302.c
 BIN=$WORKING_HOME/ds1302
