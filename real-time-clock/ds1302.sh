@@ -11,7 +11,7 @@ if [ $# -ge 1 ]; then
     PARAM=$1
 fi
 
-RASPBERRY_PI_MODEL=b
+RASPBERRY_PI_MODEL=b_plus
 if [ $# -ge 2 ]; then
     RASPBERRY_PI_MODEL=$2
 fi
@@ -25,7 +25,7 @@ case "$RASPBERRY_PI_MODEL" in
     'b')
 	SDA0_PORT=8
 	;;
-    'b+')
+    'b_plus')
 	SDA0_PORT=30
 	;;
     *)
