@@ -45,6 +45,10 @@ A time-controllable human sense light based on Raspberry Pi.
 
 Please refer to the README of this subproject for details.
 
+## [real-time-clock](./real-time-clock)
+Slight modification to the ds1302.c shipped with WiringPi to work better with the DS1302 Real-Time Clock module.
+![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/real-time-clock/demo/ds1302_1.jpg)
+
 ## [rpi-remote-monitoring-system](./rpi-remote-monitoring-system)
 A remote monitoring system based on Raspberry Pi
 
