@@ -4,7 +4,7 @@
 CURRENT_DIR=`dirname "$0"`
 WORKING_HOME=`cd "$CURRENT_DIR"; pwd`
 
-echo "Usage:./ds1302.sh [-slc | -sdsc | -rtest]"
+echo "Usage:./ds1302.sh [slc|sdsc|rtest]"
 
 PARAM=
 if [ $# -ge 1 ]; then
