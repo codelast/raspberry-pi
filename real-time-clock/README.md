@@ -1,3 +1,5 @@
+![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/real-time-clock/demo/ds1302_1.jpg)
+
 Slight modification to the ds1302.c shipped with WiringPi to work better with the DS1302 Real-Time Clock module.
 
 Usage instruction:
