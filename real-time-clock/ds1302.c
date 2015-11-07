@@ -164,14 +164,11 @@ static int setLinuxClock (void)
  *********************************************************************************
  */
 
-static int setDSclock (void)
+static int setDSclock(void)
 {
-  struct tm* t = NULL;
-  time_t now;
   int clock[8];
-
-  now = time(NULL);
-  t = localtime(&now);
+  time_t now = time(NULL);
+  struct tm* t = localtime(&now);
 
   int second = t->tm_sec;        // seconds after the minute(0~61)
   int minute = t->tm_min;        // minutes after the hour(0~59)
