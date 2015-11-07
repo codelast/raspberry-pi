@@ -8,7 +8,7 @@ echo "Usage:./ds1302.sh [-slc | -sdsc | -rtest]"
 
 PARAM=
 if [ $# -ge 1 ]; then
-    PARAM=$1
+    PARAM="-"$1
 fi
 
 RASPBERRY_PI_MODEL=b_plus
