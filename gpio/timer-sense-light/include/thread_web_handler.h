@@ -1,7 +1,6 @@
 #ifndef __THREAD_WEB_HANDLER_H
 #define __THREAD_WEB_HANDLER_H
 
-#include <string>
 #include "config_loader.h"
 #include "mongoose.h"
 

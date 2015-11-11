@@ -6,9 +6,10 @@
 # DEBUG can be set to YES to include debugging info, or NO otherwise
 DEBUG = NO
 
-CC = g++
+CC = gcc
+CXX = g++
 
-BASIC_FLAG = -Wall -D_GNU_SOURCE -D_REENTRANT
+BASIC_FLAG = -Wall
 ifeq (YES, ${DEBUG})
    FLAG = ${BASIC_FLAG} -g -DDEBUG
 else
@@ -25,13 +26,16 @@ CFLAGS = ${CXXFLAGS}
 
 LDFLAGS = -lpthread -lconfig++ -lglog -lwiringPi
 
-OBJECTS=./src/timer_sense_light.o \
-        ./src/config_loader.o \
-        ./src/util.o \
-        ./src/3rd/mongoose.o
+C_SOURCE_FILE = ./src/3rd/mongoose.c
+CXX_SOURCE_FILE = ./src/timer_sense_light.cpp \
+        ./src/config_loader.cpp \
+        ./src/util.cpp
 
-timer_sense_light: $(OBJECTS)
-	$(CC) $(CXXFLAGS) $(CFLAGS) -o $@ $(OBJECTS) $(LDFLAGS)
+C_OBJECT = ./src/3rd/mongoose.o
+
+timer_sense_light:
+	$(CC) $(C_SOURCE_FILE) -c -o ${C_OBJECT} $(CFLAGS)
+	$(CXX) ${C_OBJECT} $(CXX_SOURCE_FILE) -o $@ $(CXXFLAGS) ${LDFLAGS}
 
 install:
 	rm -rf deploy
