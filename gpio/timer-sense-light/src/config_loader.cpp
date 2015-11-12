@@ -1,5 +1,6 @@
 #include <fstream>
 #include <vector>
+#include <linux/limits.h>  // PATH_MAX
 #include <algorithm>  // std::fill_n()
 #include <glog/logging.h>
 #include <libconfig.h++>
@@ -20,6 +21,13 @@ CConfigLoader::CConfigLoader() {
   pyroelectricGpioPort = 0;
   ledGpioPortStart = 1;
   ledNumber = 1;
+
+  /* get current running program path */
+  char path[PATH_MAX];
+  memset(path, 0, sizeof(path));
+  if (-1 != (int) CUtil::getExecutablePath(path, sizeof(path))) {
+    currentAppPath = path;
+  }
 
   threadRunning = true;
 }
@@ -73,6 +81,7 @@ bool CConfigLoader::loadMainConfig(const string configFile) {
     return false;
   }
 
+  webRootPath = currentAppPath + "/" + webRootDirName;
   return true;
 }
 

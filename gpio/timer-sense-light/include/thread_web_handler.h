@@ -60,7 +60,6 @@ void* threadWebHandler(void*) {
 
   struct mg_mgr mgr;
   struct mg_connection *nc;
-  cs_stat_t st;
 
   mg_mgr_init(&mgr, NULL);
   nc = mg_bind(&mgr, listenPort, httpEventHandler);
@@ -71,14 +70,12 @@ void* threadWebHandler(void*) {
 
   /* set up web server parameters */
   mg_set_protocol_http_websocket(nc);
-  /*
-  httpServerOpts.document_root = gConfigLoader.getWebRootDirName().c_str();  // set up web root directory
 
-  if (mg_stat(httpServerOpts.document_root, &st) != 0) {
+  if (!CUtil::isDirExist(gConfigLoader.getWebRootPath())) {
     LOG(ERROR) << "Cannot find web root directory, web handler thread exits";
     return NULL;
   }
-  */
+  httpServerOpts.document_root = gConfigLoader.getWebRootPath().c_str();  // set up web root directory
 
   LOG(INFO) << "Start web server on port [" << gConfigLoader.getListenPort() << "]";
 

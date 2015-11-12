@@ -21,6 +21,8 @@ class CUtil
 
  public:
   void static signalIgnore(int signalNumber);
+  size_t static getExecutablePath(char* buffer, size_t len);
+  bool static isDirExist(const std::string path);
   void static stringSplit(const std::string &src,
 			  char delimiter,
 			  std::vector<std::string> &output);

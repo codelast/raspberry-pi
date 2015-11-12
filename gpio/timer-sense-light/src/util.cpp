@@ -36,6 +36,47 @@ void CUtil::signalIgnore(int signalNumber) {
 }
 
 /**
+ * Get the path of current program.
+ *
+ * @param buffer  Returned path be placed in.
+ * @param len     Returned path length.
+ * @return The number of characters in the path, -1 on error.
+ */
+size_t CUtil::getExecutablePath(char* buffer, size_t len) {
+  char* pathEnd = NULL;
+
+  if (readlink("/proc/self/exe", buffer, len) <= 0) {
+    return -1;
+  }
+
+  pathEnd = strrchr(buffer, '/');
+  if (NULL == pathEnd) {
+    return -1;
+  }
+
+  ++pathEnd;
+  *pathEnd = '\0';
+
+  return (size_t)(pathEnd - buffer);
+}
+
+/**
+ * Check whether a directory exists.
+ *
+ * @param path	The directory path.
+ * @return true for the input dir exists, false otherwise.
+ */
+bool CUtil::isDirExist(string path) {
+  if (path.empty()) {
+    return false;
+  }
+  if (access(path.c_str(), F_OK) == 0) {
+    return true;
+  }
+  return false;
+}
+
+/**
  * Get current time with the format of "HH:MM"(e.g. "21:05")
  *
  * @return current time string.

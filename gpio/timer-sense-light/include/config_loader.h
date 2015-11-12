@@ -19,12 +19,14 @@ class CConfigLoader
  private:
   int timeRangeArray[ONE_DAY_MINUTES];  // used to represents the status(enable/disable) of each minute of a day
 
+  std::string currentAppPath;  // the path of the current running program
   int pyroelectricGpioPort;
   int ledGpioPortStart;
   int ledNumber;
 
   int listenPort;       // local web sever listen port
   std::string webRootDirName;
+  std::string webRootPath;
 
   bool threadRunning;  // a flag to control the thread running status
 
@@ -37,7 +39,7 @@ class CConfigLoader
   inline int getLedGpioPortStart() const { return ledGpioPortStart; }
   inline int getLedNumber() const { return ledNumber; }
   inline int getListenPort() const { return listenPort; }
-  inline std::string getWebRootDirName() const { return webRootDirName; }
+  inline std::string getWebRootPath() const { return webRootPath; }
   inline bool getThreadRunning() const { return threadRunning; }
   inline void setThreadRunning(bool val) { threadRunning = val; }
 };
