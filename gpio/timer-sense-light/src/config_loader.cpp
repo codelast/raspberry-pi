@@ -29,6 +29,8 @@ CConfigLoader::CConfigLoader() {
     currentAppPath = path;
   }
 
+  manualMode = false;
+  ledLevel = 0;
   threadRunning = true;
 }
 

@@ -1,6 +1,7 @@
 #ifndef __THREAD_WEB_HANDLER_H
 #define __THREAD_WEB_HANDLER_H
 
+#include <wiringPi.h>
 #include "config_loader.h"
 #include "mongoose.h"
 
@@ -44,6 +45,17 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
     case MG_EV_HTTP_REQUEST:
       if (mg_vcmp(&hm->uri, "/get-time-range") == 0) {
         handleGetTimeRange(nc);
+      } else if (mg_vcmp(&hm->uri, "/switch-mode-on") == 0) {
+        LOG(INFO) << "Switch to mode ON";
+	gConfigLoader.setManualMode(true);
+	gConfigLoader.setLedLevel(HIGH);
+      } else if (mg_vcmp(&hm->uri, "/switch-mode-off") == 0) {
+        LOG(INFO) << "Switch to mode OFF";
+	gConfigLoader.setManualMode(true);
+	gConfigLoader.setLedLevel(LOW);
+      } else if (mg_vcmp(&hm->uri, "/switch-mode-auto") == 0) {
+        LOG(INFO) << "Switch to mode AUTO";
+	gConfigLoader.setManualMode(false);
       } else {
         mg_serve_http(nc, hm, httpServerOpts);  // serve static content
       }

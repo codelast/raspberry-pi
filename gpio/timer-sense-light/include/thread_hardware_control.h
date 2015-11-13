@@ -17,9 +17,16 @@ using namespace std;
 
 extern CConfigLoader gConfigLoader;
 
-void turnOffAllLED(int ledGpioPortStart, int ledNumber) {
+/**
+ * Turn on/off all the LEDs.
+ *
+ * @param ledGpioPortStart  The GPIO port of the 1st LED.
+ * @param ledNumber         The total number of LEDs.
+ * @param level             The level to set to the GPIO port.
+ */
+void turnOnOffAllLED(int ledGpioPortStart, int ledNumber, int level) {
   for (int i = 0; i < ledNumber; i++) {
-    digitalWrite(ledGpioPortStart + i, 0);
+    digitalWrite(ledGpioPortStart + i, level);
   }
 }
 
@@ -38,17 +45,24 @@ void* threadHardwareControl(void*) {
   }
   
   // turn off all the LEDs at the initial status
-  turnOffAllLED(ledGpioPortStart, ledNumber);
+  turnOnOffAllLED(ledGpioPortStart, ledNumber, LOW);
 
   LOG(INFO) << "Hardware controlling thread starts to work...";
 
   int level = 0;
   while(gConfigLoader.getThreadRunning()) {
+    /* manual control mode has higher priority */
+    if (gConfigLoader.isManualMode()) {
+      turnOnOffAllLED(ledGpioPortStart, ledNumber, gConfigLoader.getLedLevel());
+      delay(10);
+      continue;
+    }
+
     int currentTimePosition = CUtil::getCurrentTimePositionInTimeRange();
     if (DISABLE_STATUS == gConfigLoader.getTimePositionStatus(currentTimePosition)) {
       /* turn off all the LEDs */
       for (int i = 0; i < ledNumber; i++) {
-	digitalWrite(ledGpioPortStart + i, 0);
+	digitalWrite(ledGpioPortStart + i, LOW);
       }
     } else {
       int currentLevel = digitalRead(pyroelectricGpioPort);
@@ -66,7 +80,7 @@ void* threadHardwareControl(void*) {
   }
 
   // turn off all the LEDs when thread exits
-  turnOffAllLED(ledGpioPortStart, ledNumber);
+  turnOnOffAllLED(ledGpioPortStart, ledNumber, LOW);
 
   return NULL;
 }

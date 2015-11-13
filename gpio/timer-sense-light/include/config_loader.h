@@ -28,6 +28,8 @@ class CConfigLoader
   std::string webRootDirName;
   std::string webRootPath;
 
+  bool manualMode;     // whether the LEDs are under manual control mode
+  int ledLevel;        // used to control the LED status(on/off)
   bool threadRunning;  // a flag to control the thread running status
 
  public:
@@ -40,6 +42,10 @@ class CConfigLoader
   inline int getLedNumber() const { return ledNumber; }
   inline int getListenPort() const { return listenPort; }
   inline std::string getWebRootPath() const { return webRootPath; }
+  inline bool isManualMode() const { return manualMode; }
+  inline void setManualMode(bool val) { manualMode = val; }
+  inline int getLedLevel() const { return ledLevel; }
+  inline void setLedLevel(int val) { ledLevel = val; }
   inline bool getThreadRunning() const { return threadRunning; }
   inline void setThreadRunning(bool val) { threadRunning = val; }
 };
