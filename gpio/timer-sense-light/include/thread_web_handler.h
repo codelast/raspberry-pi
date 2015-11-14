@@ -49,13 +49,19 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
         LOG(INFO) << "Switch to mode ON";
 	gConfigLoader.setManualMode(true);
 	gConfigLoader.setLedLevel(HIGH);
+
+	mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
       } else if (mg_vcmp(&hm->uri, "/switch-mode-off") == 0) {
         LOG(INFO) << "Switch to mode OFF";
 	gConfigLoader.setManualMode(true);
 	gConfigLoader.setLedLevel(LOW);
+
+	mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
       } else if (mg_vcmp(&hm->uri, "/switch-mode-auto") == 0) {
         LOG(INFO) << "Switch to mode AUTO";
 	gConfigLoader.setManualMode(false);
+
+	mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
       } else {
         mg_serve_http(nc, hm, httpServerOpts);  // serve static content
       }
