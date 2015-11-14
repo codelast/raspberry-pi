@@ -34,6 +34,14 @@ static void handleGetTimeRange(struct mg_connection *nc) {
 }
 
 /**
+ * Send a http 302 response.
+ *
+ */
+static void sendHttpResponse302(struct mg_connection *nc) {
+  mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
+}
+
+/**
  * HTTP event handler.
  * Please refer to the API doc of Mongoose for the detail of the params.
  *
@@ -50,18 +58,18 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
 	gConfigLoader.setManualMode(true);
 	gConfigLoader.setLedLevel(HIGH);
 
-	mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
+	sendHttpResponse302(nc);
       } else if (mg_vcmp(&hm->uri, "/switch-mode-off") == 0) {
         LOG(INFO) << "Switch to mode OFF";
 	gConfigLoader.setManualMode(true);
 	gConfigLoader.setLedLevel(LOW);
 
-	mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
+	sendHttpResponse302(nc);
       } else if (mg_vcmp(&hm->uri, "/switch-mode-auto") == 0) {
         LOG(INFO) << "Switch to mode AUTO";
 	gConfigLoader.setManualMode(false);
 
-	mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
+	sendHttpResponse302(nc);
       } else {
         mg_serve_http(nc, hm, httpServerOpts);  // serve static content
       }
