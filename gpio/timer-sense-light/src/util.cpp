@@ -108,7 +108,7 @@ void CUtil::stringSplit(const string &src,
   string::size_type begin = 0, end = 0, length = src.length();
   while(begin < length && end != string::npos) {
     end = src.find(delimiter, begin);
-    output.push_back(src.substr(begin, end-begin));
+    output.push_back(src.substr(begin, end - begin));
     begin = end + 1;
   }
   return;
@@ -118,10 +118,10 @@ void CUtil::stringSplit(const string &src,
  * Get the position of a "hour:minute" string(e.g. "21:05") in the time range array.
  * The time ranger array is a 1440 elements array, which represent all the minutes of a day,
  * this function will calculate the position of a time in the array, e.g. if the time is 
- * "00:05", then the position is 6.
+ * "00:05", then the position is 5.
  *
  * @param hourAndMinute  The "hour:minute" string(e.g. "21:05").
- * @return the position value, -1 for something wrong.
+ * @return the position value(zero-based), -1 for something wrong.
  */
 int CUtil::getPositionInTimeRange(const string &hourAndMinute) {
   vector<string> items;  // each item e.g. "21"
@@ -136,8 +136,8 @@ int CUtil::getPositionInTimeRange(const string &hourAndMinute) {
 }
 
 /**
- * Get the position of a current time in the time range array.
-
+ * Get the position of current time in the time range array.
+ *
  * @return the position value, -1 for something wrong.
  */
 int CUtil::getCurrentTimePositionInTimeRange() {

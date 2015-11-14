@@ -22,12 +22,20 @@ static struct mg_serve_http_opts httpServerOpts;
  */
 static void handleGetTimeRange(struct mg_connection *nc) {
   //TODO: read time range data from memory & return it
+  vector<string> vec;
+  gConfigLoader.translateTimeRange2String(vec);
+  vector<string>::const_iterator it;
+  string allTimeRangeStr;
+  for (it = vec.begin(); it != vec.end(); it++) {
+    allTimeRangeStr += *it + " ";
+  }
+  LOG(INFO) << "Time range read: " << allTimeRangeStr;
 
   // use chunked encoding in order to avoid calculating Content-Length, please refer to https://en.wikipedia.org/wiki/Chunked_transfer_encoding for details
   mg_printf(nc, "%s", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
 
   // output JSON object
-  mg_printf_http_chunk(nc, "{ \"result\": %d }", 10);
+  mg_printf_http_chunk(nc, "{ \"result\": \"%s\" }", allTimeRangeStr.c_str());
 
   // send empty chunk, the end of response
   mg_send_http_chunk(nc, "", 0);
@@ -52,6 +60,7 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
   switch (ev) {
     case MG_EV_HTTP_REQUEST:
       if (mg_vcmp(&hm->uri, "/get-time-range") == 0) {
+	LOG(INFO) << "Will get time range";
         handleGetTimeRange(nc);
       } else if (mg_vcmp(&hm->uri, "/switch-mode-on") == 0) {
         LOG(INFO) << "Switch to mode ON";

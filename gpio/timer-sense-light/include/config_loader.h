@@ -2,6 +2,7 @@
 #define __CONFIG_LOADER_H
 
 #include <string>
+#include <vector>
 #include "constants.h"
 
 /**
@@ -32,10 +33,14 @@ class CConfigLoader
   int ledLevel;        // used to control the LED status(on/off)
   bool threadRunning;  // a flag to control the thread running status
 
+ private:
+  std::string convertPosition2TimeStr(int position);
+
  public:
   bool loadMainConfig(const std::string mainConfigFile);
   bool loadTimeRange(const std::string &timeRangeFile);
   int getTimePositionStatus(int timePosition);
+  void translateTimeRange2String(std::vector<std::string> &output);
 
   inline int getPyroelectricGpioPort() const { return pyroelectricGpioPort; }
   inline int getLedGpioPortStart() const { return ledGpioPortStart; }

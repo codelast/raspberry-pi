@@ -1,14 +1,14 @@
 $(document).ready(function() {
-    // start 1-second timer to call RESTful endpoint
+    // start 5-second timer to call RESTful endpoint
     setInterval(function() {
 	$.ajax({
 	    url: '/get-time-range',
 	    dataType: 'json',
 	    success: function(json) {
-		$('#time-range').text(json.result + '% ');
+		$('#time_range').text(json.result);
 	    }
 	});
-    }, 1000);
+    }, 5000);
 
     $("#light_mode_on").click(function() {
 	$.ajax({

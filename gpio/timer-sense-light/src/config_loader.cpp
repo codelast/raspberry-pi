@@ -1,7 +1,8 @@
 #include <fstream>
-#include <vector>
+#include <sstream>      // std::stringstream
+#include <iomanip>      // std::setfill, std::setw
 #include <linux/limits.h>  // PATH_MAX
-#include <algorithm>  // std::fill_n()
+#include <algorithm>    // std::fill_n()
 #include <glog/logging.h>
 #include <libconfig.h++>
 #include "util.h"
@@ -162,3 +163,43 @@ int CConfigLoader::getTimePositionStatus(int timePosition) {
 
   return timeRangeArray[timePosition];
 }
+
+/**
+ * Convert a position index to a time string.
+ *
+ * @param position  A position index([0, 1023]) in the time range array.
+ * @return A time string, e.g. "21:00".
+ */
+string CConfigLoader::convertPosition2TimeStr(int position) {
+  int hour = position / 60;
+  int minute = position % 60;
+
+  stringstream ss;
+  // if the hour or minute is one digit(e.g. 5), add a "0" before it(e.g. "05")
+  ss << setfill('0') << setw(2) << hour << ":" << setfill('0') << setw(2) << minute;
+  return ss.str();
+}
+
+/**
+ * Translate the time range array data to literal time range string(e.g. "22:00~23:59").
+ *
+ * @param timeRangeArray  An int array which stores the time range data, each item is 0 or 1.
+ * @param output  The output vectore which stores all the time range strings.
+ */
+void CConfigLoader::translateTimeRange2String(vector<string> &output) {
+  string startTimeStr;  // e.g. "21:00"
+  for (int i = 0; i < ONE_DAY_MINUTES; i++) {
+    if (ENABLE_STATUS == timeRangeArray[i]) {
+      string timeStr = convertPosition2TimeStr(i);
+      if (!startTimeStr.empty()) {  // already recorded the start time
+	if ((i == ONE_DAY_MINUTES - 1) ||
+	    ((i < (ONE_DAY_MINUTES - 1) && DISABLE_STATUS == timeRangeArray[i + 1]))) {
+	  output.push_back(startTimeStr + " ~ " + timeStr);
+	  startTimeStr.clear();
+	}
+      } else {
+	startTimeStr = timeStr;
+      }
+    }
+  }
+} 
