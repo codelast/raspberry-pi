@@ -1,4 +1,4 @@
-Third-party Fritzing parts found from the Internet, I can't remember the original source & backup them here just for convenience & thanks to the author.
+Third-party Fritzing parts found from the Internet, I can't remember the original source & backup them here just for convenience & thanks to the authors.
 
 ****
 
