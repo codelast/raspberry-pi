@@ -5,11 +5,13 @@
   <title>Control Panel for Human Sense Light</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="classic.css">
+  <link rel="stylesheet" type="text/css" href="classic.time.css">
   <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
   <script type="text/javascript" src="main.js"></script>
   <script type="text/javascript" src="picker.js"></script>
   <script type="text/javascript" src="picker.time.js"></script>
-  <script type="text/javascript" src="picker.date.js"></script>
+  <script type="text/javascript" src="legacy.js"></script>
 </head>
 <body>
   <div class="content">
@@ -18,8 +20,15 @@
     <button id="light_mode_off" type="button">OFF</button>
     <button id="light_mode_auto" type="button">AUTO</button>
 
+    <p></p>
     <h1>AUTO Mode Human Sense Time Range Set</h1>
     <label>Current time range:</label> <span id="time_range">&nbsp;</span>
+    <p></p>
+    <button id="add_time_range" type="button">Add Time Range</button>
+    <p></p>
+    <input id="" name="" class="js__timepicker" type="text" size="10">
+    <label> ~ </label>
+    <input id="" name="" class="js__timepicker" type="text" size="10">
   </div>
 </body>
 </html>

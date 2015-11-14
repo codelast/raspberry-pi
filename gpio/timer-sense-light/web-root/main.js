@@ -20,6 +20,8 @@ $(document).ready(function() {
 	});
     });
 
+    $('.js__timepicker').pickatime();
+    
     $("#light_mode_off").click(function() {
 	$.ajax({
 	    url: '/switch-mode-off',
