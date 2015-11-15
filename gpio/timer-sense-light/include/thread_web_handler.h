@@ -49,15 +49,18 @@ static void handleGetTimeRange(struct mg_connection *nc) {
 static void handleSetTimeRange(struct mg_connection *nc, struct http_message *hm) {
   /* get form variables */
   int length = 1024;
-  char timeRangeStr[length];
-  memset(timeRangeStr, 0, length);
-  mg_get_http_var(&hm->body, "str", timeRangeStr, length);
+  char temp[length];
+  memset(temp, 0, length);
+  mg_get_http_var(&hm->body, "str", temp, length);
 
-  LOG(INFO) << "Time range data from web UI: [" << timeRangeStr << "]";
-
-  //TODO: update the time range data in memory
-
-  mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
+  LOG(INFO) << "Time range data from web UI: [" << temp << "]";
+  
+  /* update the time range data in memory */
+  string timeRangeStr(temp);
+  if (gConfigLoader.loadTimeRange(timeRangeStr)) {
+    mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
+    return;
+  }
 }
 
 /**

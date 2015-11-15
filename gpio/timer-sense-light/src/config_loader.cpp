@@ -102,19 +102,43 @@ bool CConfigLoader::loadMainConfig(const string configFile) {
  * @param timeRangeArray  The returned time range data pointer.
  * @return true for successfully loaded the data, false otherwise.
  */
-bool CConfigLoader::loadTimeRange(const string &timeRangeFile) {
+bool CConfigLoader::loadTimeRangeFromFile(const string &timeRangeFile) {
   ifstream ifs(timeRangeFile.c_str(), ios::in);
   if (!ifs.is_open()) {
     LOG(ERROR) << "Failed to open file [" << timeRangeFile << "]";
     return false;
   }
+  
   string line;
+  vector<string> lines;
   while (!ifs.eof()) {
     getline(ifs, line);
     if (line.empty()) {
       continue;
     }
 
+    lines.push_back(line);
+    loadTimeRange(lines);
+  }
+  ifs.close();
+
+  return true;
+}
+
+/**
+ * Load time range data from strings like the lines in the time range definition file.
+ *
+ * @param timeRangeLines  Each item contains a string like one line in the time range def file.
+ * @return true for successfully loaded the data, false otherwise.
+ */
+bool CConfigLoader::loadTimeRange(const vector<string> &timeRangeLines) {
+  if (timeRangeLines.empty()) {
+    return false;
+  }
+  
+  vector<string>::const_iterator it;
+  for (it = timeRangeLines.begin(); it != timeRangeLines.end(); it++) {
+    string line = *it;
     if (0 == line.compare(0, 1, "#")) {  // line starts with "#" indicates it's a comment line
       LOG(INFO) << "Read a comment line, skip";
       continue;
@@ -143,9 +167,25 @@ bool CConfigLoader::loadTimeRange(const string &timeRangeFile) {
       timeRangeArray[i] = ENABLE_STATUS;
     }
   }
-  ifs.close();
-
+  
   return true;
+}
+
+/**
+ * Load time range data from a string.
+ *
+ * @param timeRangeLines  A string contains the time range data, 
+ *                        e.g. "00:05\t09:00\n16:00\t23:00"
+ * @return true for successfully loaded the data, false otherwise.
+ */
+bool CConfigLoader::loadTimeRange(const string &timeRangeLines) {
+  if (timeRangeLines.empty()) {
+    return false;
+  }
+
+  vector<string> vec;
+  CUtil::stringSplit(timeRangeLines, '\n', vec);
+  return loadTimeRange(vec);
 }
 
 /**

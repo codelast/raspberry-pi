@@ -34,7 +34,7 @@ int main(int argc,char* argv[]) {
   }
 
   string timeRangeFile = argv[2];
-  if (!gConfigLoader.loadTimeRange(timeRangeFile)) {  // load time range data from file
+  if (!gConfigLoader.loadTimeRangeFromFile(timeRangeFile)) {  // load time range data from file
     return 1;
   }
 

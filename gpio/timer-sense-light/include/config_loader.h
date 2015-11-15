@@ -35,10 +35,12 @@ class CConfigLoader
 
  private:
   std::string convertPosition2TimeStr(int position);
+  bool loadTimeRange(const std::vector<std::string> &timeRangeLines);
 
  public:
   bool loadMainConfig(const std::string mainConfigFile);
-  bool loadTimeRange(const std::string &timeRangeFile);
+  bool loadTimeRangeFromFile(const std::string &timeRangeFile);
+  bool loadTimeRange(const std::string &timeRangeLines);
   int getTimePositionStatus(int timePosition);
   void translateTimeRange2String(std::vector<std::string> &output);
 
@@ -56,3 +58,6 @@ class CConfigLoader
 };
 
 #endif
+
+
+
