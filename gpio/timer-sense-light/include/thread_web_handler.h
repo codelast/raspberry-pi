@@ -21,7 +21,7 @@ static struct mg_serve_http_opts httpServerOpts;
  * @param nc  Describes a HTTP connection.
  */
 static void handleGetTimeRange(struct mg_connection *nc) {
-  //TODO: read time range data from memory & return it
+  /* read time range data from memory */
   vector<string> vec;
   gConfigLoader.translateTimeRange2String(vec);
   vector<string>::const_iterator it;
@@ -39,6 +39,25 @@ static void handleGetTimeRange(struct mg_connection *nc) {
 
   // send empty chunk, the end of response
   mg_send_http_chunk(nc, "", 0);
+}
+
+/**
+ * A specific HTTP event handler to set time range data from web UI to backend program.
+ *
+ * @param nc  Describes a HTTP connection.
+ */
+static void handleSetTimeRange(struct mg_connection *nc, struct http_message *hm) {
+  /* get form variables */
+  int length = 1024;
+  char timeRangeStr[length];
+  memset(timeRangeStr, 0, length);
+  mg_get_http_var(&hm->body, "str", timeRangeStr, length);
+
+  LOG(INFO) << "Time range data from web UI: [" << timeRangeStr << "]";
+
+  //TODO: update the time range data in memory
+
+  mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
 }
 
 /**
@@ -60,8 +79,11 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
   switch (ev) {
     case MG_EV_HTTP_REQUEST:
       if (mg_vcmp(&hm->uri, "/get-time-range") == 0) {
-	LOG(INFO) << "Will get time range";
+	LOG(INFO) << "Will get time range...";
         handleGetTimeRange(nc);
+      } else if (mg_vcmp(&hm->uri, "/set-time-range") == 0) {
+        LOG(INFO) << "Will set time range...";
+	handleSetTimeRange(nc, hm);
       } else if (mg_vcmp(&hm->uri, "/switch-mode-on") == 0) {
         LOG(INFO) << "Switch to mode ON";
 	gConfigLoader.setManualMode(true);
