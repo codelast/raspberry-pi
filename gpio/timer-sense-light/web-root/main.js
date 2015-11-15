@@ -28,7 +28,7 @@ $(document).ready(function() {
     });
 
     $(wrapper).on("click",".remove_field", function(e){  // user click on remove text
-	e.preventDefault(); $(this).parent('div').remove(); x--;
+	e.preventDefault(); $(this).parent('div').remove(); timeRangeInputBoxNumber--;
     });
 
     $("#light_mode_on").click(function() {
