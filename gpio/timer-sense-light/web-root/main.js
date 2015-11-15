@@ -21,6 +21,7 @@ $(document).ready(function() {
 	if(timeRangeInputBoxNumber < maxTimeRangeInputBoxNumber) {   // max input box allowed
 	    timeRangeInputBoxNumber++;  // text box increment
 	    $(wrapper).append('<div><input class="js__timepicker" type="text" size="10"/><label> ~ </label><input class="js__timepicker" type="text" size="10"/><a href="#" class="remove_field">Remove</a></div>');  // add input box
+	    $('.js__timepicker').pickatime();  // make the dynamically added input box a time picker
 	} else {
 	    alert('Cannot add more');
 	}
