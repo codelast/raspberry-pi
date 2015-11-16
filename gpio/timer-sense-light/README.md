@@ -1,4 +1,4 @@
-# A time-controllable human sense light based on Raspberry Pi, it has a web UI to control the light.
+# A time-controllable human sense light based on Raspberry Pi, which has a web UI to control the it.
 ## 一个基于树莓派的、(开关)时间可控的人体感应灯，可以通过一个web UI界面开灯、关灯，以及设置成自动模式（在感应到人接近的时候自动点亮灯），并且可以设置自动模式的工作时间段。
 [![Click to watch Youtube video demo](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/timer-sense-light/demo/finished_product_1.jpg)](https://www.youtube.com/watch?v=_6llPyMW7_M)
 [![Click to watch Youtube video demo](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/timer-sense-light/demo/finished_product_2.jpg)](https://www.youtube.com/watch?v=_6llPyMW7_M)
