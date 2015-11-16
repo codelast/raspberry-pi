@@ -42,10 +42,14 @@ Buy essencial electronic components and build the hardware system according to t
     vim deploy/conf/main.conf
     vim deploy/conf/time-range.txt
 
-### start the system
+### start the backend program
 
     cd deploy/bin
     ./run-timer-sense-light.sh
+
+### use any web browser to visit the web UI to set parameters(assume that your RPi's IP address is 192.168.16.108)
+
+    http://192.168.16.108
 
 ****
 
