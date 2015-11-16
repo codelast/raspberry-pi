@@ -30,12 +30,14 @@ CConfigLoader::CConfigLoader() {
     currentAppPath = path;
   }
 
+  pthread_rwlock_init(&timeRangeDataLock, NULL);
   manualMode = false;
   ledLevel = 0;
   threadRunning = true;
 }
 
 CConfigLoader::~CConfigLoader() {
+  pthread_rwlock_destroy(&timeRangeDataLock);
 }
 
 /**
@@ -116,12 +118,11 @@ bool CConfigLoader::loadTimeRangeFromFile(const string &timeRangeFile) {
     if (line.empty()) {
       continue;
     }
-
     lines.push_back(line);
-    loadTimeRange(lines);
   }
-  ifs.close();
+  loadTimeRange(lines);
 
+  ifs.close();
   return true;
 }
 
@@ -135,6 +136,10 @@ bool CConfigLoader::loadTimeRange(const vector<string> &timeRangeLines) {
   if (timeRangeLines.empty()) {
     return false;
   }
+
+  pthread_rwlock_wrlock(&timeRangeDataLock);
+
+  fill_n(timeRangeArray, ONE_DAY_MINUTES, DISABLE_STATUS);  // set all minutes of a day to disable status
   
   vector<string>::const_iterator it;
   for (it = timeRangeLines.begin(); it != timeRangeLines.end(); it++) {
@@ -167,7 +172,8 @@ bool CConfigLoader::loadTimeRange(const vector<string> &timeRangeLines) {
       timeRangeArray[i] = ENABLE_STATUS;
     }
   }
-  
+
+  pthread_rwlock_unlock(&timeRangeDataLock);
   return true;
 }
 
@@ -227,6 +233,8 @@ string CConfigLoader::convertPosition2TimeStr(int position) {
  * @param output  The output vectore which stores all the time range strings.
  */
 void CConfigLoader::translateTimeRange2String(vector<string> &output) {
+  pthread_rwlock_rdlock(&timeRangeDataLock);
+  
   string startTimeStr;  // e.g. "21:00"
   for (int i = 0; i < ONE_DAY_MINUTES; i++) {
     if (ENABLE_STATUS == timeRangeArray[i]) {
@@ -242,4 +250,6 @@ void CConfigLoader::translateTimeRange2String(vector<string> &output) {
       }
     }
   }
+
+  pthread_rwlock_unlock(&timeRangeDataLock);
 } 

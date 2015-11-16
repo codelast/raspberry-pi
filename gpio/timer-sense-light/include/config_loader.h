@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <pthread.h>  // pthread_rwlock_t
 #include "constants.h"
 
 /**
@@ -29,6 +30,7 @@ class CConfigLoader
   std::string webRootDirName;
   std::string webRootPath;
 
+  pthread_rwlock_t timeRangeDataLock;
   bool manualMode;     // whether the LEDs are under manual control mode
   int ledLevel;        // used to control the LED status(on/off)
   bool threadRunning;  // a flag to control the thread running status
