@@ -27,7 +27,8 @@ $(document).ready(function() {
 		format: 'HH:i'
 	    });  // make the dynamically added input box a time picker
 	} else {
-	    alert('Cannot add more');
+	    // display a message on the page
+	    $('#add_time_range_result').text('Cannot add more').show().fadeOut(3000);
 	}
     });
 
