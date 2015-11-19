@@ -78,4 +78,5 @@ Install WiringPi, then execute command "gpio -v" to get RPi's revision, the outp
 ****
 
 ## Work in progress(NOT done yet)
-Add more feature to the web UI.
+* Add more features to the web UI.
+* Make the web page compatible with mobile browser.
