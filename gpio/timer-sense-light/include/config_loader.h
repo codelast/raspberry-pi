@@ -34,6 +34,7 @@ class CConfigLoader
   bool manualMode;     // whether the LEDs are under manual control mode
   int ledLevel;        // used to control the LED status(on/off)
   bool threadRunning;  // a flag to control the thread running status
+  std::string timeRangeFile;  // a file on local fs which stores the time range definition data
 
  private:
   std::string convertPosition2TimeStr(int position);
@@ -42,7 +43,7 @@ class CConfigLoader
  public:
   bool loadMainConfig(const std::string mainConfigFile);
   bool loadTimeRangeFromFile(const std::string &timeRangeFile);
-  bool loadTimeRange(const std::string &timeRangeLines);
+  bool updateTimeRange(const std::string &timeRangeLines);
   int getTimePositionStatus(int timePosition);
   void translateTimeRange2String(std::vector<std::string> &output);
 

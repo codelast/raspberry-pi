@@ -3,6 +3,7 @@
 #include <iomanip>      // std::setfill, std::setw
 #include <linux/limits.h>  // PATH_MAX
 #include <algorithm>    // std::fill_n()
+#include <fstream>
 #include <glog/logging.h>
 #include <libconfig.h++>
 #include "util.h"
@@ -110,6 +111,7 @@ bool CConfigLoader::loadTimeRangeFromFile(const string &timeRangeFile) {
     LOG(ERROR) << "Failed to open file [" << timeRangeFile << "]";
     return false;
   }
+  this->timeRangeFile = timeRangeFile;
   
   string line;
   vector<string> lines;
@@ -178,20 +180,37 @@ bool CConfigLoader::loadTimeRange(const vector<string> &timeRangeLines) {
 }
 
 /**
- * Load time range data from a string.
+ * Update time range data in memory & local fs config file from a string.
  *
  * @param timeRangeLines  A string contains the time range data, 
  *                        e.g. "00:05\t09:00\n16:00\t23:00"
  * @return true for successfully loaded the data, false otherwise.
  */
-bool CConfigLoader::loadTimeRange(const string &timeRangeLines) {
+bool CConfigLoader::updateTimeRange(const string &timeRangeLines) {
   if (timeRangeLines.empty()) {
     return false;
   }
 
   vector<string> vec;
   CUtil::stringSplit(timeRangeLines, '\n', vec);
-  return loadTimeRange(vec);
+  if (!loadTimeRange(vec)) {
+    LOG(INFO) << "Failed to update time range data in memory";
+    return false;
+  }
+  
+  /* update time range data in local fs config file */
+  ofstream ofs(timeRangeFile.c_str());
+  if (!ofs.is_open()) {
+    LOG(ERROR) << "Failed to open time range config file [" << timeRangeFile << "] to write";
+    return false;
+  }
+  vector<string>::const_iterator it;
+  for (it = vec.begin(); it != vec.end(); it++) {
+    ofs << *it << endl;
+  }
+  ofs.close();
+
+  return true;
 }
 
 /**

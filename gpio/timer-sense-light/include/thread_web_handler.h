@@ -58,9 +58,9 @@ static void handleSetTimeRange(struct mg_connection *nc, struct http_message *hm
 
   LOG(INFO) << "Time range data from web UI: [" << temp << "]";
   
-  /* update the time range data in memory */
+  /* update the time range data in memory & config file */
   string timeRangeStr(temp);
-  if (gConfigLoader.loadTimeRange(timeRangeStr)) {
+  if (gConfigLoader.updateTimeRange(timeRangeStr)) {
     mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
     return;
   }
