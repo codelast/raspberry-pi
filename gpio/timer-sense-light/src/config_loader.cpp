@@ -199,6 +199,7 @@ bool CConfigLoader::updateTimeRange(const string &timeRangeLines) {
   }
   
   /* update time range data in local fs config file */
+  translateTimeRange2String(vec, "\t");
   ofstream ofs(timeRangeFile.c_str());
   if (!ofs.is_open()) {
     LOG(ERROR) << "Failed to open time range config file [" << timeRangeFile << "] to write";
@@ -249,11 +250,13 @@ string CConfigLoader::convertPosition2TimeStr(int position) {
  * Translate the time range array data to literal time range strings(e.g. "22:00[\t]23:59").
  *
  * @param timeRangeArray  An int array which stores the time range data, each item is 0 or 1.
+ * @param delimiter       The delimiter between the start time & end time, e.g. "\t"
  * @param output  The output vectore which stores all the time range strings.
  */
-void CConfigLoader::translateTimeRange2String(vector<string> &output) {
+void CConfigLoader::translateTimeRange2String(vector<string> &output, string delimiter) {
   pthread_rwlock_rdlock(&timeRangeDataLock);
-  
+
+  output.clear();
   string startTimeStr;  // e.g. "21:00"
   for (int i = 0; i < ONE_DAY_MINUTES; i++) {
     if (ENABLE_STATUS == timeRangeArray[i]) {
@@ -261,7 +264,7 @@ void CConfigLoader::translateTimeRange2String(vector<string> &output) {
       if (!startTimeStr.empty()) {  // already recorded the start time
 	if ((i == ONE_DAY_MINUTES - 1) ||
 	    ((i < (ONE_DAY_MINUTES - 1) && DISABLE_STATUS == timeRangeArray[i + 1]))) {
-	  output.push_back(startTimeStr + " " + timeStr);
+	  output.push_back(startTimeStr + delimiter + timeStr);
 	  startTimeStr.clear();
 	}
       } else {

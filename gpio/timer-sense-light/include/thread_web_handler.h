@@ -31,7 +31,7 @@ static void sendHttpResponse302(struct mg_connection *nc) {
 static void handleGetTimeRange(struct mg_connection *nc) {
   /* read time range data from memory */
   vector<string> vec;
-  gConfigLoader.translateTimeRange2String(vec);
+  gConfigLoader.translateTimeRange2String(vec, " ");
   vector<string>::const_iterator it;
   string allTimeRangeStr;
   for (it = vec.begin(); it != vec.end(); it++) {

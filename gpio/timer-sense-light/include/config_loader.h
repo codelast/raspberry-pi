@@ -45,7 +45,7 @@ class CConfigLoader
   bool loadTimeRangeFromFile(const std::string &timeRangeFile);
   bool updateTimeRange(const std::string &timeRangeLines);
   int getTimePositionStatus(int timePosition);
-  void translateTimeRange2String(std::vector<std::string> &output);
+  void translateTimeRange2String(std::vector<std::string> &output, std::string delimiter);
 
   inline int getPyroelectricGpioPort() const { return pyroelectricGpioPort; }
   inline int getLedGpioPortStart() const { return ledGpioPortStart; }
@@ -61,6 +61,8 @@ class CConfigLoader
 };
 
 #endif
+
+
 
 
 
