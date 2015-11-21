@@ -62,7 +62,7 @@ $(document).ready(function() {
 	timeRangeInputBoxNumber--;
     });
 
-    $("#set_time_range").click(function(e) {
+    $("#save_time_range").click(function(e) {
 	var inputBoxes = $("input.js__timepicker[type='text']");  // get all the time range input boxes
 	var allInputText = '';
 	var index = 0;
@@ -80,7 +80,7 @@ $(document).ready(function() {
 	    }
 	);
 	$.ajax({
-	    url: '/set-time-range',
+	    url: '/save-time-range',
 	    method: 'POST',
 	    data: { "str": allInputText }, 
 	    success: function() {

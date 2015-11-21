@@ -53,11 +53,11 @@ static void handleGetTimeRange(struct mg_connection *nc) {
 }
 
 /**
- * A specific HTTP event handler to set time range data from web UI to backend program.
+ * A specific HTTP event handler to save time range data from web UI to backend.
  *
  * @param nc  Describes a HTTP connection.
  */
-static void handleSetTimeRange(struct mg_connection *nc, struct http_message *hm) {
+static void handleSaveTimeRange(struct mg_connection *nc, struct http_message *hm) {
   /* get web page variables */
   int length = 1024;
   char temp[length];
@@ -86,9 +86,9 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
       if (mg_vcmp(&hm->uri, "/get-time-range") == 0) {
 	LOG(INFO) << "Will get time range...";
         handleGetTimeRange(nc);
-      } else if (mg_vcmp(&hm->uri, "/set-time-range") == 0) {
-        LOG(INFO) << "Will set time range...";
-	handleSetTimeRange(nc, hm);
+      } else if (mg_vcmp(&hm->uri, "/save-time-range") == 0) {
+        LOG(INFO) << "Will save time range...";
+	handleSaveTimeRange(nc, hm);
       } else if (mg_vcmp(&hm->uri, "/switch-mode-on") == 0) {
         LOG(INFO) << "Switch to mode ON";
 	gConfigLoader.setManualMode(true);
