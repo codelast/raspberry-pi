@@ -28,7 +28,17 @@ $(document).ready(function() {
 	}
     }
 
-    // when web page just loaded, sync the time range data on the page with backend program
+    // when web page just loaded, sync the mode on web page with backend program
+    $.ajax({
+	url: '/get-mode',
+	dataType: 'json',
+	success: function(json) {
+	    var mode = json.result;  // e.g. 1
+	    $("[type=radio]").get(mode).checked = true;
+	}
+    });
+
+    // when web page just loaded, sync the time range data on web page with backend program
     $.ajax({
 	url: '/get-time-range',
 	dataType: 'json',

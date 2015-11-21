@@ -26,6 +26,74 @@ static void sendHttpResponse302(struct mg_connection *nc) {
 }
 
 /**
+ * A specific HTTP event handler to get light running mode.
+ *
+ * @param nc  Describes a HTTP connection.
+ */
+static void handleGetMode(struct mg_connection *nc) {
+  int mode = MODE_AUTO;
+  if (gConfigLoader.isManualMode()) {
+    mode = (gConfigLoader.getLedLevel() == HIGH) ? MODE_ON : MODE_OFF;
+  }
+  LOG(INFO) << "Mode read: " << mode;
+
+  // use chunked encoding in order to avoid calculating Content-Length, please refer to https://en.wikipedia.org/wiki/Chunked_transfer_encoding for details
+  mg_printf(nc, "%s", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
+
+  // output JSON object
+  mg_printf_http_chunk(nc, "{ \"result\": \"%d\" }", mode);
+
+  // send empty chunk, the end of response
+  mg_send_http_chunk(nc, "", 0);
+}
+
+/**
+ * A specific HTTP event handler to set light running mode.
+ *
+ */
+static void handleSetMode(struct mg_connection *nc, struct http_message *hm) {
+  /* get web page variables */
+  int length = 8;
+  char temp[length];
+  memset(temp, 0, length);
+  mg_get_http_var(&hm->body, "mode", temp, length);
+
+  bool success = true;
+  int mode = atoi(temp);
+  switch (mode) {
+  case MODE_ON:
+    {
+      LOG(INFO) << "Switch to mode ON";
+      gConfigLoader.setManualMode(true);
+      gConfigLoader.setLedLevel(HIGH);
+      break;
+    }
+  case MODE_OFF:
+    {
+      LOG(INFO) << "Switch to mode OFF";
+      gConfigLoader.setManualMode(true);
+      gConfigLoader.setLedLevel(LOW);
+      break;
+    }
+  case MODE_AUTO:
+    {
+      LOG(INFO) << "Switch to mode AUTO";
+      gConfigLoader.setManualMode(false);
+      break;
+    }
+  default:
+    {
+      LOG(ERROR) << "Unrecognized mode: " << mode;
+      success = false;
+    }
+  }
+
+  if (success) {
+    sendHttpResponse302(nc);
+  }
+}
+
+/**
  * A specific HTTP event handler to get time range data.
  *
  * @param nc  Describes a HTTP connection.
@@ -76,54 +144,6 @@ static void handleSaveTimeRange(struct mg_connection *nc, struct http_message *h
 }
 
 /**
- * A specific HTTP event handler to set light running mode.
- *
- */
-static void handleSetMode(struct mg_connection *nc, struct http_message *hm) {
-  /* get web page variables */
-  int length = 8;
-  char temp[length];
-  memset(temp, 0, length);
-  mg_get_http_var(&hm->body, "mode", temp, length);
-
-  LOG(INFO) << "Will set mode to ";
-
-  bool success = true;
-  int mode = atoi(temp);
-  switch (mode) {
-  case MODE_ON:
-    {
-      LOG(INFO) << "Switch to mode ON";
-      gConfigLoader.setManualMode(true);
-      gConfigLoader.setLedLevel(HIGH);
-      break;
-    }
-  case MODE_OFF:
-    {
-      LOG(INFO) << "Switch to mode OFF";
-      gConfigLoader.setManualMode(true);
-      gConfigLoader.setLedLevel(LOW);
-      break;
-    }
-  case MODE_AUTO:
-    {
-      LOG(INFO) << "Switch to mode AUTO";
-      gConfigLoader.setManualMode(false);
-      break;
-    }
-  default:
-    {
-      LOG(ERROR) << "Unrecognized mode: " << mode;
-      success = false;
-    }
-  }
-
-  if (success) {
-    sendHttpResponse302(nc);
-  }
-}
-
-/**
  * HTTP event handler.
  * Please refer to the API doc of Mongoose for the detail of the params.
  *
@@ -133,6 +153,10 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
 
   switch (ev) {
     case MG_EV_HTTP_REQUEST:
+      if (mg_vcmp(&hm->uri, "/get-mode") == 0) {
+	LOG(INFO) << "Will get mode...";
+	handleGetMode(nc);
+      }
       if (mg_vcmp(&hm->uri, "/set-mode") == 0) {
 	handleSetMode(nc, hm);
       } else if (mg_vcmp(&hm->uri, "/get-time-range") == 0) {
