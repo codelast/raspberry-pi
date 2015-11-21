@@ -95,6 +95,17 @@ $(document).ready(function() {
 	});
     });
 
+    $("[type=radio]").click(function() {
+	var checkedValue = $(this).filter(':checked').val();  // get the value of the checked radiobox
+	$.ajax({
+	    url: '/set-mode',
+	    method: 'POST',
+	    data: { "mode": checkedValue }, 
+	    success: function() {
+	    }
+	});
+    });
+
     $("#light_mode_on").click(function() {
 	$.ajax({
 	    url: '/switch-mode-on',

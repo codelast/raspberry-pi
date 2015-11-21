@@ -17,4 +17,18 @@ const int ENABLE_STATUS = 1;
 const int INVALID_POSITION = -1;
 const int ONE_DAY_MINUTES = 1440;  // total minutes of a day
 
+const int MODE_ON = 1;
+const int MODE_OFF = 2;
+const int MODE_AUTO = 3;
+
 #endif
+
+
+
+
+
+
+
+
+
+
