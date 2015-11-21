@@ -17,7 +17,7 @@ $(document).ready(function() {
 	    });  // make the dynamically added input box a time picker
 	} else {
 	    // display a warning message on the page
-	    $('#add_time_range_result').text('Cannot add more').show().fadeOut(3000);
+	    $('#time_range_operation_result').text('Cannot add more').show().fadeOut(3000);
 	}
     }
 
@@ -82,10 +82,12 @@ $(document).ready(function() {
 	$.ajax({
 	    url: '/set-time-range',
 	    method: 'POST',
-	    dataType: 'json',
 	    data: { "str": allInputText }, 
-	    success: function(json) {
-		//TODO:
+	    success: function() {
+		$('#time_range_operation_result').text('Saved').show().fadeOut(2000);
+	    },
+	    error: function() {
+		$('#time_range_operation_result').text('Error').show().fadeOut(2000);
 	    }
 	});
     });

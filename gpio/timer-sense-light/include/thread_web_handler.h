@@ -16,6 +16,14 @@ extern CConfigLoader gConfigLoader;
 static struct mg_serve_http_opts httpServerOpts;
 
 /**
+ * Send a http 302 response.
+ *
+ */
+static void sendHttpResponse302(struct mg_connection *nc) {
+  mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
+}
+
+/**
  * A specific HTTP event handler to get time range data.
  *
  * @param nc  Describes a HTTP connection.
@@ -50,7 +58,7 @@ static void handleGetTimeRange(struct mg_connection *nc) {
  * @param nc  Describes a HTTP connection.
  */
 static void handleSetTimeRange(struct mg_connection *nc, struct http_message *hm) {
-  /* get form variables */
+  /* get web page variables */
   int length = 1024;
   char temp[length];
   memset(temp, 0, length);
@@ -61,17 +69,8 @@ static void handleSetTimeRange(struct mg_connection *nc, struct http_message *hm
   /* update the time range data in memory & config file */
   string timeRangeStr(temp);
   if (gConfigLoader.updateTimeRange(timeRangeStr)) {
-    mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
-    return;
+    sendHttpResponse302(nc);
   }
-}
-
-/**
- * Send a http 302 response.
- *
- */
-static void sendHttpResponse302(struct mg_connection *nc) {
-  mg_printf(nc, "%s", "HTTP/1.1 302 OK\r\nLocation: /\r\n\r\n");
 }
 
 /**
