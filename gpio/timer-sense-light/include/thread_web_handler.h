@@ -8,6 +8,7 @@
 /**
  * This thread handles web events from the frontend UI.
  *
+ * @author Darran Zhang @ codelast.com
  */
 
 using namespace std;
