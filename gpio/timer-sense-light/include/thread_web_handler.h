@@ -27,7 +27,10 @@ static void handleGetTimeRange(struct mg_connection *nc) {
   vector<string>::const_iterator it;
   string allTimeRangeStr;
   for (it = vec.begin(); it != vec.end(); it++) {
-    allTimeRangeStr += *it + " ";
+    allTimeRangeStr += *it + ",";
+  }
+  if (!allTimeRangeStr.empty()) {
+    allTimeRangeStr = allTimeRangeStr.substr(0, allTimeRangeStr.length() - 1);
   }
   LOG(INFO) << "Time range read: " << allTimeRangeStr;
 
