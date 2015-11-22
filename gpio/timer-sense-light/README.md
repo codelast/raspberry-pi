@@ -2,8 +2,10 @@
 ## 一个基于树莓派的、(开关)时间可控的人体感应灯，可以通过一个web UI界面开灯、关灯，以及设置成自动模式（在感应到人接近的时候自动点亮灯），并且可以设置自动模式的工作时间段。
 [![Click to watch Youtube video demo](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/timer-sense-light/demo/finished_product_1.jpg)](https://www.youtube.com/watch?v=_6llPyMW7_M)
 [![Click to watch Youtube video demo](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/timer-sense-light/demo/finished_product_2.jpg)](https://www.youtube.com/watch?v=_6llPyMW7_M)
-![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/timer-sense-light/demo/web_ui_1.png)
 [![Click to watch Youtube video demo](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/timer-sense-light/demo/semi_finished_product.jpg)](https://www.youtube.com/watch?v=_6llPyMW7_M)
+
+### The Web UI:
+![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/timer-sense-light/demo/web_ui_1.png)
 
 I only tested this program on Raspberry Pi Model B+(Revision 1.2) & Model B(Revision 2), but it should work on other models of RPi too, except that the hardware wiring should be some difference, and the code should need no modification.
 
