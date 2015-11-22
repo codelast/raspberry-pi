@@ -111,8 +111,6 @@ $(document).ready(function() {
 	    url: '/set-mode',
 	    method: 'POST',
 	    data: { "mode": checkedValue }, 
-	    success: function() {
-	    }
 	});
     });
 });
