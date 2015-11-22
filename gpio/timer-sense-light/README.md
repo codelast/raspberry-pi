@@ -4,7 +4,7 @@
 [![Click to watch Youtube video demo](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/timer-sense-light/demo/finished_product_2.jpg)](https://www.youtube.com/watch?v=_6llPyMW7_M)
 [![Click to watch Youtube video demo](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/timer-sense-light/demo/semi_finished_product.jpg)](https://www.youtube.com/watch?v=_6llPyMW7_M)
 
-### The Web UI:
+### The Web UI(control panel of the system):
 ![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/gpio/timer-sense-light/demo/web_ui_1.png)
 
 I only tested this program on Raspberry Pi Model B+(Revision 1.2) & Model B(Revision 2), but it should work on other models of RPi too, except that the hardware wiring should be some difference, and the code should need no modification.
