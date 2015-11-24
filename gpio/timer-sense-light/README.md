@@ -79,3 +79,6 @@ Install WiringPi, then execute command "gpio -v" to get RPi's revision, the outp
       Type: Model B+, Revision: 1.2, Memory: 512MB, Maker: Sony
 
 ****
+
+## Future work
+Add machine-learning ability to the system, to let it auto-adjust the time range according to history human movement data.
