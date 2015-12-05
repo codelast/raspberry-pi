@@ -19,8 +19,9 @@ endif
 BASIC_INCLUDE_PATH = -I./include
 
 CXXFLAGS = ${FLAG} \
+           ${BASIC_INCLUDE_PATH} \
            ${BASIC_INCLUDE_PATH}/3rd \
-           ${BASIC_INCLUDE_PATH}
+           ${BASIC_INCLUDE_PATH}/test
 
 CFLAGS = ${CXXFLAGS}
 
@@ -33,10 +34,12 @@ CXX_SOURCE_FILE = ./src/timer_sense_light.cpp \
 
 C_OBJECT = ./src/3rd/mongoose.o
 
+# compile the main executable program
 timer_sense_light:
 	$(CC) $(C_SOURCE_FILE) -c -o ${C_OBJECT} $(CFLAGS)
 	$(CXX) ${C_OBJECT} $(CXX_SOURCE_FILE) -o $@ $(CXXFLAGS) ${LDFLAGS}
 
+# deploy the project to a directory
 install:
 	rm -rf deploy
 	mkdir -p deploy/conf
@@ -46,7 +49,21 @@ install:
 	cp -f conf/* deploy/conf
 	cp -rf web-root deploy
 
-.PHONY : clean
+# unit test dependency source
+UT_CXX_SOURCE_FILE = ./src/test/gtest_main.cc \
+        ./src/util.cpp
+
+# compile the unit test runner
+ut_runner:
+	$(CXX) $(UT_CXX_SOURCE_FILE) -o $@ $(CXXFLAGS) ${LDFLAGS} -lgtest
+
+# compile & run the unit test
+test: ut_runner
+	./ut_runner
+
+.PHONY: test
+.PHONY: clean
+
 clean:
-	rm -f timer_sense_light *.o ./src/*.o ./src/3rd/*.o
+	rm -f timer_sense_light ut_runner *.o ./src/*.o ./src/3rd/*.o
 	rm -rf ./deploy

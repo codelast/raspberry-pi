@@ -33,6 +33,10 @@ Before compiling this project, you should have some software packages installed 
 
     pacman -S google-glog
 
+* gtest(Google's C++ test framework) - to run the unit tests in this project
+
+    pacman -S gtest
+
 ### build the hardware system
 Buy essencial electronic components and build the hardware system according to the circuit diagrams.
 
