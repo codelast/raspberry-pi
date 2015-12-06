@@ -43,12 +43,16 @@ class CUtilTest : public testing::Test
   }
 };
 
-TEST_F(CUtilTest, givenExistingDirShouldReturnTrue) {
+TEST_F(CUtilTest, isDirExistTestGivenExistingDirShouldReturnTrue) {
   /* create a temp directory for unit test */
   int ret = mkdir(toCreateDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
   ASSERT_EQ(0, ret) << "Failed to create dir [" << toCreateDir << "], return value: " << ret;
   
   EXPECT_TRUE(CUtil::isDirExist(toCreateDir));
+}
+
+TEST(isDirExistTest, isDirExistTestGivenNonExistDirShouldReturnFalse) {
+  EXPECT_FALSE(CUtil::isDirExist("a-non-exist-dir"));
 }
 
 TEST(stringSplitTest, givenValidStringShouldSplitToSubStrings) {
