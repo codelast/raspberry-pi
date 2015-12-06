@@ -55,7 +55,7 @@ TEST(isDirExistTest, isDirExistTestGivenNonExistDirShouldReturnFalse) {
   EXPECT_FALSE(CUtil::isDirExist("a-non-exist-dir"));
 }
 
-TEST(stringSplitTest, givenValidStringShouldSplitToSubStrings) {
+TEST(stringSplitTest, givenNonEmptyInputStringShouldSplitToSubStrings) {
   string input = "a\tb\tc";
   vector<string> output;
   CUtil::stringSplit(input, '\t', output);
@@ -64,6 +64,14 @@ TEST(stringSplitTest, givenValidStringShouldSplitToSubStrings) {
   EXPECT_STREQ("a", output[0].c_str());
   EXPECT_STREQ("b", output[1].c_str());
   EXPECT_STREQ("c", output[2].c_str());
+}
+
+TEST(stringSplitTest, givenEmptyInputStringShouldGetEmptyOutput) {
+  string input = "";
+  vector<string> output;
+  CUtil::stringSplit(input, '\t', output);
+
+  EXPECT_EQ(0, output.size());
 }
 
 #endif

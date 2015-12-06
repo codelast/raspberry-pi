@@ -105,6 +105,10 @@ void CUtil::stringSplit(const string &src,
 			char delimiter,
 			vector<string> &output) {
   output.clear();
+  if (src.empty()) {
+    return;
+  }
+  
   string::size_type begin = 0, end = 0, length = src.length();
   while(begin < length && end != string::npos) {
     end = src.find(delimiter, begin);
