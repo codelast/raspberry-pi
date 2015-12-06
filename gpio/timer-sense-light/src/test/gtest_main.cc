@@ -31,6 +31,7 @@
 
 #include <gtest/gtest.h>
 #include "util_test.h"
+#include "config_loader_test.h"
 
 GTEST_API_ int main(int argc, char **argv) {
   printf("Running main() from gtest_main.cc\n");

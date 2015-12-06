@@ -51,6 +51,7 @@ install:
 
 # unit test dependency source
 UT_CXX_SOURCE_FILE = ./src/test/gtest_main.cc \
+        ./src/config_loader.cpp \
         ./src/util.cpp
 
 # compile the unit test runner
