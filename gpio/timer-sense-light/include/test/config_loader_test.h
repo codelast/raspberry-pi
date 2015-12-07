@@ -3,8 +3,6 @@
 
 #include <gtest/gtest.h>
 #include <linux/limits.h>  // PATH_MAX
-#include <stdlib.h>        // system()
-#include <stdio.h>         // remove()
 #include "config_loader.h"
 
 /**
@@ -20,7 +18,6 @@ namespace {
   {
   protected:
     string currentAppPath;
-    string testDataDir;
   
   protected:
     virtual void SetUp() {
@@ -30,22 +27,16 @@ namespace {
       if (-1 != (int) CUtil::getExecutablePath(path, sizeof(path))) {
 	currentAppPath = path;
       }
-      testDataDir = currentAppPath + "test";
-
-      /* create the test data dir */
-      string shellCommand = "mkdir -p " + testDataDir;
-      system(shellCommand.c_str());
     }
   
     virtual void TearDown() {
-      remove(testDataDir.c_str());
     }
   };
 
   TEST_F(CConfigLoaderTest, givenNonExistConfigFileShouldReturnFalse) {
     CConfigLoader loader;
-    string nonExistConfigFile = testDataDir + "/main.conf";
-    
+    string nonExistConfigFile = currentAppPath + "/non-exist.conf";
+
     EXPECT_FALSE(loader.loadMainConfig(nonExistConfigFile));
   }
 

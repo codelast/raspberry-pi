@@ -3,10 +3,6 @@
 
 #include <gtest/gtest.h>
 #include <linux/limits.h>  // PATH_MAX
-#include <sys/stat.h>      // mkdir()
-#include <sys/types.h>     // mkdir()
-#include <stdlib.h>        // system()
-#include <stdio.h>         // remove()
 #include "constants.h"
 #include "util.h"
 
@@ -23,7 +19,6 @@ namespace {
   {
   protected:
     string currentAppPath;
-    string toCreateDir;
   
   protected:
     virtual void SetUp() {
@@ -33,15 +28,9 @@ namespace {
       if (-1 != (int) CUtil::getExecutablePath(path, sizeof(path))) {
 	currentAppPath = path;
       }
-      toCreateDir = currentAppPath + "to-create-dir-for-ut";
-
-      /* remove the dir before creating it(if it exists) */
-      string shellCommand = "rm -rf " + toCreateDir;
-      system(shellCommand.c_str());
     }
   
     virtual void TearDown() {
-      remove(toCreateDir.c_str());
     }
 
     /**
@@ -70,16 +59,12 @@ namespace {
 		 currentAppPath.c_str());
   }
 
-  TEST(isDirExistTest, givenNonExistDirShouldReturnFalse) {
-    EXPECT_FALSE(CUtil::isDirExist("a-non-exist-dir"));
+  TEST_F(CUtilTest, givenNonExistDirShouldReturnFalse) {
+    EXPECT_FALSE(CUtil::isDirExist(currentAppPath + "/non-exist-dir"));
   }
 
   TEST_F(CUtilTest, givenExistingDirShouldReturnTrue) {
-    /* create a temp directory for unit test */
-    int ret = mkdir(toCreateDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-    ASSERT_EQ(0, ret) << "Failed to create dir [" << toCreateDir << "], return value: " << ret;
-  
-    EXPECT_TRUE(CUtil::isDirExist(toCreateDir));
+    EXPECT_TRUE(CUtil::isDirExist(currentAppPath));
   }
 
   TEST(stringSplitTest, givenEmptyInputStringShouldGetEmptyOutput) {
