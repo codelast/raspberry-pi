@@ -52,6 +52,13 @@ namespace {
     string expectedWebRootPath = currentAppPath + "/web-root";
     EXPECT_STREQ(expectedWebRootPath.c_str(), loader.getWebRootPath().c_str());
   }
+
+  TEST_F(CConfigLoaderTest, givenNonExistTimeRangeFileShouldReturnFalse) {
+    CConfigLoader loader;
+    string nonExistTimeRangeFile = currentAppPath + "/non-exist-time-range-file.txt";
+
+    EXPECT_FALSE(loader.loadTimeRangeFromFile(nonExistTimeRangeFile));
+  }
 }
 
 #endif
