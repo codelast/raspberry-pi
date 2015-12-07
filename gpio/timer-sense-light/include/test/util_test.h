@@ -22,12 +22,12 @@ namespace {
   class CUtilTest : public testing::Test
   {
   protected:
+    string currentAppPath;
     string toCreateDir;
   
   protected:
     virtual void SetUp() {
       /* get current running program path */
-      string currentAppPath;
       char path[PATH_MAX];
       memset(path, 0, sizeof(path));
       if (-1 != (int) CUtil::getExecutablePath(path, sizeof(path))) {
@@ -43,7 +43,32 @@ namespace {
     virtual void TearDown() {
       remove(toCreateDir.c_str());
     }
+
+    /**
+     * Get the output of a piece of shell command.
+     *
+     * @param shellCommand The shell command to execute, e.g. "ls"
+     * @return The output of the command.
+     */
+    string getShellCommandOutput(const std::string shellCommand) {
+      FILE* crs = popen(shellCommand.c_str(), "r"); // execute the shell command
+      char result[1024] = "0";
+      fread(result, sizeof(char), sizeof(result), crs);
+      if (NULL != crs) {
+	fclose(crs);
+	crs = NULL;
+      }
+      std::string res = result;
+      return res;
+    }
   };
+
+  TEST_F(CUtilTest, twoImplementationOfCurrentAppPathShouldEquals) {
+    // shell command "pwd" returns current path, but ends with a "\n"
+    string currentPathByShellCmd = getShellCommandOutput("pwd");
+    EXPECT_STREQ(currentPathByShellCmd.substr(0, currentPathByShellCmd.length() - 1).c_str(),
+		 currentAppPath.c_str());
+  }
 
   TEST(isDirExistTest, givenNonExistDirShouldReturnFalse) {
     EXPECT_FALSE(CUtil::isDirExist("a-non-exist-dir"));

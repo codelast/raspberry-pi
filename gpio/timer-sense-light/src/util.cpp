@@ -54,7 +54,6 @@ size_t CUtil::getExecutablePath(char* buffer, size_t len) {
     return -1;
   }
 
-  ++pathEnd;
   *pathEnd = '\0';
 
   return (size_t)(pathEnd - buffer);

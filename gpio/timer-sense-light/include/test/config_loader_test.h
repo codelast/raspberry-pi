@@ -19,12 +19,12 @@ namespace {
   class CConfigLoaderTest : public testing::Test
   {
   protected:
+    string currentAppPath;
     string testDataDir;
   
   protected:
     virtual void SetUp() {
       /* get current running program path */
-      string currentAppPath;
       char path[PATH_MAX];
       memset(path, 0, sizeof(path));
       if (-1 != (int) CUtil::getExecutablePath(path, sizeof(path))) {
@@ -45,7 +45,21 @@ namespace {
   TEST_F(CConfigLoaderTest, givenNonExistConfigFileShouldReturnFalse) {
     CConfigLoader loader;
     string nonExistConfigFile = testDataDir + "/main.conf";
+    
     EXPECT_FALSE(loader.loadMainConfig(nonExistConfigFile));
+  }
+
+  TEST_F(CConfigLoaderTest, givenExistingConfigFileShouldReturnTrue) {
+    CConfigLoader loader;
+    string existingConfigFile = currentAppPath + "/conf/main.conf";
+    
+    EXPECT_TRUE(loader.loadMainConfig(existingConfigFile));
+    EXPECT_EQ(0, loader.getPyroelectricGpioPort());
+    EXPECT_EQ(1, loader.getLedGpioPortStart());
+    EXPECT_EQ(4, loader.getLedNumber());
+    EXPECT_EQ(80, loader.getListenPort());
+    string expectedWebRootPath = currentAppPath + "/web-root";
+    EXPECT_STREQ(expectedWebRootPath.c_str(), loader.getWebRootPath().c_str());
   }
 }
 

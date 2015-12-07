@@ -29,6 +29,8 @@ CConfigLoader::CConfigLoader() {
   memset(path, 0, sizeof(path));
   if (-1 != (int) CUtil::getExecutablePath(path, sizeof(path))) {
     currentAppPath = path;
+  } else {
+    currentAppPath = ".";
   }
 
   pthread_rwlock_init(&timeRangeDataLock, NULL);
