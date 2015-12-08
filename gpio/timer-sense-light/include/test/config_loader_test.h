@@ -3,6 +3,9 @@
 
 #include <gtest/gtest.h>
 #include <linux/limits.h>  // PATH_MAX
+#include <fstream>         // std::ofstream
+#include <algorithm>       // std::fill_n()
+#include <stdio.h>         // remove()
 #include "config_loader.h"
 
 /**
@@ -40,11 +43,11 @@ namespace {
     EXPECT_FALSE(loader.loadMainConfig(nonExistConfigFile));
   }
 
-  TEST_F(CConfigLoaderTest, givenExistingConfigFileShouldReturnTrue) {
+  TEST_F(CConfigLoaderTest, givenValidConfigFileShouldLoadRightData) {
     CConfigLoader loader;
-    string existingConfigFile = currentAppPath + "/conf/main.conf";
+    string validConfigFile = currentAppPath + "/conf/main.conf";
     
-    EXPECT_TRUE(loader.loadMainConfig(existingConfigFile));
+    EXPECT_TRUE(loader.loadMainConfig(validConfigFile));
     EXPECT_EQ(0, loader.getPyroelectricGpioPort());
     EXPECT_EQ(1, loader.getLedGpioPortStart());
     EXPECT_EQ(4, loader.getLedNumber());
@@ -58,6 +61,38 @@ namespace {
     string nonExistTimeRangeFile = currentAppPath + "/non-exist-time-range-file.txt";
 
     EXPECT_FALSE(loader.loadTimeRangeFromFile(nonExistTimeRangeFile));
+  }
+
+  TEST_F(CConfigLoaderTest, givenValidTimeRangeFileShouldLoadRightData) {
+    /* create a temp time range file for test */
+    string validTimeRangeFile = currentAppPath + "/unit-test-time-range.txt";
+    vector<string> outputLines;
+    outputLines.push_back("00:00\t00:35");
+    outputLines.push_back("01:00\t06:00");
+    ofstream ofs(validTimeRangeFile.c_str());
+    ASSERT_TRUE(ofs.is_open()) << "Failed to open time range config file [" << validTimeRangeFile << "] to write";
+
+    vector<string>::const_iterator it;
+    for (it = outputLines.begin(); it != outputLines.end(); it++) {
+      ofs << *it << endl;
+    }
+    ofs.close();
+
+    CConfigLoader loader;
+
+    EXPECT_TRUE(loader.loadTimeRangeFromFile(validTimeRangeFile));
+    
+    int* actualTimeRangeArray = loader.getTimeRangeArray();
+    for (int i = 0; i < ONE_DAY_MINUTES; i++) {
+      if ((i >= 0 && i <= 35) || (i >= 60 && i <= 360)) {
+	EXPECT_EQ(ENABLE_STATUS, actualTimeRangeArray[i]) << "Unexpected index [" << i << "] value";
+      } else {
+	EXPECT_EQ(DISABLE_STATUS, actualTimeRangeArray[i]) << "Unexpected index [" << i << "] value";
+      }
+    }
+
+    // cleanup
+    remove(validTimeRangeFile.c_str());
   }
 }
 
