@@ -92,12 +92,11 @@ namespace {
     CConfigLoader loader;
     EXPECT_TRUE(loader.loadTimeRangeFromFile(timeRangeFile));
     
-    int* actualTimeRangeArray = loader.getTimeRangeArray();
     for (int i = 0; i < ONE_DAY_MINUTES; i++) {
       if ((i >= 0 && i <= 35) || (i >= 60 && i <= 360)) {
-	EXPECT_EQ(ENABLE_STATUS, actualTimeRangeArray[i]) << "Unexpected index [" << i << "] value";
+	EXPECT_EQ(ENABLE_STATUS, loader.getTimePositionStatus(i)) << "Unexpected index [" << i << "] value";
       } else {
-	EXPECT_EQ(DISABLE_STATUS, actualTimeRangeArray[i]) << "Unexpected index [" << i << "] value";
+	EXPECT_EQ(DISABLE_STATUS, loader.getTimePositionStatus(i)) << "Unexpected index [" << i << "] value";
       }
     }
   }
@@ -116,15 +115,33 @@ namespace {
 
     string timeRangeStrLines = "00:05\t00:20\n10:00\t12:00";
     EXPECT_TRUE(loader.updateTimeRange(timeRangeStrLines));
-    int* actualTimeRangeArray = loader.getTimeRangeArray();
 
     for (int i = 0; i < ONE_DAY_MINUTES; i++) {
       if ((i >= 5 && i <= 20) || (i >= 600 && i <= 720)) {
-  	EXPECT_EQ(ENABLE_STATUS, actualTimeRangeArray[i]) << "Unexpected index [" << i << "] value";
+  	EXPECT_EQ(ENABLE_STATUS, loader.getTimePositionStatus(i)) << "Unexpected index [" << i << "] value";
       } else {
-  	EXPECT_EQ(DISABLE_STATUS, actualTimeRangeArray[i]) << "Unexpected index [" << i << "] value";
+  	EXPECT_EQ(DISABLE_STATUS, loader.getTimePositionStatus(i)) << "Unexpected index [" << i << "] value";
       }
     }
+  }
+
+  TEST_F(CConfigLoaderTest, givenInvalidTimePositionShouldReturnInvalidPositionFLag) {
+    CConfigLoader loader;
+    EXPECT_TRUE(loader.loadTimeRangeFromFile(timeRangeFile));
+
+    EXPECT_EQ(INVALID_POSITION, loader.getTimePositionStatus(-1));
+    EXPECT_EQ(INVALID_POSITION, loader.getTimePositionStatus(ONE_DAY_MINUTES + 1));
+  }
+
+  TEST_F(CConfigLoaderTest, givenLoadedTimeRangerDataShouldConvert2RightStrings) {
+    CConfigLoader loader;
+    EXPECT_TRUE(loader.loadTimeRangeFromFile(timeRangeFile));
+
+    vector<string> output;
+    string delimiter = " ";
+    loader.translateTimeRange2String(output, delimiter);
+    EXPECT_STREQ("00:00 00:35", output[0].c_str());
+    EXPECT_STREQ("01:00 06:00", output[1].c_str());
   }
 }
 

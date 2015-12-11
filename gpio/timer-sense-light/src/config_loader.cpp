@@ -251,9 +251,8 @@ string CConfigLoader::convertPosition2TimeStr(int position) {
 /**
  * Translate the time range array data to literal time range strings(e.g. "22:00[\t]23:59").
  *
- * @param timeRangeArray  An int array which stores the time range data, each item is 0 or 1.
- * @param delimiter       The delimiter between the start time & end time, e.g. "\t"
- * @param output  The output vectore which stores all the time range strings.
+ * @param delimiter  The delimiter between the start time & end time, e.g. "\t"
+ * @param output     The output vectore which stores all the time range strings.
  */
 void CConfigLoader::translateTimeRange2String(vector<string> &output, string delimiter) {
   pthread_rwlock_rdlock(&timeRangeDataLock);
