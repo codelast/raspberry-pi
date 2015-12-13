@@ -156,8 +156,7 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
       if (mg_vcmp(&hm->uri, "/get-mode") == 0) {
 	LOG(INFO) << "Will get mode...";
 	handleGetMode(nc);
-      }
-      if (mg_vcmp(&hm->uri, "/set-mode") == 0) {
+      } else if (mg_vcmp(&hm->uri, "/set-mode") == 0) {
 	handleSetMode(nc, hm);
       } else if (mg_vcmp(&hm->uri, "/get-time-range") == 0) {
 	LOG(INFO) << "Will get time range...";
