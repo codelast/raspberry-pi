@@ -33,6 +33,10 @@ Before compiling this project, you should have some software packages installed 
 
     pacman -S google-glog
 
+* libconfig(C/C++ Configuration File Library)
+
+    pacman -S libconfig
+
 * gtest(Google's C++ test framework) - to run the unit tests in this project
 
     pacman -S gtest
