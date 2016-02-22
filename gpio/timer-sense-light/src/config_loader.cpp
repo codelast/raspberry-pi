@@ -33,6 +33,7 @@ CConfigLoader::CConfigLoader() {
     currentAppPath = ".";
   }
 
+  memset(webRootPath, 0, sizeof(webRootPath));
   pthread_rwlock_init(&timeRangeDataLock, NULL);
   manualMode = false;
   ledLevel = 0;
@@ -89,7 +90,8 @@ bool CConfigLoader::loadMainConfig(const string configFile) {
     return false;
   }
 
-  webRootPath = currentAppPath + "/" + webRootDirName;
+  sprintf(webRootPath, "%s/%s", currentAppPath.c_str(), webRootDirName.c_str());
+  LOG(INFO) << "Web root path is [" << webRootPath << "]";
   return true;
 }
 

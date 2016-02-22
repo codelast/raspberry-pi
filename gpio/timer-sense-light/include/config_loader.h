@@ -28,7 +28,7 @@ class CConfigLoader
 
   int listenPort;       // local web sever listen port
   std::string webRootDirName;
-  std::string webRootPath;
+  char webRootPath[1024];
 
   pthread_rwlock_t timeRangeDataLock;
   bool manualMode;     // whether the LEDs are under manual control mode
@@ -51,7 +51,7 @@ class CConfigLoader
   inline int getLedGpioPortStart() const { return ledGpioPortStart; }
   inline int getLedNumber() const { return ledNumber; }
   inline int getListenPort() const { return listenPort; }
-  inline std::string getWebRootPath() const { return webRootPath; }
+  inline const char* getWebRootPath() const { return webRootPath; }
   inline bool isManualMode() const { return manualMode; }
   inline void setManualMode(bool val) { manualMode = val; }
   inline int getLedLevel() const { return ledLevel; }

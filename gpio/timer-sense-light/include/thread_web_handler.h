@@ -195,7 +195,7 @@ void* threadWebHandler(void*) {
     LOG(ERROR) << "Cannot find web root directory, web handler thread exits";
     return NULL;
   }
-  httpServerOpts.document_root = gConfigLoader.getWebRootPath().c_str();  // set up web root directory
+  httpServerOpts.document_root = gConfigLoader.getWebRootPath();  // set up web root directory
 
   LOG(INFO) << "Start web server on port [" << gConfigLoader.getListenPort() << "]";
 
