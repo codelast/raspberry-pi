@@ -78,7 +78,7 @@ namespace {
     EXPECT_EQ(4, loader.getLedNumber());
     EXPECT_EQ(80, loader.getListenPort());
     string expectedWebRootPath = currentAppPath + "/web-root";
-    EXPECT_STREQ(expectedWebRootPath.c_str(), loader.getWebRootPath().c_str());
+    EXPECT_STREQ(expectedWebRootPath.c_str(), loader.getWebRootPath());
   }
 
   TEST_F(CConfigLoaderTest, givenNonExistTimeRangeFileShouldReturnFalse) {
