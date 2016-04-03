@@ -6,9 +6,9 @@
  */
 
 $(document).ready(function() {
+    var timeRangeInputBoxNumber = 1;        // initlal input box number
     var maxTimeRangeInputBoxNumber = 10;    // maximum input boxes allowed
     var wrapper = $(".input_fields_wrap");  // fields wrapper
-    var timeRangeInputBoxNumber = 1;        // initlal input box number
 
     $('.js__timepicker').pickatime({
 	format: 'HH:i'  // the time text in the time picker will looks like "06:39"
