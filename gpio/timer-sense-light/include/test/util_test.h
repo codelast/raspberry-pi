@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include <linux/limits.h>  // PATH_MAX
+#include <regex>
 #include "constants.h"
 #include "util.h"
 
@@ -60,7 +61,11 @@ namespace {
   }
 
   TEST(getCurrentDateTest, shouldOutputADateStringWith10Chars) {
-    EXPECT_EQ(10, CUtil::getCurrentDate().length());
+    string dateStr = CUtil::getCurrentDate();
+
+    regex reg("^\\d{4}-\\d{2}-\\d{2}$");
+    smatch match;
+    EXPECT_TRUE(regex_match(dateStr, match, reg));
   }
 
   TEST_F(CUtilTest, givenNonExistDirShouldReturnFalse) {
