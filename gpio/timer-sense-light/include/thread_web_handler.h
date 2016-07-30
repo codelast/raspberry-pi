@@ -35,7 +35,7 @@ static void handleGetMode(struct mg_connection *nc) {
   if (gConfigLoader.isManualMode()) {
     mode = (gConfigLoader.getLedLevel() == HIGH) ? MODE_ON : MODE_OFF;
   }
-  LOG(INFO) << "Mode read: " << mode;
+  LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Mode read: " << mode;
 
   // use chunked encoding in order to avoid calculating Content-Length, please refer to https://en.wikipedia.org/wiki/Chunked_transfer_encoding for details
   mg_printf(nc, "%s", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
@@ -63,27 +63,27 @@ static void handleSetMode(struct mg_connection *nc, struct http_message *hm) {
   switch (mode) {
   case MODE_ON:
     {
-      LOG(INFO) << "Switch to mode ON";
+      LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Switch to mode ON";
       gConfigLoader.setManualMode(true);
       gConfigLoader.setLedLevel(HIGH);
       break;
     }
   case MODE_OFF:
     {
-      LOG(INFO) << "Switch to mode OFF";
+      LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Switch to mode OFF";
       gConfigLoader.setManualMode(true);
       gConfigLoader.setLedLevel(LOW);
       break;
     }
   case MODE_AUTO:
     {
-      LOG(INFO) << "Switch to mode AUTO";
+      LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Switch to mode AUTO";
       gConfigLoader.setManualMode(false);
       break;
     }
   default:
     {
-      LOG(ERROR) << "Unrecognized mode: " << mode;
+      LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Unrecognized mode: " << mode;
       success = false;
     }
   }
@@ -110,7 +110,7 @@ static void handleGetTimeRange(struct mg_connection *nc) {
   if (!allTimeRangeStr.empty()) {
     allTimeRangeStr = allTimeRangeStr.substr(0, allTimeRangeStr.length() - 1);
   }
-  LOG(INFO) << "Time range read: " << allTimeRangeStr;
+  LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Time range read: " << allTimeRangeStr;
 
   // use chunked encoding in order to avoid calculating Content-Length, please refer to https://en.wikipedia.org/wiki/Chunked_transfer_encoding for details
   mg_printf(nc, "%s", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
@@ -134,7 +134,7 @@ static void handleSaveTimeRange(struct mg_connection *nc, struct http_message *h
   memset(temp, 0, length);
   mg_get_http_var(&hm->body, "str", temp, length);
 
-  LOG(INFO) << "Time range data from web UI: [" << temp << "]";
+  LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Time range data from web UI: [" << temp << "]";
   
   /* update the time range data in memory & config file */
   string timeRangeStr(temp);
@@ -154,15 +154,15 @@ static void httpEventHandler(struct mg_connection *nc, int ev, void *ev_data) {
   switch (ev) {
     case MG_EV_HTTP_REQUEST:
       if (mg_vcmp(&hm->uri, "/get-mode") == 0) {
-	LOG(INFO) << "Will get mode...";
+	LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Will get mode...";
 	handleGetMode(nc);
       } else if (mg_vcmp(&hm->uri, "/set-mode") == 0) {
 	handleSetMode(nc, hm);
       } else if (mg_vcmp(&hm->uri, "/get-time-range") == 0) {
-	LOG(INFO) << "Will get time range...";
+	LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Will get time range...";
         handleGetTimeRange(nc);
       } else if (mg_vcmp(&hm->uri, "/save-time-range") == 0) {
-	LOG(INFO) << "Will save time range...";
+	LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Will save time range...";
 	handleSaveTimeRange(nc, hm);
       } else {
         mg_serve_http(nc, hm, httpServerOpts);  // serve static content
@@ -184,7 +184,7 @@ void* threadWebHandler(void*) {
   mg_mgr_init(&mgr, NULL);
   nc = mg_bind(&mgr, listenPort, httpEventHandler);
   if (NULL == nc) {
-    LOG(ERROR) <<  "Cannot bind to " << listenPort;
+    LOG(ERROR) <<  CUtil::getCurrentDate() << "\t" << "Cannot bind to " << listenPort;
     return NULL;
   }
 
@@ -192,12 +192,12 @@ void* threadWebHandler(void*) {
   mg_set_protocol_http_websocket(nc);
 
   if (!CUtil::isDirExist(gConfigLoader.getWebRootPath())) {
-    LOG(ERROR) << "Cannot find web root directory, web handler thread exits";
+    LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Cannot find web root directory, web handler thread exits";
     return NULL;
   }
   httpServerOpts.document_root = gConfigLoader.getWebRootPath();  // set up web root directory
 
-  LOG(INFO) << "Start web server on port [" << gConfigLoader.getListenPort() << "]";
+  LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Start web server on port [" << gConfigLoader.getListenPort() << "]";
 
   while (gConfigLoader.getThreadRunning()) {
     mg_mgr_poll(&mgr, 1000);

@@ -59,6 +59,10 @@ namespace {
 		 currentAppPath.c_str());
   }
 
+  TEST(getCurrentDateTest, shouldOutputADateStringWith10Chars) {
+    EXPECT_EQ(10, CUtil::getCurrentDate().length());
+  }
+
   TEST_F(CUtilTest, givenNonExistDirShouldReturnFalse) {
     EXPECT_FALSE(CUtil::isDirExist(currentAppPath + "/non-exist-dir"));
   }

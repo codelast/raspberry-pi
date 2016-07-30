@@ -24,12 +24,12 @@ int main(int argc,char* argv[]) {
   google::SetStderrLogging(google::INFO);  // set logging level
 
   if (argc < 3) {
-    LOG(ERROR) << "Usage example: ./timer_sense_light main_config_file time_range_config_file";
+    LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Usage example: ./timer_sense_light main_config_file time_range_config_file";
     return 1;
   }
 
   if (!gConfigLoader.loadMainConfig(argv[1])) {
-    LOG(ERROR) << "Failed to load main config file, please check";
+    LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Failed to load main config file, please check";
     return 1;
   }
 
@@ -54,7 +54,7 @@ int main(int argc,char* argv[]) {
   pthread_t webHandlerThreadId = 0;
   int createThreadRet = pthread_create(&webHandlerThreadId, NULL, threadWebHandler, NULL);
   if (0 != createThreadRet) {
-    LOG(ERROR) << "Failed to create the web events handling thread, quit";
+    LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Failed to create the web events handling thread, quit";
     return 1;
   }
 
@@ -62,7 +62,7 @@ int main(int argc,char* argv[]) {
   pthread_t hardwareControlThreadId = 0;
   createThreadRet = pthread_create(&hardwareControlThreadId, NULL, threadHardwareControl, NULL);
   if (0 != createThreadRet) {
-    LOG(ERROR) << "Failed to create the hardware control thread, quit";
+    LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Failed to create the hardware control thread, quit";
     return 1;
   }
 
@@ -70,7 +70,7 @@ int main(int argc,char* argv[]) {
   pthread_join(webHandlerThreadId, NULL);
   pthread_join(hardwareControlThreadId, NULL);
 
-  LOG(INFO) << "Backend program exits";
+  LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Backend program exits";
   return 0;
 }
 
@@ -80,6 +80,6 @@ int main(int argc,char* argv[]) {
  * @param signalNumber  Signal identifier.
  */
 void signalCatchSIGINT(int signalNumber) {
-  LOG(INFO) << "Received SIGINT, will exit...";
+  LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Received SIGINT, will exit...";
   gConfigLoader.setThreadRunning(false);
 }

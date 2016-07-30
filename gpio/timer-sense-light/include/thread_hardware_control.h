@@ -47,7 +47,7 @@ void* threadHardwareControl(void*) {
   // turn off all the LEDs at the initial status
   turnOnOffAllLED(ledGpioPortStart, ledNumber, LOW);
 
-  LOG(INFO) << "Hardware controlling thread starts to work...";
+  LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Hardware controlling thread starts to work...";
 
   int level = 0;
   while(gConfigLoader.getThreadRunning()) {
@@ -67,7 +67,7 @@ void* threadHardwareControl(void*) {
     } else {
       int currentLevel = digitalRead(pyroelectricGpioPort);
       if (currentLevel != level) {
-	LOG(INFO) << "Level change detected, current level is: " << currentLevel;
+	LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Level change detected, current level is: " << currentLevel;
 
 	/* turn on/off all LEDs according to current input level */
 	for (int i = 0; i < ledNumber; i++) {

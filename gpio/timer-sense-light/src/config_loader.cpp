@@ -55,10 +55,10 @@ bool CConfigLoader::loadMainConfig(const string configFile) {
   try {
     cfg.readFile(configFile.c_str());
   } catch(const FileIOException &fioex) {    
-    LOG(ERROR) << "I/O exception when loading config file.";
+    LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "I/O exception when loading config file.";
     return false;
   } catch(const ParseException &pex) {
-    LOG(ERROR) << "Parse config file error at " << pex.getFile() << " : " << pex.getLine() << " - " << pex.getError();
+    LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Parse config file error at " << pex.getFile() << " : " << pex.getLine() << " - " << pex.getError();
     return false;
   }
 
@@ -71,10 +71,10 @@ bool CConfigLoader::loadMainConfig(const string configFile) {
     if (!(gpio.lookupValue("PyroelectricGpioPort", pyroelectricGpioPort) &&
 	  gpio.lookupValue("LedGpioPortStart", ledGpioPortStart) &&
 	  gpio.lookupValue("LedNumber", ledNumber))) {
-      LOG(ERROR) << "Failed to read config file section " << CFG_FILE_SECTION_GPIO;
+      LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Failed to read config file section " << CFG_FILE_SECTION_GPIO;
     }
   } catch (...) {
-    LOG(ERROR) << "Exception caught when reading config file section " << CFG_FILE_SECTION_GPIO;
+    LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Exception caught when reading config file section " << CFG_FILE_SECTION_GPIO;
     return false;
   }
 
@@ -83,15 +83,15 @@ bool CConfigLoader::loadMainConfig(const string configFile) {
 
     if (!(web.lookupValue("ListenPort", listenPort) &&
 	  web.lookupValue("WebRootDirName", webRootDirName))) {
-      LOG(ERROR) << "Failed to read config file section " << CFG_FILE_SECTION_WEB;
+      LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Failed to read config file section " << CFG_FILE_SECTION_WEB;
     }
   } catch (...) {
-    LOG(ERROR) << "Exception caught when reading config file section " << CFG_FILE_SECTION_WEB;
+    LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Exception caught when reading config file section " << CFG_FILE_SECTION_WEB;
     return false;
   }
 
   sprintf(webRootPath, "%s/%s", currentAppPath.c_str(), webRootDirName.c_str());
-  LOG(INFO) << "Web root path is [" << webRootPath << "]";
+  LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Web root path is [" << webRootPath << "]";
   return true;
 }
 
@@ -112,7 +112,7 @@ bool CConfigLoader::loadMainConfig(const string configFile) {
 bool CConfigLoader::loadTimeRangeFromFile(const string &timeRangeFile) {
   ifstream ifs(timeRangeFile.c_str(), ios::in);
   if (!ifs.is_open()) {
-    LOG(ERROR) << "Failed to open file [" << timeRangeFile << "]";
+    LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Failed to open file [" << timeRangeFile << "]";
     return false;
   }
   this->timeRangeFile = timeRangeFile;
@@ -151,14 +151,14 @@ bool CConfigLoader::loadTimeRange(const vector<string> &timeRangeLines) {
   for (it = timeRangeLines.begin(); it != timeRangeLines.end(); it++) {
     string line = *it;
     if (0 == line.compare(0, 1, "#")) {  // line starts with "#" indicates it's a comment line
-      LOG(INFO) << "Read a comment line, skip";
+      LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Read a comment line, skip";
       continue;
     }
     
     vector<string> lineItems;  // each item e.g. "21:00"
     CUtil::stringSplit(line, '\t', lineItems);
     if (lineItems.size() != 2) {
-      LOG(WARNING) << "Skip invalid line: [" << line << "]";
+      LOG(WARNING) << CUtil::getCurrentDate() << "\t" << "Skip invalid line: [" << line << "]";
       continue;
     }
 
@@ -171,7 +171,7 @@ bool CConfigLoader::loadTimeRange(const vector<string> &timeRangeLines) {
       continue;
     }
 
-    LOG(INFO) << "LED can be lighten up between [" << lineItems[0] << "~" << lineItems[1] << "]";
+    LOG(INFO) << CUtil::getCurrentDate() << "\t" << "LED can be lighten up between [" << lineItems[0] << "~" << lineItems[1] << "]";
 
     /* set all minutes between the start & end position to enable status */
     for (int i = startPosition; i <= endPosition; i++) {
@@ -198,7 +198,7 @@ bool CConfigLoader::updateTimeRange(const string &timeRangeLines) {
   vector<string> vec;
   CUtil::stringSplit(timeRangeLines, '\n', vec);
   if (!loadTimeRange(vec)) {
-    LOG(INFO) << "Failed to update time range data in memory";
+    LOG(INFO) << CUtil::getCurrentDate() << "\t" << "Failed to update time range data in memory";
     return false;
   }
   
@@ -206,7 +206,7 @@ bool CConfigLoader::updateTimeRange(const string &timeRangeLines) {
   translateTimeRange2String(vec, "\t");
   ofstream ofs(timeRangeFile.c_str());
   if (!ofs.is_open()) {
-    LOG(ERROR) << "Failed to open time range config file [" << timeRangeFile << "] to write";
+    LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Failed to open time range config file [" << timeRangeFile << "] to write";
     return false;
   }
   vector<string>::const_iterator it;
@@ -227,7 +227,7 @@ bool CConfigLoader::updateTimeRange(const string &timeRangeLines) {
  */
 int CConfigLoader::getTimePositionStatus(int timePosition) {
   if (timePosition < 0 || timePosition >= ONE_DAY_MINUTES) {
-    LOG(ERROR) << "Invalid time position: " << timePosition;
+    LOG(ERROR) << CUtil::getCurrentDate() << "\t" << "Invalid time position: " << timePosition;
     return INVALID_POSITION;
   }
 

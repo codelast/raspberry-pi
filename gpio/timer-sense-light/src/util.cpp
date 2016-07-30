@@ -60,6 +60,26 @@ size_t CUtil::getExecutablePath(char* buffer, size_t len) {
 }
 
 /**
+ * Get current date with the format of "yyyy-MM-dd"
+ *
+ * @return the date string, e.g. "2016-06-11"
+ */
+string CUtil::getCurrentDate() {
+  struct timeval tv;
+  memset(&tv, 0, sizeof(tv));
+  char dateStr[16] = "0";
+
+  // obtain the time of day, and convert it to a tm struct
+  gettimeofday(&tv, NULL);
+  struct tm* ptm = localtime(&tv.tv_sec);
+
+  // format the date and time
+  strftime(dateStr, sizeof(dateStr), "%Y-%m-%d", ptm);
+
+  return dateStr;
+}
+
+/**
  * Check whether a directory exists.
  *
  * @param path	The directory path.
@@ -130,7 +150,7 @@ int CUtil::getPositionInTimeRange(const string &hourAndMinute) {
   vector<string> items;  // each item e.g. "21"
   CUtil::stringSplit(hourAndMinute, ':', items);
   if (items.size() != 2) {
-    LOG(ERROR) << "Invalid hour & minute: [" << hourAndMinute << "], current line will be skipped";
+    LOG(ERROR) << getCurrentDate() << "\t" << "Invalid hour & minute: [" << hourAndMinute << "], current line will be skipped";
     return INVALID_POSITION;
   }
   int hour = atoi(items[0].c_str());

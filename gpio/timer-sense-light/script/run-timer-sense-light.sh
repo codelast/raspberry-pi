@@ -14,7 +14,7 @@ cd $TIMER_SENSE_LIGHT_HOME
 EXEC_FILE_NAME=timer_sense_light
 
 function process_count() {
-    ps -ef | grep $EXEC_FILE_NAME | grep -v grep | wc -l
+    ps -ef | grep "${EXEC_FILE_NAME}$" | grep -v grep | wc -l
 }
 
 function kill_process() {
