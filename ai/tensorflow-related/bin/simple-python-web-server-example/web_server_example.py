@@ -1,5 +1,6 @@
 #!/usr/bin/python3.5
 # A simple Python-based web server example.
+# To start this web server, simply run "python3.5 web_server_example.py"
 # In client side, you can use following shell command to send a request to this server:
 # curl "http://127.0.0.1:8080/?image_path=/root/mobike.jpg"
 
