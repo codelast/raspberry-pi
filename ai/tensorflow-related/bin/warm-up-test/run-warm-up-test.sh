@@ -10,5 +10,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+WARM_UP_IMAGE_FILE_PATH=$TENSORFLOW_RELATED_HOME/resource/test-images/ubike.jpg
+INFERENCE_IMAGE_FILE_PATH=$TENSORFLOW_RELATED_HOME/resource/test-images/mobike.jpg
+
 # run the test
-$PYTHON_BIN $TENSORFLOW_RELATED_HOME/bin/warm-up-test/warm_up_test.py --model_dir $TENSORFLOW_RELATED_HOME/resource/model --warm_up_image_file /root/raspberry-pi/ai/tensorflow-related/resource/test-images/ubike.jpg --image_file $TENSORFLOW_RELATED_HOME/resource/test-images/mobike.jpg
+$PYTHON_BIN $TENSORFLOW_RELATED_HOME/bin/warm-up-test/warm_up_test.py --model_dir $TENSORFLOW_RELATED_HOME/resource/model --warm_up_image_file $WARM_UP_IMAGE_FILE_PATH --image_file $INFERENCE_IMAGE_FILE_PATH

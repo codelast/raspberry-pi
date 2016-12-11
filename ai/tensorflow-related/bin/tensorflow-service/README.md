@@ -1,0 +1,1 @@
+A simple, not elegant demo on how to run TensorFlow as a service, to initialize the model once, and warm-up several times before serving any actual client request, which will significantly reduce the time of one prediction.
