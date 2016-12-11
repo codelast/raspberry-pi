@@ -268,9 +268,9 @@ def main(_):
 
   warm_up_model(FLAGS.warm_up_image_file)
 
-  print('Starting TensorFlow service...')
   server_address = ('127.0.0.1', 8080)
   httpd = HTTPServer(server_address, MyRequestHandler)
+  print('TensorFlow service started')
   httpd.serve_forever()
 
 
