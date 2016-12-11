@@ -1,0 +1,1 @@
+To start writing any TensorFlow code on Raspberry Pi, you should install it on Raspberry Pi first. Refer to this(https://github.com/samjabrahams/tensorflow-on-raspberry-pi) link or this(http://www.codelast.com/?p=8984) link to find out how to achieve this.
