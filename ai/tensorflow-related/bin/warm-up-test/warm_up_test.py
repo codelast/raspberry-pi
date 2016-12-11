@@ -61,6 +61,8 @@ tf.app.flags.DEFINE_string(
     """imagenet_2012_challenge_label_map_proto.pbtxt.""")
 tf.app.flags.DEFINE_string('image_file', '',
                            """Absolute path to image file.""")
+tf.app.flags.DEFINE_string('warm_up_image_file', '',
+                           """Absolute path to warm-up image file.""")
 tf.app.flags.DEFINE_integer('num_top_predictions', 5,
                             """Display this many predictions.""")
 
@@ -158,7 +160,9 @@ def run_inference_on_image(image):
   image_data = tf.gfile.FastGFile(image, 'rb').read()
 
   # the image used to warm-up TensorFlow model
-  warm_up_image_data = tf.gfile.FastGFile('/root/tensorflow-related/test-images/ubike.jpg', 'rb').read()
+  if not tf.gfile.Exists(FLAGS.warm_up_image_file):
+    tf.logging.fatal('File does not exist %s', FLAGS.warm_up_image_file)
+  warm_up_image_data = tf.gfile.FastGFile(FLAGS.warm_up_image_file, 'rb').read()
 
   # Creates graph from saved GraphDef.
   create_graph()
