@@ -1,6 +1,6 @@
-A simple, not elegant demo on how to run TensorFlow as a service, to initialize the model once, and warm-up the model several times before serving any actual client request, which will significantly reduce the consuming time of one prediction.
+A simple, not elegant demo on how to run TensorFlow as a service, to initialize the model once, and warm-up the model several times before serving any actual client request, which will significantly reduce the consuming time of one prediction. Please refer to [this article](http://www.codelast.com/?p=8995) for details.
 
-***这里用简单、但不优雅的代码演示了如何把TensorFlow运行为一个服务，在真正服务客户端的请求之前只初始化一次模型、预热几次模型，从而极大地减少后面的一次预测所消耗的时间。***
+***这里用简单、但不优雅的代码演示了如何把TensorFlow运行为一个服务，在真正服务客户端的请求之前只初始化一次模型、预热几次模型，从而极大地减少后面的一次预测所消耗的时间。详情请参考[这篇文章](http://www.codelast.com/?p=8995)。***
 
 Follow these steps to run the test:
 
