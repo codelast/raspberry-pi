@@ -1,3 +1,6 @@
+### 关注我的微信公众号获取更多信息：
+![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/codelast_wechat_qr_code.jpg)
+
 # Raspberry Pi related code
 My video courses corresponding to part of these codes on jikexueyuan.com: [link](http://search.jikexueyuan.com/course/?q=%E6%A0%91%E8%8E%93%E6%B4%BE "Click to watch")
 
