@@ -1,4 +1,4 @@
-### 关注我的微信公众号获取更多信息（Follow my WeChat public account to get more info）：
+### 关注我的微信公众号获取更多信息（Follow my WeChat Official Account to get more info）：
 ![](https://raw.githubusercontent.com/codelast/raspberry-pi/master/codelast_wechat_qr_code.jpg)
 
 # Raspberry Pi related code
